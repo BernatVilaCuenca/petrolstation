@@ -1,0 +1,90 @@
+mutation{
+    insertCustomer(    
+      Customer:{
+        Type:"Person",
+        PersonData: {
+          Name:"Bernat",
+          SurName:"Vila",
+          CompleteName:"Bernat Vila",
+          Phone:"123456789",
+          Email:"bvila@mrw.es",
+          DocumentId:"456789123K"
+        },
+        Contacts: [
+          {
+            Name : "Manel",
+            SurName : "Martinez",
+            CompleteName : "Manel Martinez",
+            Phone : "9999777555",
+            DocumentId : "890567123L"
+          }
+          ],
+        Addresses:[
+          {
+            DepartmentId: "D01",
+            TownId: "D01.T01",
+            PostCode : "08016",
+            StreetName : "Mar",
+            HouseNumber : "1",
+            FlatNumber : "2",
+            Door : "3",
+            Others : "Altres"
+          }
+        ]
+      }
+    ){
+      success
+      errors
+      data{
+        _id
+        Type
+        PersonData {
+          Name
+          SurName
+          CompleteName
+          Phone
+          Email
+          DocumentId
+        }
+        Contacts {
+          Name
+          SurName
+          CompleteName
+          Phone
+          Email
+          DocumentId
+        }
+        Addresses {
+          Department{
+            _id
+            Name
+          }
+          Town{
+            _id
+            Name
+            
+          }
+          Door
+          PostCode
+          StreetName
+          HouseNumber
+          FlatNumber
+          Door
+          Others
+        }
+      }
+    }
+  }
+
+
+  mutation{
+    deleteCustomer(    
+        _id: "5b5303fb3d64e9145819cc1b"
+    ){
+      success
+      errors
+      data{
+        _id
+      }
+    }
+  }
