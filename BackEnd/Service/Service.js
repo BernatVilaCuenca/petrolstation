@@ -80,7 +80,7 @@ class Service {
         this.repository.delete(id)
         .then(function(result){
             if(result && result.success)
-                LogManager.LogInfo(`${className}.delete the item ${result.data._id}`);
+                LogManager.LogInfo(`${className}.delete removed the item ${result.data._id}`);
             else
                 LogManager.LogError(`Error on ${className}.delete`);
             deferred.resolve(result);

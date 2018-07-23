@@ -6,5 +6,3 @@ ServiceManager.Init();
 
 const ServerManager = require("./ServerManager");
 ServerManager.Start();
-
-//something
