@@ -16,7 +16,8 @@ module.exports = Object.freeze({
 			TRADING: {
 				name: "Trading",
 				collections: {
-					CUSTOMERS: "Customers"
+					CUSTOMERS: "Customers",
+					CUSTOMERSLIST: "CustomersList"
 				}
 			}
 		}

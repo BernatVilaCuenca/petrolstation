@@ -4,7 +4,6 @@ const Config = require("../../../config");
 const contactSchema = new Mongoose.Schema({
 	Name: String,
     Surname: String,
-    CompleteName: String,
     Phone: String,
     Email: String,
     DocumentId: String
@@ -13,6 +12,7 @@ const contactSchema = new Mongoose.Schema({
     _id: false
 });
 const addressSchema = new Mongoose.Schema({
+    IsDefault: Boolean,
 	DepartmentId: String,
     TownId: String,
     PostCode: String,
@@ -30,7 +30,6 @@ const schema = new Mongoose.Schema({
     PersonData:{
         Name: String,
         Surname: String,
-        CompleteName: String,
         Phone: String,
         Email: String,
         DocumentId: String

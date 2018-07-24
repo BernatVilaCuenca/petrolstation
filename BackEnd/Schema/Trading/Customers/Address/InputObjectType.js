@@ -1,8 +1,9 @@
-const { GraphQLString, GraphQLInputObjectType } = require("graphql");
+const { GraphQLString, GraphQlBoolean, GraphQLInputObjectType } = require("graphql");
 
 module.exports = new GraphQLInputObjectType({
     name:"AddressInput",
     fields:()=>({
+        IsDefault: { type: GraphQlBoolean},
         DepartmentId: { type: GraphQLString },
         TownId: { type: GraphQLString },
         PostCode : { type: GraphQLString },
