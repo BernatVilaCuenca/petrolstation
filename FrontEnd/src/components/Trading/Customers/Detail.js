@@ -138,10 +138,10 @@ export default class CustomersDetail extends React.Component {
                 </FormControl>
                 <FormControl>
                   <TextField
-                      label="SurName"
+                      label="Surname"
                       className={this.classNames.textBoxes.mediumTextBox}
-                      value={this.state.currentItem.PersonData.SurName}
-                      onChange={this.handlePersonDataChange('SurName')}
+                      value={this.state.currentItem.PersonData.Surname}
+                      onChange={this.handlePersonDataChange('Surname')}
                       margin="normal"
                   />
                 </FormControl>

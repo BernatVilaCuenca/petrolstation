@@ -4,7 +4,7 @@ mutation{
         Type:"Person",
         PersonData: {
           Name:"Bernat",
-          SurName:"Vila",
+          Surname:"Vila",
           CompleteName:"Bernat Vila",
           Phone:"123456789",
           Email:"bvila@mrw.es",
@@ -13,7 +13,7 @@ mutation{
         Contacts: [
           {
             Name : "Manel",
-            SurName : "Martinez",
+            Surname : "Martinez",
             CompleteName : "Manel Martinez",
             Phone : "9999777555",
             DocumentId : "890567123L"
@@ -40,7 +40,7 @@ mutation{
         Type
         PersonData {
           Name
-          SurName
+          Surname
           CompleteName
           Phone
           Email
@@ -48,7 +48,7 @@ mutation{
         }
         Contacts {
           Name
-          SurName
+          Surname
           CompleteName
           Phone
           Email

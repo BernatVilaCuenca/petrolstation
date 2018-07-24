@@ -8,7 +8,7 @@ module.exports = class CustomerFactory {
             Type: Type.Person,
             PersonData: {
                 Name: StringUtils.Empty,
-                SurName: StringUtils.Empty,
+                Surname: StringUtils.Empty,
                 CompleteName: StringUtils.Empty,
                 Phone: StringUtils.Empty,
                 Email: StringUtils.Empty,
@@ -16,7 +16,7 @@ module.exports = class CustomerFactory {
             },
             LegalPersonData: {
                 Name: StringUtils.Empty,
-                SurName: StringUtils.Empty,
+                Surname: StringUtils.Empty,
                 CompleteName: StringUtils.Empty,
                 Phone: StringUtils.Empty,
                 Email: StringUtils.Empty,

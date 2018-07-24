@@ -3,7 +3,7 @@ const Config = require("../../../config");
 
 const contactSchema = new Mongoose.Schema({
 	Name: String,
-    SurName: String,
+    Surname: String,
     CompleteName: String,
     Phone: String,
     Email: String,

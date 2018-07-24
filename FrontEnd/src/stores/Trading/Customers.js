@@ -13,7 +13,7 @@ class CustomersStore{
                         Type
                         PersonData {
                             Name
-                            SurName
+                            Surname
                             CompleteName
                             Phone
                             Email
@@ -42,6 +42,18 @@ class CustomersStore{
                 global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
             }
         );        
+    }
+    getOne(data){
+
+    }
+    insert(data){
+
+    }
+    update(data){
+
+    }
+    delete(data){
+        
     }
 }
 module.exports = CustomersStore;
