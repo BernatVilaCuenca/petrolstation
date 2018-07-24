@@ -50,7 +50,7 @@ export default class Menu extends Component {
                 <Paper>
                   <MenuList role="menu">
                     <MenuItem>
-                        <Link to="/employees" style={linkStyle}>Employees</Link>
+                        <Link to="/Customers" style={linkStyle}>Customers</Link>
                     </MenuItem>
                   </MenuList>
                 </Paper>

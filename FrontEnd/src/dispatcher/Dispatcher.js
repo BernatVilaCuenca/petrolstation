@@ -1,15 +1,15 @@
-const EmployeesDispatcher = require('../dispatcher/humanResources/Employees/Dispatcher');
+const CustomersDispatcher = require('../dispatcher/Trading/Customers/Dispatcher');
 const Modules = require('./Modules');
 
 class Dispatcher {
     constructor(){
-        this.employeesDispatcher = new EmployeesDispatcher();
+        this.customersDispatcher = new CustomersDispatcher();
     }
     dispatch(actionRequest){
         if(actionRequest==null)return;
         switch(actionRequest.module){
-            case Modules.Employees:
-                this.employeesDispatcher.dispatch(actionRequest);
+            case Modules.Customers:
+                this.customersDispatcher.dispatch(actionRequest);
             break;
             default:
             break;

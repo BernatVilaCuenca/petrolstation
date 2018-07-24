@@ -1,7 +1,7 @@
-const Store = require('../../../stores/humanResources/Employees');
+const Store = require('../../../stores/Trading/Customers');
 const Actions = require('./Actions');
 
-class EmployeesDispatcher{
+class CustomersDispatcher{
     constructor(){
         this.store = new Store();
     }
@@ -24,4 +24,4 @@ class EmployeesDispatcher{
         }
     }
 }
-module.exports = EmployeesDispatcher;
+module.exports = CustomersDispatcher;
