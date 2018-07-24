@@ -12,6 +12,7 @@ class CustomersDispatcher{
                 this.store.getAll();
             break;
             case Actions.GetOne:
+                this.store.getOne();
             break;
             case Actions.Insert:
             break;
