@@ -13,12 +13,12 @@ class CustomersService extends ListableItemService{
         if(item.Type === 'Person'){
             listItem.Phone = item.PersonData.Phone;
             listItem.Email = item.PersonData.Email;
-            listItem.Phone = item.PersonData.DocumentId;
+            listItem.DocumentId = item.PersonData.DocumentId;
             listItem.CompleteName = `${item.PersonData.Name} ${item.PersonData.Surname}`;
         }else{
             listItem.Phone = item.LegalPersonData.Phone;
             listItem.Email = item.LegalPersonData.Email;
-            listItem.Phone = item.LegalPersonData.DocumentId;
+            listItem.DocumentId = item.LegalPersonData.DocumentId;
             listItem.CompleteName = item.LegalPersonData.BusinessName;
         }
         return listItem;

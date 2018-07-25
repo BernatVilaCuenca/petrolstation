@@ -6,14 +6,14 @@ const {
     GraphQLBoolean
 } = graphQL;
 
-const CustomerObjectType = require("./ObjectType");
+const SingleResultObjectType = require("./SingleResultObjectType");
 
 module.exports = new GraphQLObjectType({
     name:"SingleCustomerResult",
     fields:()=>(
         {
             success : { type: GraphQLBoolean },
-            data : { type: CustomerObjectType },
+            data : { type: SingleResultObjectType },
             errors : { type: new GraphQLList(GraphQLString) }
           }
     )

@@ -63,9 +63,8 @@ export default class CustomersList extends Component {
   deleteItem(id){
   }
   closeDetail() {
-    this.setState({openDetail: false});
+    this.setState({open:{Detail: false}});
   }
-
   render() {
     return (
       <div>
@@ -88,14 +87,12 @@ export default class CustomersList extends Component {
                     accessor: row => row.Type === Type.Person ? "Person" : "Legal person"
                   }
                 ]
-              },
-              {
+              },{
                 Header: "Name",
                 columns: [
                   { 
-                    Header: "Name", 
-                    id: 'Name',
-                    accessor: row => row.Type === Type.Person ? row.PersonData.CompleteName : row.LegalPersonData.BusinessName
+                    Header: "CompleteName", 
+                    accessor: 'CompleteName'
                   }
                 ]
               }, {
@@ -103,18 +100,15 @@ export default class CustomersList extends Component {
                 columns: [
                   { 
                     Header: "Phone", 
-                    id: 'Phone',
-                    accessor: row => row.Type === Type.Person ? row.PersonData.Phone : row.LegalPersonData.Phone
+                    accessor: 'Phone'
                   },
                   { 
                     Header: "DocumentId", 
-                    id: 'DocumentId',
-                    accessor: row => row.Type === Type.Person ? row.PersonData.DocumentId : row.LegalPersonData.DocumentId
+                    accessor: 'DocumentId'
                   },
                   { 
                     Header: "Email", 
-                    id: 'Email',
-                    accessor: row => row.Type === Type.Person ? row.PersonData.Email : row.LegalPersonData.Email
+                    accessor: 'Email'
                   }
                 ]
               }, {

@@ -12,16 +12,16 @@ class CustomersDispatcher{
                 this.store.getAll();
             break;
             case Actions.GetOne:
-                this.store.getOne(data);
+                this.store.getOne(actionRequest.data);
             break;
             case Actions.Insert:
-                this.store.insert(data);
+                this.store.insert(actionRequest.data);
             break;
             case Actions.Update:
-                this.store.update(data);
+                this.store.update(actionRequest.data);
             break;
             case Actions.Delete:
-                this.store.delete(data);
+                this.store.delete(actionRequest.data);
             break;
             default:
             break;
