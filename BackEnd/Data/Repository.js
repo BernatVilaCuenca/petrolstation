@@ -6,10 +6,11 @@ class Repository{
         this.errors = errors;
     }
     getAll(query){
+        let self = this;
         var deferred = Q.defer();
         this.model.find(query, function(error, result){	
             if(error){
-                deferred.resolve({ success: false, errors: [ errors.getAll ]});
+                deferred.resolve({ success: false, errors: [ self.errors.getAll ]});
             }else{
                 deferred.resolve({ success: true, data: result });
             }
@@ -17,10 +18,11 @@ class Repository{
         return deferred.promise;
     }
     getOne(id){
+        let self = this;
         var deferred = Q.defer();
         this.model.findById(id, function(error, result){	
             if(error){
-                deferred.resolve({ success: false, errors: [ errors.getOne ]});
+                deferred.resolve({ success: false, errors: [ self.errors.getOne ]});
             }else{
                 deferred.resolve({ success: true, data: result });
             }
@@ -28,14 +30,12 @@ class Repository{
         return deferred.promise;
     }
     insert(item){
-        var newItem = new this.model();        
-        Object.assign(newItem, item);
-        delete newItem._id;
-        
+        let self = this;
+        var newItem = new self.model(item);        
         var deferred = Q.defer();
         newItem.save(function(error){	
             if(error){
-                deferred.resolve({ success: false, errors: [ errors.insert ]});
+                deferred.resolve({ success: false, errors: [ self.errors.insert ]});
             }else{
                 deferred.resolve({ success: true, data: newItem });
             }
@@ -43,16 +43,16 @@ class Repository{
         return deferred.promise;
     }
     update(item){
+        let self = this;
         var deferred = Q.defer();
-        console.log(item._id);
         this.model.findById(item._id, function(errorOnFetch, result){	
             if(errorOnFetch){
-                deferred.resolve({ success: false, errors: [ errors.getOne ]});
+                deferred.resolve({ success: false, errors: [ self.errors.getOne ]});
             }else{
                 var itemToUpdate = Object.assign(result, item);
                 itemToUpdate.save(function(errorSave){	
                     if(errorSave){
-                        deferred.resolve({ success: false, errors: [ errors.update ]});
+                        deferred.resolve({ success: false, errors: [ self.errors.update ]});
                     }else{
                         deferred.resolve({ success: true, data: itemToUpdate });
                     }
@@ -62,6 +62,7 @@ class Repository{
         return deferred.promise;
     }
     delete(id){
+        let self = this;
         var deferred = Q.defer();
         this.model.findById(id, function(errorOnFetch, itemToDelete){	
             if(errorOnFetch){

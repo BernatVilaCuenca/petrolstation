@@ -1,10 +1,15 @@
 const LogManager = require("../LogManager");
 const Q = require('q');
 
-class Service {
+class ItemService {
     constructor(repository, errors){
         this.repository = repository;
-        this.errors = errors;        
+        this.errors = errors;
+        this.actions = {
+            INSERT: 'insert',
+            UPDATE: 'update',
+            DELETE: 'delete'
+        };       
     }
     getAll(query){
         let className = this.constructor.name;
@@ -41,55 +46,45 @@ class Service {
         return deferred.promise;
     }
     insert(item){
-        let className = this.constructor.name;
+        let self=this;
         let deferred = Q.defer();
-        this.repository.insert(item)
-        .then(function(result){
-            if(result && result.success)
-                LogManager.LogInfo(`${className}.insert created the new item ${result.data._id}`);
-            else
-                LogManager.LogError(`Error on ${className}.insert`);
-            deferred.resolve(result);
-        })
-        .catch(function(error){
-            LogManager.LogError(`Error on ${className}.insert: ${error}`);
-            deferred.resolve({ success: false, errors: [ this.errors.insert ] });
-        });
+        self.applyAction(item, self.actions.INSERT)
+        .then(function(result){ deferred.resolve(result); })
+        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.INSERT] ] }); });
         return deferred.promise;
     }
     update(item){
-        let className = this.constructor.name;
+        let self=this;
         let deferred = Q.defer();
-        this.repository.update(item)
-        .then(function(result){
-            if(result && result.success)
-                LogManager.LogInfo(`${className}.update modified the item ${result.data._id}`);
-            else
-                LogManager.LogError(`Error on ${className}.update`);
-            deferred.resolve(result);
-        })
-        .catch(function(error){
-            LogManager.LogError(`Error on ${className}.update: ${error}`);
-            deferred.resolve({ success: false, errors: [ this.errors.update ] });
-        });
+        self.applyAction(item, self.actions.UPDATE)
+        .then(function(result){ deferred.resolve(result); })
+        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.UPDATE] ] }); });
         return deferred.promise;
     }
     delete(id){
-        let className = this.constructor.name;
+        let self=this;
         let deferred = Q.defer();
-        this.repository.delete(id)
+        self.applyAction(id, self.actions.DELETE)
+        .then(function(result){ deferred.resolve(result); })
+        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.DELETE] ] }); });
+        return deferred.promise;
+    }
+    applyAction(item, action){
+        let self=this;
+        let className = self.constructor.name;
+        let deferred = Q.defer();
+        self.repository[action](item)
         .then(function(result){
             if(result && result.success)
-                LogManager.LogInfo(`${className}.delete removed the item ${result.data._id}`);
+                LogManager.LogInfo(`${className}.${action} the item ${result.data._id}`);
             else
-                LogManager.LogError(`Error on ${className}.delete`);
-            deferred.resolve(result);
+                LogManager.LogError(`Error on ${className}.${action}`);
+            deferred.resolve(result);         
         })
         .catch(function(error){
-            LogManager.LogError(`Error on ${className}.delete: ${error}`);
-            deferred.resolve({ success: false, errors: [ this.errors.delete ] });
+            deferred.resolve({ success: false, errors: [ self.errors[action] ] });
         });
         return deferred.promise;
     }
 }
-module.exports = Service;
+module.exports = ItemService;

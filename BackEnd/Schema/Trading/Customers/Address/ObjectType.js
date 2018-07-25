@@ -1,11 +1,11 @@
-const { GraphQlBoolean, GraphQLString, GraphQLObjectType } = require("graphql");
+const { GraphQLBoolean, GraphQLString, GraphQLObjectType } = require("graphql");
 const DepartmentObjectType = require("../../../Geographics/Departments/ObjectType");
 const TownObjectType = require("../../../Geographics/Towns/ObjectType");
 
 module.exports = new GraphQLObjectType({
     name:"Address",
     fields:()=>({
-        IsDefault: { type: GraphQlBoolean},
+        IsDefault: { type: GraphQLBoolean},
         DepartmentId: { type: GraphQLString },
         Department: { 
             type: DepartmentObjectType,

@@ -5,22 +5,13 @@ mutation{
         PersonData: {
           Name:"Bernat",
           Surname:"Vila",
-          CompleteName:"Bernat Vila",
           Phone:"123456789",
           Email:"bvila@mrw.es",
           DocumentId:"456789123K"
-        },
-        Contacts: [
-          {
-            Name : "Manel",
-            Surname : "Martinez",
-            CompleteName : "Manel Martinez",
-            Phone : "9999777555",
-            DocumentId : "890567123L"
-          }
-          ],
+        },        
         Addresses:[
           {
+            IsDefault:true,
             DepartmentId: "D01",
             TownId: "D01.T01",
             PostCode : "08016",
@@ -41,19 +32,10 @@ mutation{
         PersonData {
           Name
           Surname
-          CompleteName
           Phone
           Email
           DocumentId
-        }
-        Contacts {
-          Name
-          Surname
-          CompleteName
-          Phone
-          Email
-          DocumentId
-        }
+        }        
         Addresses {
           Department{
             _id
@@ -61,10 +43,8 @@ mutation{
           }
           Town{
             _id
-            Name
-            
+            Name            
           }
-          Door
           PostCode
           StreetName
           HouseNumber

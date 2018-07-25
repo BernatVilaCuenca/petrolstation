@@ -11,20 +11,10 @@ class CustomersStore{
                     data {
                         _id
                         Type
-                        PersonData {
-                            Name
-                            Surname
-                            CompleteName
-                            Phone
-                            Email
-                            DocumentId
-                        }
-                        LegalPersonData {
-                            BusinessName
-                            Phone
-                            Email
-                            DocumentId
-                        }
+                        CompleteName
+                        Phone
+                        Email
+                        DocumentId
                     }
                 }
             }`,
@@ -53,7 +43,7 @@ class CustomersStore{
 
     }
     delete(data){
-        
+
     }
 }
 module.exports = CustomersStore;

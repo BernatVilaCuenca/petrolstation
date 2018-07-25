@@ -4,7 +4,6 @@ const Config = require("../../../config");
 const schema = new Mongoose.Schema({
     Type: String,
     CompleteName: String,
-    CompleteAddress: String,
     Phone: String,
     Email: String,
     DocumentId: String
