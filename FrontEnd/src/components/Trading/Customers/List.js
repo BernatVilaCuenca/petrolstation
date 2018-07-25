@@ -4,9 +4,8 @@ import "react-table/react-table.css";
 import React, { Component } from 'react';
 import Menu from '../../Menu';
 import ReactTable from "react-table";
-import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-import SaveIcon from '@material-ui/icons/Save';
 import Detail from "./Detail";
 
 const ActionRequest = require('../../../dispatcher/ActionRequest');
@@ -28,10 +27,6 @@ export default class CustomersList extends Component {
         Detail: false,
         Delete: false
       }
-    };
-    self.classNames = {
-      content: 'content',
-      gridOptionButton: 'gridOptionButton'
     };
     global.eventManager.on(
       Events.GetAll,
@@ -66,6 +61,7 @@ export default class CustomersList extends Component {
     this.setState({open:{Detail: false}});
   }
   render() {
+    const buttonStyle={marginLeft:'5px', cursor: 'pointer'};
     return (
       <div>
           <Menu/>
@@ -74,7 +70,7 @@ export default class CustomersList extends Component {
             currentItem={this.state.currentItem} 
             onClose={this.closeDetail}
           />
-          <div className={this.classNames.content}>
+          <div>
             <ReactTable
             data={ this.state.items }
             columns={[
@@ -89,27 +85,13 @@ export default class CustomersList extends Component {
                 ]
               },{
                 Header: "Name",
-                columns: [
-                  { 
-                    Header: "CompleteName", 
-                    accessor: 'CompleteName'
-                  }
-                ]
+                columns: [ { Header: "Complete name", accessor: 'CompleteName'} ]
               }, {
                 Header: "Information",
                 columns: [
-                  { 
-                    Header: "Phone", 
-                    accessor: 'Phone'
-                  },
-                  { 
-                    Header: "DocumentId", 
-                    accessor: 'DocumentId'
-                  },
-                  { 
-                    Header: "Email", 
-                    accessor: 'Email'
-                  }
+                  { Header: "Phone", accessor: 'Phone' },
+                  { Header: "Id", accessor: 'DocumentId'},
+                  { Header: "Email", accessor: 'Email' }
                 ]
               }, {
                 Header: "Options",
@@ -118,15 +100,25 @@ export default class CustomersList extends Component {
                     Header: "Options", 
                     Cell: row =>(
                       <div>
-                        <Button onClick={this.editItem.bind(this, row.original._id)} className={this.classNames.gridOptionButton} variant="contained" size="small"><SaveIcon/>Edit</Button>
-                        <Button onClick={this.deleteItem.bind(this, row.original._id)} className={this.classNames.gridOptionButton} variant="contained" color="secondary" size="small"><DeleteIcon/>Delete</Button>
+                        <span 
+                          onClick={this.deleteItem.bind(this, row.original._id)} 
+                          class="glyphicon glyphicon-trash" 
+                          aria-hidden="true"
+                          style={buttonStyle}
+                        ></span>
+                        <span 
+                          onClick={this.editItem.bind(this, row.original._id)} 
+                          class="glyphicon glyphicon-pencil" 
+                          aria-hidden="true"
+                          style={buttonStyle}
+                        ></span>                        
                       </div>
                     )
                   }
                 ]
               }
             ]}
-            defaultPageSize={10}
+            defaultPageSize={15}
             className="-striped -highlight"
           />
         </div>
