@@ -4,8 +4,6 @@ import "react-table/react-table.css";
 import React, { Component } from 'react';
 import Menu from '../../Menu';
 import ReactTable from "react-table";
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import Detail from "./Detail";
 
 const ActionRequest = require('../../../dispatcher/ActionRequest');
@@ -21,7 +19,7 @@ export default class CustomersList extends Component {
 
     let self=this;
     self.state = {
-      items:[],
+      items: [],
       currentItem: CustomerFactory.create(),
       open: {
         Detail: false,
@@ -37,31 +35,34 @@ export default class CustomersList extends Component {
     global.eventManager.on(
       Events.GetOne,
       function(result){
-        self.setState({currentItem: result});
+        self.setState({ currentItem: result });
       }
     );
-    this.editItem = this.editItem.bind(this);
-    this.deleteItem = this.deleteItem.bind(this);
-    this.closeDetail = this.closeDetail.bind(this);
   }
-
   componentDidMount(){
     let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
     global.dispatcher.dispatch(actionRequest);
   }
-  editItem(id){
+  editItem = (id) => {
     let self=this;
     let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, id);
-    global.dispatcher.dispatch(actionRequest);
-    self.setState({open: {Detail: true}});
+    global.dispatcher.dispatch(actionRequest);  
+    self.setState({open: {Detail: true}});  
   }
-  deleteItem(id){
+  deleteItem = (id) => {
+    let self=this;
+    let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, id);
+    global.dispatcher.dispatch(actionRequest);  
+    self.setState({open: {Delete: true}});
   }
-  closeDetail() {
-    this.setState({open:{Detail: false}});
+  closeDetail = () => {
+    this.setState({open: {Detail: false}});
   }
   render() {
-    const buttonStyle={marginLeft:'5px', cursor: 'pointer'};
+    const buttonStyle = {marginLeft:'5px', cursor: 'pointer'};
+    const editButtonClass = 'glyphicon glyphicon-pencil';
+    const deleteButtonClass = 'glyphicon glyphicon-trash';
+
     return (
       <div>
           <Menu/>
@@ -102,13 +103,13 @@ export default class CustomersList extends Component {
                       <div>
                         <span 
                           onClick={this.deleteItem.bind(this, row.original._id)} 
-                          class="glyphicon glyphicon-trash" 
+                          className={deleteButtonClass}
                           aria-hidden="true"
                           style={buttonStyle}
                         ></span>
                         <span 
                           onClick={this.editItem.bind(this, row.original._id)} 
-                          class="glyphicon glyphicon-pencil" 
+                          className={editButtonClass}
                           aria-hidden="true"
                           style={buttonStyle}
                         ></span>                        
@@ -118,7 +119,7 @@ export default class CustomersList extends Component {
                 ]
               }
             ]}
-            defaultPageSize={15}
+            defaultPageSize={10}
             className="-striped -highlight"
           />
         </div>

@@ -2,64 +2,66 @@ import "../../../styles/Trading/Customers/Detail.css";
 
 import _ from 'lodash';
 import React from 'react';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Typography from '@material-ui/core/Typography';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 const CustomerFactory = require("../../../entities/Trading/Customers/CustomerFactory");
+const AddressFactory = require("../../../entities/Trading/Customers/AddressFactory");
+const ContactFactory = require("../../../entities/Trading/Customers/ContactFactory");
+
 const Type = require("../../../entities/Trading/Customers/Type");
+const ControlsUtils = require("../../../utils/Controls");
 
 export default class CustomersDetail extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-        currentItem: _.assign (CustomerFactory.create(), this.props.currentItem),
-        personData:{
-          expanded:true
-        },
-        legalPersonData:{
-          expanded:true
-        },
-        addresses:{
-          expanded:true
-        },
-        contacts:{
-          expanded:true
-        }
+        currentItem: CustomerFactory.create()
     };
-    this.classNames = {
-        textBoxes:{
-            smallTextBox: 'smallTextBox',
-            mediumTextBox: 'mediumTextBox',
-            largeTextBox: 'largeTextBox'
-        }
-      };
+  }
+  componentWillReceiveProps(newProps) {
+    let currentItem = CustomerFactory.create();
+    switch(currentItem.Type){
+      case Type.Person:
+        currentItem.PersonData = newProps.currentItem.PersonData;
+      break;
+      case Type.LegalPerson:
+        currentItem.LegalPersonData = newProps.currentItem.LegalPersonData;
+        currentItem.Addresses = newProps.currentItem.Addresses;
+      break;
+    }
+    currentItem.Contacts = newProps.currentItem.Contacts;
+    this.setState({ currentItem });
+  }
+  componentDidUpdate(){
+    this.showSuitableSections();
   }
   close = () => {
     this.props.onClose();
   };
   save = () => {
-    //this.props.onClose();
-    //console.log(this.state.currentItem.Type);
+    this.props.onClose();
   };
-  handleTypeChange = () => event => {
+  showSuitableSections(){
+    switch(this.state.currentItem.Type){
+      case Type.Person:
+        ControlsUtils.ShowElement("PersonData");
+        ControlsUtils.HideElement("LegalPersonData");
+        ControlsUtils.HideElement("Contacts");
+      break;
+      case Type.LegalPerson:
+        ControlsUtils.HideElement("PersonData");
+        ControlsUtils.ShowElement("LegalPersonData");
+        ControlsUtils.ShowElement("Contacts");
+      break;
+    }
+  }
+  handleTypeChange = event => {
     let currentItem = this.state.currentItem;
     currentItem.Type = event.target.value;
     this.setState({ currentItem });
+    this.showSuitableSections();
   };
   handlePersonDataChange = (name) => event => {
     let currentItem = this.state.currentItem;
@@ -81,23 +83,30 @@ export default class CustomersDetail extends React.Component {
     currentItem.Contacts[index][name] = event.target.value;
     this.setState({ currentItem });
   };
-  handleExpandPersonData = () => {
-    var value = this.state.personData.expanded;
-    this.setState({ personData:{ expanded: !value } });
-  };
-  handleExpandLegalPersonData = () => {
-    var value = this.state.legalPersonData.expanded;
-    this.setState({ legalPersonData:{ expanded: !value } });
-  };
-  handleExpandAddresses = () => {
-    var value = this.state.addresses.expanded;
-    this.setState({ addresses:{ expanded: !value } });
-  };
-  handleExpandContacts = () => {
-    var value = this.state.contacts.expanded;
-    this.setState({ contacts:{ expanded: !value } });
+  addContact = () => {
+    let currentItem = this.state.currentItem;
+    let contact = ContactFactory.create();
+    currentItem.Contacts.push(contact);
+    this.setState({ currentItem });
   };
   render() {
+    const controlSizeXS = {width: '50px', marginLeft: '5px'};
+    const controlSizeS = {width: '80px', marginLeft: '5px'};
+    const controlSizeM = {width: '115px', marginLeft: '5px'};
+    const controlSizeL = {width: '215px', marginLeft: '5px'};
+    const controlSizeXl = {width: '330px', marginLeft: '5px'};
+
+    const controlButtonSave = {width: '80px', marginRight: '5px'};
+    const controlButtonClose = {width: '80px'};
+    const buttonStyle = {marginLeft:'5px', cursor: 'pointer'};
+
+    const classFromGroup='form-group';
+    const classButtonSave='btn btn-primary';
+    const classButtonClose='btn btn-secondary';
+    const classButtonAdd = 'glyphicon glyphicon-plus';
+    const classButtonDelete = 'glyphicon glyphicon-thrash';
+    const required = { color: 'red', fontWeight: 'bold'};    
+
     return (
       <div>
         <Dialog
@@ -106,65 +115,190 @@ export default class CustomersDetail extends React.Component {
           aria-labelledby="form-dialog-title"
           maxWidth={false}
         >
-          <DialogTitle id="form-dialog-title">Customer</DialogTitle>
           <DialogContent>
-            <FormControl>
-                <InputLabel>Type</InputLabel>
-                <Select
-                    native
+            <form>
+              <label><h3>Customer</h3></label>
+              <div className={classFromGroup}>
+                <label style={controlSizeS}>Type</label>
+                <select
+                    style={controlSizeL}
                     value={this.state.currentItem.Type}
-                    onChange={this.handleTypeChange}            
+                    onChange={this.handleTypeChange}
                 >
                   <option value={Type.Person}>Person</option>
                   <option value={Type.LegalPerson}>Legal person</option>
-                </Select>
-            </FormControl>
-            <ExpansionPanel 
-              expanded={this.state.personData.expanded}
-              onChange={this.handleExpandPersonData}
-            >
-              <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                <Typography>Person data</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <FormControl>
-                  <TextField
-                      label="Name"
-                      className={this.classNames.textBoxes.mediumTextBox}
-                      value={this.state.currentItem.PersonData.Name}
-                      onChange={this.handlePersonDataChange('Name')}
-                      margin="normal"
+                </select>
+              </div>
+
+              <div id="PersonData">
+                <div className={classFromGroup}>
+                  <label style={controlSizeS}>Name <label style={required}>*</label></label>                    
+                  <input
+                    type="text"
+                    label="Name"
+                    style={controlSizeL}
+                    value={this.state.currentItem.PersonData.Name}
+                    onChange={this.handlePersonDataChange('Name')}
                   />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                      label="Surname"
-                      className={this.classNames.textBoxes.mediumTextBox}
-                      value={this.state.currentItem.PersonData.Surname}
-                      onChange={this.handlePersonDataChange('Surname')}
-                      margin="normal"
+                  <label style={controlSizeS}>Surname <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="Surname"
+                    style={controlSizeL}
+                    value={this.state.currentItem.PersonData.Surname}
+                    onChange={this.handlePersonDataChange('Surname')}
                   />
-                </FormControl>
-                <FormControl>
-                  <TextField
-                      label="Phone"
-                      className={this.classNames.textBoxes.mediumTextBox}
-                      value={this.state.currentItem.PersonData.Phone}
-                      onChange={this.handlePersonDataChange('Phone')}
-                      margin="normal"
+                  <label style={controlSizeS}>Id <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="DocumentId"
+                    style={controlSizeM}
+                    value={this.state.currentItem.PersonData.DocumentId}
+                    onChange={this.handlePersonDataChange('DocumentId')}
                   />
-                </FormControl>
-              </ExpansionPanelDetails>
-            </ExpansionPanel>            
+                </div>
+                <div className={classFromGroup}>
+                  <label style={controlSizeS}>Phone <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="Phone"
+                    style={controlSizeL}
+                    value={this.state.currentItem.PersonData.Phone}
+                    onChange={this.handlePersonDataChange('Phone')}
+                  />
+                  <label style={controlSizeS}>Email <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="Email"
+                    style={controlSizeL}
+                    value={this.state.currentItem.PersonData.Email}
+                    onChange={this.handlePersonDataChange('Email')}
+                  />
+                </div>
+              </div>
+
+              <div id="LegalPersonData">
+                <div className={classFromGroup}>
+                  <label style={controlSizeS}>Name <label style={required}>*</label></label>                    
+                  <input
+                    type="text"
+                    label="Name"
+                    style={controlSizeL}
+                    value={this.state.currentItem.LegalPersonData.BusinessName}
+                    onChange={this.handleLegalPersonDataChange('BusinessName')}
+                  />
+                  <label style={controlSizeS}>Id <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="DocumentId"
+                    style={controlSizeM}
+                    value={this.state.currentItem.LegalPersonData.DocumentId}
+                    onChange={this.handleLegalPersonDataChange('DocumentId')}
+                  />
+                </div>
+                <div className={classFromGroup}>
+                  <label style={controlSizeS}>Phone <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="Phone"
+                    style={controlSizeL}
+                    value={this.state.currentItem.LegalPersonData.Phone}
+                    onChange={this.handleLegalPersonDataChange('Phone')}
+                  />
+                  <label style={controlSizeS}>Email <label style={required}>*</label></label>
+                  <input
+                    type="text"
+                    label="Email"
+                    style={controlSizeL}
+                    value={this.state.currentItem.LegalPersonData.Email}
+                    onChange={this.handleLegalPersonDataChange('Email')}
+                  />
+                </div>
+              </div>
+
+              <div id="Addresses">
+                <label><h4>Addresses</h4></label>
+                <span 
+                  onClick={this.addAddress} 
+                  className={classButtonAdd}
+                  aria-hidden="true"
+                  style={buttonStyle}
+                ></span>
+                <div>
+                </div>
+              </div>
+
+              <div id="Contacts">
+                <label><h4>Contacts</h4></label>
+                <span 
+                  onClick = {this.addContact} 
+                  className = {classButtonAdd}
+                  aria-hidden = "true"
+                  style = {buttonStyle}
+                ></span>
+                {
+                  this.state.currentItem.Contacts.map((item, index) =>
+                    <div key={index}>
+                      <div className={classFromGroup}>
+                        <label style={controlSizeS}>Name <label style={required}>*</label></label>                    
+                        <input
+                          type="text"
+                          label="Name"
+                          style={controlSizeL}
+                          value={item.Name}
+                          onChange={this.handleContactChange('Name', index)}
+                        />
+                        <label style={controlSizeS}>Surname <label style={required}>*</label></label>
+                        <input
+                          type="text"
+                          label="Surname"
+                          style={controlSizeL}
+                          value={item.Surname}
+                          onChange={this.handleContactChange('Surname', index)}
+                        />
+                        <label style={controlSizeS}>Id <label style={required}>*</label></label>
+                        <input
+                          type="text"
+                          label="DocumentId"
+                          style={controlSizeM}
+                          value={item.DocumentId}
+                          onChange={this.handleContactChange('DocumentId', index)}
+                        />
+                      </div>
+                      <div className={classFromGroup}>
+                        <label style={controlSizeS}>Phone <label style={required}>*</label></label>
+                        <input
+                          type="text"
+                          label="Phone"
+                          style={controlSizeL}
+                          value={item.Phone}
+                          onChange={this.handleContactChange('Phone', index)}
+                        />
+                        <label style={controlSizeS}>Email <label style={required}>*</label></label>
+                        <input
+                          type="text"
+                          label="Email"
+                          style={controlSizeL}
+                          value={item.Email}
+                          onChange={this.handleContactChange('Email', index)}
+                        />
+                        <span 
+                          onClick = {this.removeContact(index)}
+                          className = {classButtonDelete}
+                          aria-hidden = "true"
+                          style = {buttonStyle}
+                        ></span>
+                      </div>
+                    </div>
+                  )
+                }                
+              </div>
+              <div>
+                <button type="button" onClick={this.save} className={classButtonSave} style={controlButtonSave}>Save</button>
+                <button type="button" onClick={this.save} className={classButtonClose} style={controlButtonClose}>Close</button>
+              </div>
+            </form>
           </DialogContent>
-          <DialogActions>
-            <Button onClick={this.close} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={this.save} color="primary">
-              Save
-            </Button>
-          </DialogActions>
         </Dialog>
       </div>
     );

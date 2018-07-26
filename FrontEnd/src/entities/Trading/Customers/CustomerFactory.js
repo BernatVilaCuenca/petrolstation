@@ -15,9 +15,7 @@ module.exports = class CustomerFactory {
                 DocumentId: StringUtils.Empty
             },
             LegalPersonData: {
-                Name: StringUtils.Empty,
-                Surname: StringUtils.Empty,
-                CompleteName: StringUtils.Empty,
+                BusinessName: StringUtils.Empty,
                 Phone: StringUtils.Empty,
                 Email: StringUtils.Empty,
                 DocumentId: StringUtils.Empty
