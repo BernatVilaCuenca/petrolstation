@@ -1,9 +1,9 @@
-import "../../../styles/List.css";
 import "react-table/react-table.css";
+import "../../../styles/Trading/Customers/List.css";
 
 import React, { Component } from 'react';
-import Menu from '../../Menu';
 import ReactTable from "react-table";
+import Menu from '../../Menu';
 import Detail from "./Detail";
 
 const ActionRequest = require('../../../dispatcher/ActionRequest');
@@ -11,7 +11,7 @@ const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
 const Events = require('../../../events/Trading/Customers');
 const Type = require("../../../entities/Trading/Customers/Type");
-const CustomerFactory = require("../../../entities/Trading/Customers/CustomerFactory");
+const ListClasses = require("../../../styles/List");
 
 export default class CustomersList extends Component {
   constructor(){
@@ -20,7 +20,7 @@ export default class CustomersList extends Component {
     let self=this;
     self.state = {
       items: [],
-      currentItem: CustomerFactory.create(),
+      currentId: null,
       open: {
         Detail: false,
         Delete: false
@@ -31,50 +31,37 @@ export default class CustomersList extends Component {
       function(result){
         self.setState({items: result});
       }
-    );
-    global.eventManager.on(
-      Events.GetOne,
-      function(result){
-        self.setState({ currentItem: result });
-      }
-    );
+    );    
   }
   componentDidMount(){
     let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
     global.dispatcher.dispatch(actionRequest);
   }
   editItem = (id) => {
-    let self=this;
-    let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, id);
-    global.dispatcher.dispatch(actionRequest);  
-    self.setState({open: {Detail: true}});  
+    let self=this;      
+    self.setState({open: {Detail: true}, currentId: id});  
   }
   deleteItem = (id) => {
-    let self=this;
-    let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, id);
-    global.dispatcher.dispatch(actionRequest);  
-    self.setState({open: {Delete: true}});
+    let self=this;    
+    self.setState({open: {Delete: true}, currentId: id});
   }
   closeDetail = () => {
     this.setState({open: {Detail: false}});
   }
   render() {
     const buttonStyle = {marginLeft:'5px', cursor: 'pointer'};
-    const editButtonClass = 'glyphicon glyphicon-pencil';
-    const deleteButtonClass = 'glyphicon glyphicon-trash';
-
     return (
       <div>
           <Menu/>
           <Detail 
             open={this.state.open.Detail} 
-            currentItem={this.state.currentItem} 
+            id={this.state.currentId} 
             onClose={this.closeDetail}
           />
           <div>
             <ReactTable
-            data={ this.state.items }
-            columns={[
+              data={ this.state.items }
+              columns={[
               {
                 Header: "Type",
                 columns: [
@@ -103,13 +90,13 @@ export default class CustomersList extends Component {
                       <div>
                         <span 
                           onClick={this.deleteItem.bind(this, row.original._id)} 
-                          className={deleteButtonClass}
+                          className={ListClasses.buttons.style.delete}
                           aria-hidden="true"
                           style={buttonStyle}
                         ></span>
                         <span 
                           onClick={this.editItem.bind(this, row.original._id)} 
-                          className={editButtonClass}
+                          className={ListClasses.buttons.style.edit}
                           aria-hidden="true"
                           style={buttonStyle}
                         ></span>                        
@@ -120,7 +107,7 @@ export default class CustomersList extends Component {
               }
             ]}
             defaultPageSize={10}
-            className="-striped -highlight"
+            className={ListClasses.list}
           />
         </div>
       </div>

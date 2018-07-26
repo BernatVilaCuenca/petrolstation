@@ -1,9 +1,9 @@
-.smallTextBox{
-    width:150px;
-}
-.mediumTextBox{
-    width:200px;
-}
-.largeTextBox{
-    width:300px;
-}
+.controlXS {width: '50px'; margin-right: '5px'}
+.controlS {width: '80px'; margin-right: '5px'}
+.controlM {width: '115px'; margin-right: '5px'}
+.controlL {width: '215px'; margin-right: '5px'}
+.controlXL {width: '330px'; margin-right: '5px'}
+
+.buttonS {width: '80px'; margin-right: '5px'; cursor: 'pointer'}
+
+.labelRequired { color: 'red'; font-weight: 'bold'}
