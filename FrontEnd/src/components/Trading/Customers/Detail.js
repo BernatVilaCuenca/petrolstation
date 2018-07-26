@@ -64,6 +64,7 @@ export default class CustomersDetail extends React.Component {
     let currentItem = self.state.currentItem;
     currentItem.Type = event.target.value;
     self.setState({ currentItem });
+    self.enableSections();
   };
   onChangePersonData = (data) => {
     let self=this;
