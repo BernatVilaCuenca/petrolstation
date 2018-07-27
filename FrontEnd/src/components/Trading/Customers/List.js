@@ -1,5 +1,4 @@
 import "react-table/react-table.css";
-import "../../../styles/Trading/Customers/List.css";
 
 import React, { Component } from 'react';
 import ReactTable from "react-table";
@@ -11,7 +10,9 @@ const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
 const Events = require('../../../events/Trading/Customers');
 const Type = require("../../../entities/Trading/Customers/Type");
-const ListClasses = require("../../../styles/List");
+
+const ExternalClasses = require("../../../styles/ExternalClasses/List");
+const StyledComponents = require("../../../styles/StyledComponents/List").styles;
 
 export default class CustomersList extends Component {
   constructor(){
@@ -50,6 +51,7 @@ export default class CustomersList extends Component {
   }
   render() {
     const buttonStyle = {marginLeft:'5px', cursor: 'pointer'};
+    const ImageButton = StyledComponents.buttons.image;
     return (
       <div>
           <Menu/>
@@ -88,18 +90,18 @@ export default class CustomersList extends Component {
                     Header: "Options", 
                     Cell: row =>(
                       <div>
-                        <span 
+                        <ImageButton 
                           onClick={this.deleteItem.bind(this, row.original._id)} 
-                          className={ListClasses.buttons.style.delete}
+                          className={ExternalClasses.buttons.delete}
                           aria-hidden="true"
                           style={buttonStyle}
-                        ></span>
-                        <span 
+                        ></ImageButton>
+                        <ImageButton 
                           onClick={this.editItem.bind(this, row.original._id)} 
-                          className={ListClasses.buttons.style.edit}
+                          className={ExternalClasses.buttons.edit}
                           aria-hidden="true"
                           style={buttonStyle}
-                        ></span>                        
+                        ></ImageButton>                        
                       </div>
                     )
                   }
@@ -107,7 +109,7 @@ export default class CustomersList extends Component {
               }
             ]}
             defaultPageSize={10}
-            className={ListClasses.list}
+            className={ExternalClasses.list}
           />
         </div>
       </div>

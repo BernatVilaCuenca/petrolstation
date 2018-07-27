@@ -1,11 +1,10 @@
-import "../../../styles/Trading/Customers/Detail.css";
-
 import React from 'react';
+
+const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 
 const PersonDataFactory = require("../../../entities/Trading/Customers/PersonDataFactory");
 const Type = require("../../../entities/Trading/Customers/Type");
 const ControlsUtils = require("../../../utils/Controls");
-const DetailClasses = require("../../../styles/Detail");
 const Events = require('../../../events/Trading/Customers');
 
 export default class PersonDataComponent extends React.Component {
@@ -39,52 +38,54 @@ export default class PersonDataComponent extends React.Component {
         this.props.onChange(personData);
     };
     render(){
+
+        const LabelSizeS = StyledComponents.labels.S;
+        const LabelRequired = StyledComponents.labels.required;
+        const InputSizeL = StyledComponents.inputs.L;
+        const InputSizeM = StyledComponents.inputs.M;
+
         return (
             <div id="PersonData">
-                <div className={DetailClasses.formSection}>
-                  <label className={DetailClasses.controls.size.S}>Name <label className={DetailClasses.labels.required}>*</label></label>                    
-                  <input
+                <div>
+                  <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <InputSizeL
                     type="text"
                     label="Name"
-                    className={DetailClasses.controls.size.L}
                     value={this.state.data.Name}
                     onChange={this.handleChange('Name')}
                   />
-                  <label className={DetailClasses.controls.size.S}>Surname <label className={DetailClasses.labels.required}>*</label></label>
-                  <input
+                  <LabelSizeS>Surname <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <InputSizeL
                     type="text"
                     label="Surname"
-                    className={DetailClasses.controls.size.L}
                     value={this.state.data.Surname}
                     onChange={this.handleChange('Surname')}
                   />
-                  <label className={DetailClasses.controls.size.S}>Id <label className={DetailClasses.labels.required}>*</label></label>
-                  <input
+                  <LabelSizeS>Id <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <InputSizeM
                     type="text"
                     label="DocumentId"
-                    className={DetailClasses.controls.size.M}
                     value={this.state.data.DocumentId}
                     onChange={this.handleChange('DocumentId')}
                   />
                 </div>
-                <div className={DetailClasses.formSection}>
-                  <label className={DetailClasses.controls.size.S}>Phone <label className={DetailClasses.labels.required}>*</label></label>
-                  <input
+                <div>
+                  <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <InputSizeL
                     type="text"
                     label="Phone"
-                    className={DetailClasses.controls.size.L}
                     value={this.state.data.Phone}
                     onChange={this.handleChange('Phone')}
                   />
-                  <label className={DetailClasses.controls.size.S}>Email <label className={DetailClasses.labels.required}>*</label></label>
-                  <input
+                  <LabelSizeS>Email <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <InputSizeL
                     type="text"
                     label="Email"
-                    className={DetailClasses.controls.size.L}
                     value={this.state.data.Email}
                     onChange={this.handleChange('Email')}
                   />
                 </div>
+                <hr/>
             </div>
         );
     }

@@ -1,3 +1,4 @@
 module.exports = Object.freeze({
-    Customers: 'Customers'
+    Customers: 'Customers',
+    Departments: 'Departments'
 });

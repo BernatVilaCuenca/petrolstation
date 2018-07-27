@@ -1,15 +1,18 @@
-import "../../../styles/Trading/Customers/Detail.css";
-
 import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
 import PersonData from './PersonData';
 import LegalPersonData from './LegalPersonData';
+import Contacts from './Contacts';
+import Addresses from './Addresses';
+
+const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
+const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 
 const CustomerFactory = require("../../../entities/Trading/Customers/CustomerFactory");
 const Type = require("../../../entities/Trading/Customers/Type");
-const DetailClasses = require("../../../styles/Detail");
+
 const ActionRequest = require('../../../dispatcher/ActionRequest');
 const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
@@ -78,43 +81,49 @@ export default class CustomersDetail extends React.Component {
     currentItem.LegalPersonData = data;
     self.setState({ currentItem });
   };
+  onChangeContacts = (data) => {
+    let self=this;
+    let currentItem = self.state.currentItem;
+    currentItem.Contacts = data;
+    self.setState({ currentItem });
+  };
+  onChangeAddresses = (data) => {
+    let self=this;
+    let currentItem = self.state.currentItem;
+    currentItem.Addresses = data;
+    self.setState({ currentItem });
+  };
   render() {
+    const LabelSizeS = StyledComponents.labels.S;
+    const SelectSizeL = StyledComponents.selects.L;
+    const ButtonSizeS = StyledComponents.buttons.S;
+    const Title = StyledComponents.title;
+
     return (
       <div>
         <Dialog
           open={this.props.open}
           onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-          maxWidth={false}
+          maxWidth={'md'}
+          fullWidth={true}
         >
           <DialogContent>
             <form>
-              <label><h3>Customer</h3></label>
-              <div className={DetailClasses.formSection}>
-                <label className={DetailClasses.controls.size.S}>Type</label>
-                <select
-                    className={DetailClasses.controls.size.L}
-                    value={this.state.currentItem.Type}
-                    onChange={this.handleTypeChange}
-                >
+              <Title>Customer</Title>
+              <div>
+                <LabelSizeS>Type</LabelSizeS>
+                <SelectSizeL value={this.state.currentItem.Type} onChange={this.handleTypeChange}>
                   <option value={Type.Person}>Person</option>
                   <option value={Type.LegalPerson}>Legal person</option>
-                </select>
+                </SelectSizeL>
               </div>              
-              
-              <PersonData 
-                enabled={ this.state.enabled.personData } 
-                onChange={this.onChangePersonData}
-              ></PersonData>
-
-              <LegalPersonData 
-                enabled={ this.state.enabled.legalPersonData }
-                onChange={this.onChangeLegalPersonData}
-              ></LegalPersonData>              
-              
+              <PersonData enabled={ this.state.enabled.personData } onChange={this.onChangePersonData}></PersonData>
+              <LegalPersonData enabled={ this.state.enabled.legalPersonData } onChange={this.onChangeLegalPersonData}></LegalPersonData>
+              <Contacts enabled={ this.state.enabled.contacts } onChange={this.onChangeContacts}></Contacts>
+              <Addresses onChange={this.onChangeAddresses}></Addresses>
               <div>
-                <button type="button" onClick={this.save} className={DetailClasses.buttons.style.primary} >Save</button>
-                <button type="button" onClick={this.save} className={DetailClasses.buttons.style.secondary} >Close</button>
+                <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
+                <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>
               </div>
             </form>
           </DialogContent>

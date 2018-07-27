@@ -5,7 +5,6 @@ module.exports = class ContactFactory {
         return{
             Name: StringUtils.Empty,
             Surname: StringUtils.Empty,
-            CompleteName: StringUtils.Empty,
             Phone: StringUtils.Empty,
             Email: StringUtils.Empty,
             DocumentId: StringUtils.Empty

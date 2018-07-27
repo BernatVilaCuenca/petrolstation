@@ -17,6 +17,9 @@ global.dispatcher = new Dispatcher();
 const ApiClient = require("./stores/ApiClient")
 global.apiClient = new ApiClient();
 
+const CommonDataLoader = require("./CommonDataLoader")
+CommonDataLoader.load();
+
 ReactDOM.render(
     <Router>
         <div>
