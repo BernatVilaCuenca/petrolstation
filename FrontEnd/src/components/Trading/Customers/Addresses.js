@@ -17,8 +17,11 @@ export default class AddressesComponent extends React.Component {
         global.eventManager.on(
             Events.GetOne,
             function(result){
-                if(result)
+                if(result){
                     self.setState({ data: result.Addresses });
+                    for(let index in result.Addresses)
+                        self.appendTownsOnSelectDepartment (index);
+                }
             }
         );
     }
@@ -34,21 +37,29 @@ export default class AddressesComponent extends React.Component {
         addresses.splice(index, 1);
         self.setState({ data: addresses });
     };
+    appendTownsOnSelectDepartment = (index) => {
+        let self=this;
+        let addresses = self.state.data;
+        let selectedDepartment = addresses[index].DepartmentId;
+        
+        for(let iDepartment in global.departments)
+            if(global.departments[iDepartment]._id === selectedDepartment){
+                ControlUtils.appendOptionsToSelectControl(
+                    `TownId${index}`, 
+                    global.departments[iDepartment].Towns, 
+                    addresses[index].TownId,
+                    {Text: 'Name', Value: '_id'}
+                );
+                break;
+            }     
+    };
     handleDepartmentChange = (index) => event => {
         let self=this;
         let addresses = self.state.data;
         addresses[index].DepartmentId = event.target.value;
         self.setState({ data: addresses });
         self.props.onChange(addresses);
-
-        for(var department in global.departments){
-            if(department._id === event.target.value)
-                ControlUtils.AppendOptionsToSelectControl(
-                    `TownId${index}`, 
-                    department.Towns, 
-                    {Text: 'Name', Value: '_id'}
-                );            
-        }        
+        self.appendTownsOnSelectDepartment(index);        
     };
     handleChange = (name, index) => event => {
         let self=this;
@@ -61,7 +72,9 @@ export default class AddressesComponent extends React.Component {
         let self = this;
         const SubTitle = StyledComponents.subTitle;
         const ImageButton = StyledComponents.buttons.image;
+        const LabelSizeXS = StyledComponents.labels.XS;
         const LabelSizeS = StyledComponents.labels.S;
+        const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
         const InputSizeXS = StyledComponents.inputs.XS;
         const InputSizeM = StyledComponents.inputs.M;
@@ -77,7 +90,7 @@ export default class AddressesComponent extends React.Component {
                 <div style={StyleAlignedSection}>
                     <SubTitle style={StyleAlignedElement}>Addresses</SubTitle>
                     <ImageButton 
-                        onClick={this.addContact} 
+                        onClick={this.addAddress} 
                         className={ExternalClasses.buttons.add}
                         aria-hidden="true"
                         style={StyleAlignedImageButton}
@@ -101,7 +114,7 @@ export default class AddressesComponent extends React.Component {
                                     <LabelSizeS>Department <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <SelectSizeL 
                                         value={address.DepartmentId} 
-                                        onChange={self.handleDepartmentChange}
+                                        onChange={self.handleDepartmentChange(index)}
                                         id={controlId.DepartmentId} 
                                     >
                                         <option value="">Seleccionar ...</option>
@@ -115,17 +128,17 @@ export default class AddressesComponent extends React.Component {
                                     <SelectSizeL 
                                         value={address.TownId} 
                                         id={controlId.TownId} 
-                                        onChange={self.handleChange(controlId.TownId, index)}
+                                        onChange={self.handleChange('TownId', index)}
                                     >
                                         <option value="">Select an option ...</option>
                                     </SelectSizeL>
-                                    <LabelSizeS>PostCode <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeM>PostCode <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeM
                                         type="text"
                                         label="PostCode"
                                         value={address.PostCode}
                                         id={controlId.PostCode} 
-                                        onChange={self.handleChange(controlId.PostCode, index)}
+                                        onChange={self.handleChange('PostCode', index)}
                                     />
                                 </div>
                                 <div>
@@ -135,31 +148,31 @@ export default class AddressesComponent extends React.Component {
                                         label="StreetName"
                                         value={address.StreetName}
                                         id={controlId.StreetName} 
-                                        onChange={self.handleChange(controlId.StreetName, index)}
+                                        onChange={self.handleChange('StreetName', index)}
                                     />
-                                    <LabelSizeS>Building number <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeS>Building <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeXS
                                         type="text"
                                         label="HouseNumber"
                                         value={address.HouseNumber}
                                         id={controlId.HouseNumber} 
-                                        onChange={self.handleChange(controlId.HouseNumber, index)}
+                                        onChange={self.handleChange('HouseNumber', index)}
                                     />
-                                    <LabelSizeS>Flat</LabelSizeS>
+                                    <LabelSizeXS>Flat</LabelSizeXS>
                                     <InputSizeXS
                                         type="text"
                                         label="FlatNumber"
                                         value={address.FlatNumber}
                                         id={controlId.FlatNumber} 
-                                        onChange={self.handleChange(controlId.FlatNumber, index)}
+                                        onChange={self.handleChange('FlatNumber', index)}
                                     />
-                                    <LabelSizeS>Door</LabelSizeS>
+                                    <LabelSizeXS>Door</LabelSizeXS>
                                     <InputSizeXS
                                         type="text"
                                         label="Door"
                                         value={address.Door}
                                         id={controlId.Door} 
-                                        onChange={self.handleChange(controlId.Door, index)}
+                                        onChange={self.handleChange('Door', index)}
                                     />
                                 </div>
                                 <div>
@@ -169,7 +182,7 @@ export default class AddressesComponent extends React.Component {
                                         label="Others"
                                         value={address.Others}
                                         id={controlId.Others} 
-                                        onChange={self.handleChange(controlId.Others, index)}
+                                        onChange={self.handleChange('Others', index)}
                                     />
                                     <ImageButton 
                                         onClick={self.deleteAddress(index)} 

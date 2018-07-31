@@ -17,6 +17,7 @@ const ActionRequest = require('../../../dispatcher/ActionRequest');
 const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
 const Events = require('../../../events/Trading/Customers');
+const Validator = require("./Validator")
 
 export default class CustomersDetail extends React.Component {
   constructor(props){
@@ -60,7 +61,13 @@ export default class CustomersDetail extends React.Component {
     this.props.onClose();
   };
   save = () => {
-    this.props.onClose();
+    let self = this;
+    if(Validator.Validate()){
+      let actionRequest = new ActionRequest(Modules.Customers, Actions.Insert, self.state.currentItem);
+      global.dispatcher.dispatch(actionRequest);
+      //this.props.onClose();
+    } else {
+    }
   };
   handleTypeChange = event => {
     let self=this;
@@ -112,7 +119,11 @@ export default class CustomersDetail extends React.Component {
               <Title>Customer</Title>
               <div>
                 <LabelSizeS>Type</LabelSizeS>
-                <SelectSizeL value={this.state.currentItem.Type} onChange={this.handleTypeChange}>
+                <SelectSizeL 
+                  id="Type"
+                  value={this.state.currentItem.Type} 
+                  onChange={this.handleTypeChange}
+                >
                   <option value={Type.Person}>Person</option>
                   <option value={Type.LegalPerson}>Legal person</option>
                 </SelectSizeL>
@@ -123,7 +134,7 @@ export default class CustomersDetail extends React.Component {
               <Addresses onChange={this.onChangeAddresses}></Addresses>
               <div>
                 <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
-                <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>
+                <ButtonSizeS type="button" onClick={this.close} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>
               </div>
             </form>
           </DialogContent>

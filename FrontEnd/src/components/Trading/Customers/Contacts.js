@@ -24,9 +24,9 @@ export default class ContactsComponent extends React.Component {
     }
     componentWillReceiveProps(newProps) {
         if(newProps && newProps.enabled)
-            ControlsUtils.ShowElement("Contacts");
+            ControlsUtils.showElement("Contacts");
         else
-            ControlsUtils.HideElement("Contacts");
+            ControlsUtils.hideElement("Contacts");
     };
     addContact = () => {
         let self=this;
@@ -52,6 +52,7 @@ export default class ContactsComponent extends React.Component {
         const SubTitle = StyledComponents.subTitle;
         const ImageButton = StyledComponents.buttons.image;
         const LabelSizeS = StyledComponents.labels.S;
+        const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
         const InputSizeL = StyledComponents.inputs.L;
         const InputSizeM = StyledComponents.inputs.M;
@@ -90,7 +91,7 @@ export default class ContactsComponent extends React.Component {
                                         value={contact.Surname}
                                         onChange={self.handleChange('Surname', index)}
                                     />
-                                    <LabelSizeS>Id <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeM>Document Id <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeM
                                         type="text"
                                         label="DocumentId"

@@ -4,27 +4,53 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Link } from "react-router-dom";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import SendIcon from '@material-ui/icons/Send';
+
+import CustomersIcon from '@material-ui/icons/Person';
+import ProvidersIcon from '@material-ui/icons/ContactPhone';
+import BudgetsIcon from '@material-ui/icons/Folder';
+import InvoicesIcon from '@material-ui/icons/FolderSpecial';
+import ReportsIcon from '@material-ui/icons/Assessment';
 
 export default class Menu extends Component {
     
   render() {
-    const linkStyle = { textDecoration: 'none', color: 'red', fontSize:'20px' };
-    const divMenuStyle = { float: 'left', width: '200px' };
+    const linkStyle = { textDecoration: 'none', color:'#000000', fontSize:'15px' };
+    const divMenuStyle = { float: 'left', width: '150px', height: '975px' };
     return (
-      <div style={divMenuStyle}>
-      <Paper>
-      <MenuList>
+      <Paper style={divMenuStyle}>
+      <MenuList style={divMenuStyle}>
         <MenuItem>
           <ListItemIcon>
-            <SendIcon />
+            <CustomersIcon />
           </ListItemIcon>
-          <Link to="/Customers" style={linkStyle}><ListItemText inset primary="Customers" /></Link>
+          <Link to="/Customers" style={linkStyle}>Customers</Link>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <ProvidersIcon />
+          </ListItemIcon>
+          <Link to="/Providers" style={linkStyle}>Providers</Link>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <BudgetsIcon />
+          </ListItemIcon>
+          <Link to="/Budgets" style={linkStyle}>Budgets</Link>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <InvoicesIcon />
+          </ListItemIcon>
+          <Link to="/Invoices" style={linkStyle}>Invoices</Link>
+        </MenuItem>
+        <MenuItem>
+          <ListItemIcon>
+            <ReportsIcon />
+          </ListItemIcon>
+          <Link to="/Reports" style={linkStyle}>Reports</Link>
         </MenuItem>
       </MenuList>
     </Paper>
-    </div>
     );
   }
 };

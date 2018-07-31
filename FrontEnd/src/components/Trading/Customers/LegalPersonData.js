@@ -26,9 +26,9 @@ export default class LegalPersonDataComponent extends React.Component {
     }
     componentWillReceiveProps(newProps) {
         if(newProps && newProps.enabled)
-            ControlsUtils.ShowElement("LegalPersonData");
+            ControlsUtils.showElement("LegalPersonData");
         else
-            ControlsUtils.HideElement("LegalPersonData");
+            ControlsUtils.hideElement("LegalPersonData");
     }
     handleChange = (name) => event => {
         let self=this;
