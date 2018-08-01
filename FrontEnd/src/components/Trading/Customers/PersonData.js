@@ -12,7 +12,7 @@ export default class PersonDataComponent extends React.Component {
     constructor(props){
         super(props);
         let self=this;
-        this.state = {
+        self.state = {
             data: PersonDataFactory.create()
         };
         global.eventManager.on(
@@ -21,7 +21,10 @@ export default class PersonDataComponent extends React.Component {
                 var personData = PersonDataFactory.create();
                 if(result && result.Type === Type.Person)
                     personData = result.PersonData;
-                self.setState({ data: personData });
+                self.setState({
+                    data: personData,
+                    currentId: result._id
+                });                
             }
         );
     }

@@ -11,14 +11,16 @@ export default class ContactsComponent extends React.Component {
     constructor(props){
         super(props);
         let self=this;
-        this.state = {
+        self.state = {
             data: []
         };
         global.eventManager.on(
             Events.GetOne,
             function(result){
-                if(result)
-                    self.setState({ data: result.Contacts });
+                self.setState({ 
+                    data: result.Contacts,
+                    currentId: result._id
+                });                
             }
         );
     }

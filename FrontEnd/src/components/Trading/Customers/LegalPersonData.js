@@ -9,10 +9,10 @@ const ControlsUtils = require("../../../utils/Controls");
 const Events = require('../../../events/Trading/Customers');
 
 export default class LegalPersonDataComponent extends React.Component {
-    constructor(props){
+    constructor(props){        
         super(props);        
         let self=this;
-        this.state = {
+        self.state = {
             data: LegalPersonDataFactory.create()
         };
         global.eventManager.on(
@@ -21,11 +21,14 @@ export default class LegalPersonDataComponent extends React.Component {
                 var legalPersonData = LegalPersonDataFactory.create();
                 if(result && result.Type === Type.LegalPerson)
                 legalPersonData = result.LegalPersonData;
-                self.setState({ data: legalPersonData });
+                self.setState({ 
+                    data: legalPersonData,
+                    currentId: result._id
+                });                
             }
         );
     }
-    componentWillReceiveProps(newProps) {        
+    componentWillReceiveProps(newProps) {  
         if(newProps && newProps.enabled)
             ControlsUtils.showElement("LegalPersonData");
         else

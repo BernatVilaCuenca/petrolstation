@@ -25,7 +25,7 @@ export default class CustomersDetail extends React.Component {
   constructor(props){
     super(props);
     let self=this;
-    this.state = {
+    self.state = {
         currentItem: CustomerFactory.create(),
         enabled: {
           personData: true,
@@ -171,7 +171,7 @@ export default class CustomersDetail extends React.Component {
                 <option value={Type.Person}>Person</option>
                 <option value={Type.LegalPerson}>Legal person</option>
               </SelectSizeL>
-              <PersonData enabled={ this.state.enabled.personData } onChange={this.onChangePersonData}></PersonData>
+              <PersonData enabled={ this.state.enabled.personData } onChange={this.onChangePersonData}></PersonData>              
               <LegalPersonData enabled={ this.state.enabled.legalPersonData } onChange={this.onChangeLegalPersonData}></LegalPersonData>
               <Contacts enabled={ this.state.enabled.contacts } onChange={this.onChangeContacts}></Contacts>
               <Addresses onChange={this.onChangeAddresses}></Addresses>
