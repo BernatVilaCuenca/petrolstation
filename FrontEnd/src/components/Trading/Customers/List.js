@@ -3,7 +3,10 @@ import "react-table/react-table.css";
 import React, { Component } from 'react';
 import ReactTable from "react-table";
 import Menu from '../../Menu';
+import Notificator from '../../Notificator';
+import Ribbon from './Ribbon';
 import Detail from "./Detail";
+import TableBuilder from "../../TableBuilder";
 
 const ActionRequest = require('../../../dispatcher/ActionRequest');
 const Modules = require('../../../dispatcher/Modules');
@@ -13,10 +16,12 @@ const Type = require("../../../entities/Trading/Customers/Type");
 
 const ExternalClasses = require("../../../styles/ExternalClasses/List");
 const StyledComponents = require("../../../styles/StyledComponents/List").styles;
+const MenuOptions = require("../../MenuOptions");
 
 export default class CustomersList extends Component {
   constructor(){
     super();
+    global.selectedMenuOption = MenuOptions.Customers;
 
     let self=this;
     self.state = {
@@ -42,6 +47,10 @@ export default class CustomersList extends Component {
     let self=this;      
     self.setState({open: {Detail: true}, currentId: id});  
   }
+  newItem = () => {
+    let self=this;      
+    self.setState({open: {Detail: true}, currentId: null});  
+  }
   deleteItem = (id) => {
     let self=this;    
     self.setState({open: {Delete: true}, currentId: id});
@@ -50,57 +59,65 @@ export default class CustomersList extends Component {
     this.setState({open: {Detail: false}});
   }
   render() {
-    const buttonStyle = {marginLeft:'5px', cursor: 'pointer'};
     const ImageButton = StyledComponents.buttons.image;
-    return (
-      <div>
+    const Table = StyledComponents.table;
+    
+    return (   
+        <div>   
           <Menu/>
+          <Notificator/>
+          <Ribbon
+            onNewItem={this.newItem}
+          />
           <Detail 
             open={this.state.open.Detail} 
             id={this.state.currentId} 
             onClose={this.closeDetail}
           />
-          <div>
+          <Table>
             <ReactTable
+              filterable
               data={ this.state.items }
               columns={[
               {
                 Header: "Type",
                 columns: [
-                  { 
-                    Header: "Type", 
-                    id: 'Type',
-                    accessor: row => row.Type === Type.Person ? "Person" : "Legal person"
-                  }
+                  TableBuilder.createFilterableBySelectionColumn(
+                    'Type', 
+                    'Type', 
+                    [
+                      { id: Type.Person, value: 'Person'}, 
+                      { id: Type.LegalPerson, value: 'Legal person'}
+                    ]
+                  )
                 ]
               },{
                 Header: "Name",
-                columns: [ { Header: "Complete name", accessor: 'CompleteName'} ]
+                columns: [ TableBuilder.createFilterableColumn('Complete name', 'CompleteName') ]
               }, {
                 Header: "Information",
                 columns: [
-                  { Header: "Phone", accessor: 'Phone' },
-                  { Header: "Id", accessor: 'DocumentId'},
-                  { Header: "Email", accessor: 'Email' }
+                  TableBuilder.createFilterableColumn('Phone', 'Phone'),
+                  { Header: "Document Id", accessor: 'DocumentId', filterable: false},
+                  { Header: "Email", accessor: 'Email', filterable: false }
                 ]
               }, {
                 Header: "Options",
                 columns: [
                   { 
                     Header: "Options", 
+                    filterable: false,
                     Cell: row =>(
                       <div>
                         <ImageButton 
                           onClick={this.deleteItem.bind(this, row.original._id)} 
                           className={ExternalClasses.buttons.delete}
-                          aria-hidden="true"
-                          style={buttonStyle}
+                          title="Delete customer"
                         ></ImageButton>
                         <ImageButton 
                           onClick={this.editItem.bind(this, row.original._id)} 
                           className={ExternalClasses.buttons.edit}
-                          aria-hidden="true"
-                          style={buttonStyle}
+                          title="Edit customer"
                         ></ImageButton>                        
                       </div>
                     )
@@ -108,10 +125,10 @@ export default class CustomersList extends Component {
                 ]
               }
             ]}
-            defaultPageSize={10}
+            defaultPageSize={20}
             className={ExternalClasses.list}
           />
-        </div>
+        </Table>
       </div>
     );
   }

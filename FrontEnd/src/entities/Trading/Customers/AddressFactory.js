@@ -10,7 +10,7 @@ module.exports = class AddressFactory {
             HouseNumber: StringUtils.Empty,
             FlatNumber: StringUtils.Empty,
             Door: StringUtils.Empty,
-            Other: StringUtils.Empty
+            Others: StringUtils.Empty
         };
     }
 }

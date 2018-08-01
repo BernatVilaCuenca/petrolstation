@@ -8,5 +8,6 @@ module.exports = Object.freeze({
     labels: {
         required: 'labelRequired'
     },
-    formSection: 'form-group'
+    formSection: 'form-group',
+    controls: 'form-control'
 });

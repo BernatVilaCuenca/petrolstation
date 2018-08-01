@@ -22,7 +22,7 @@ module.exports = class DateUtils {
         return result;
     };
     static isValidDate = function(day, month, year){    
-        if(day == 0 ){
+        if(day === 0 ){
             return false;
         }
         switch(month){
@@ -31,7 +31,7 @@ module.exports = class DateUtils {
                     return false;
                 return true;
             case 2:
-                if (year % 4 == 0)
+                if (year % 4 === 0)
                     if(day > 29){
                         return false;
                     }

@@ -45,7 +45,7 @@ export default class AddressesComponent extends React.Component {
         for(let iDepartment in global.departments)
             if(global.departments[iDepartment]._id === selectedDepartment){
                 ControlUtils.appendOptionsToSelectControl(
-                    `TownId${index}`, 
+                    `Address_TownId${index}`, 
                     global.departments[iDepartment].Towns, 
                     addresses[index].TownId,
                     {Text: 'Name', Value: '_id'}
@@ -99,14 +99,14 @@ export default class AddressesComponent extends React.Component {
                 {
                     this.state.data.map(function(address, index){
                         const controlId = {
-                            DepartmentId: `DepartmentId${index}`,
-                            TownId: `TownId${index}`,
-                            PostCode: `PostCode${index}`,
-                            StreetName: `StreetName${index}`,
-                            HouseNumber: `HouseNumber${index}`,
-                            FlatNumber: `FlatNumber${index}`,
-                            Door: `Door${index}`,
-                            Others: `Others${index}`
+                            DepartmentId: `Address_DepartmentId${index}`,
+                            TownId: `Address_TownId${index}`,
+                            PostCode: `Address_PostCode${index}`,
+                            StreetName: `Address_StreetName${index}`,
+                            HouseNumber: `Address_HouseNumber${index}`,
+                            FlatNumber: `Address_FlatNumber${index}`,
+                            Door: `Address_Door${index}`,
+                            Others: `Address_Others${index}`
                         };
                         return (
                             <div key={index}>
@@ -116,6 +116,7 @@ export default class AddressesComponent extends React.Component {
                                         value={address.DepartmentId} 
                                         onChange={self.handleDepartmentChange(index)}
                                         id={controlId.DepartmentId} 
+                                        className={ExternalClasses.controls}
                                     >
                                         <option value="">Seleccionar ...</option>
                                     {                                        
@@ -129,65 +130,65 @@ export default class AddressesComponent extends React.Component {
                                         value={address.TownId} 
                                         id={controlId.TownId} 
                                         onChange={self.handleChange('TownId', index)}
+                                        className={ExternalClasses.controls}
                                     >
                                         <option value="">Select an option ...</option>
                                     </SelectSizeL>
                                     <LabelSizeM>PostCode <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeM
                                         type="text"
-                                        label="PostCode"
                                         value={address.PostCode}
                                         id={controlId.PostCode} 
                                         onChange={self.handleChange('PostCode', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                 </div>
                                 <div>
                                     <LabelSizeS>Street <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="StreetName"
                                         value={address.StreetName}
                                         id={controlId.StreetName} 
                                         onChange={self.handleChange('StreetName', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                     <LabelSizeS>Building <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeXS
                                         type="text"
-                                        label="HouseNumber"
                                         value={address.HouseNumber}
                                         id={controlId.HouseNumber} 
                                         onChange={self.handleChange('HouseNumber', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                     <LabelSizeXS>Flat</LabelSizeXS>
                                     <InputSizeXS
                                         type="text"
-                                        label="FlatNumber"
                                         value={address.FlatNumber}
                                         id={controlId.FlatNumber} 
                                         onChange={self.handleChange('FlatNumber', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                     <LabelSizeXS>Door</LabelSizeXS>
                                     <InputSizeXS
                                         type="text"
-                                        label="Door"
                                         value={address.Door}
                                         id={controlId.Door} 
                                         onChange={self.handleChange('Door', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                 </div>
                                 <div>
                                     <LabelSizeS>Others</LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="Others"
                                         value={address.Others}
                                         id={controlId.Others} 
                                         onChange={self.handleChange('Others', index)}
+                                        className={ExternalClasses.controls}
                                     />
                                     <ImageButton 
                                         onClick={self.deleteAddress(index)} 
                                         className={ExternalClasses.buttons.delete}
-                                        aria-hidden="true"
                                     ></ImageButton>
                                 </div>
                                 <br/>

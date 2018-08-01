@@ -10,9 +10,9 @@ module.exports = class Validator {
             for(let i=0; i<controls.length; i++){            
                 let control = controls[i];
                 let value = document.getElementById(control.id).value;
-                let controlValid=true;
+                let controlValid=true;                
                 if(StringUtils.IsNullOrEmpty(value)){
-                    controlValid = (control.requirementType == RequirementTypes.OPTIONAL);
+                    controlValid = (control.requirementType === RequirementTypes.Optional);
                 }else{
                     switch(control.dataType) {
                         case DataTypes.NUMERIC:                    
@@ -32,6 +32,8 @@ module.exports = class Validator {
                         case DataTypes.EMAIL:
                             let regularExpression = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
                             controlValid = regularExpression.test(value);
+                        break;
+                        default:
                         break;
                     }
                 }

@@ -23,5 +23,12 @@ class CustomersService extends ListableItemService{
         }
         return listItem;
     }
+    prepareItem(item){
+        if(item.Type === 'Person'){
+            item.LegalPersonData = null;
+        }else{
+            item.PersonData = null;
+        }
+    }
 }
 module.exports = CustomersService;

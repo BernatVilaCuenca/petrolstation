@@ -11,46 +11,79 @@ import BudgetsIcon from '@material-ui/icons/Folder';
 import InvoicesIcon from '@material-ui/icons/FolderSpecial';
 import ReportsIcon from '@material-ui/icons/Assessment';
 
+const MenuOptions = require("./MenuOptions");
+
 export default class Menu extends Component {
     
   render() {
-    const linkStyle = { textDecoration: 'none', color:'#000000', fontSize:'15px' };
-    const divMenuStyle = { float: 'left', width: '150px', height: '975px' };
-    return (
-      <Paper style={divMenuStyle}>
-      <MenuList style={divMenuStyle}>
-        <MenuItem>
-          <ListItemIcon>
-            <CustomersIcon />
-          </ListItemIcon>
-          <Link to="/Customers" style={linkStyle}>Customers</Link>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <ProvidersIcon />
-          </ListItemIcon>
-          <Link to="/Providers" style={linkStyle}>Providers</Link>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <BudgetsIcon />
-          </ListItemIcon>
-          <Link to="/Budgets" style={linkStyle}>Budgets</Link>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <InvoicesIcon />
-          </ListItemIcon>
-          <Link to="/Invoices" style={linkStyle}>Invoices</Link>
-        </MenuItem>
-        <MenuItem>
-          <ListItemIcon>
-            <ReportsIcon />
-          </ListItemIcon>
-          <Link to="/Reports" style={linkStyle}>Reports</Link>
-        </MenuItem>
-      </MenuList>
-    </Paper>
+    let styles = {
+      content: { float: 'left', width: '150px', height: '970px' },
+      link: {
+        normal: { textDecoration: 'none', color:'#000000', fontSize:'15px' }
+      }
+    };
+    styles.link.selected = Object.assign ({ }, styles.link.normal, {fontWeight: 'bold'});    
+
+    return (      
+        <Paper style={styles.content}>
+        <MenuList >
+          <MenuItem>
+            <ListItemIcon>
+              <CustomersIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Customers" 
+              style={ global.selectedMenuOption === MenuOptions.Customers ? styles.link.selected : styles.link.normal }
+            >
+              Customers
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <ProvidersIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Providers" 
+              style={ global.selectedMenuOption === MenuOptions.Providers ? styles.link.selected : styles.link.normal }
+            >
+              Providers
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <BudgetsIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Budgets" 
+              style={ global.selectedMenuOption === MenuOptions.Budgets ? styles.link.selected : styles.link.normal }
+            >
+              Budgets
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <InvoicesIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Invoices" 
+              style={ global.selectedMenuOption === MenuOptions.Invoices ? styles.link.selected : styles.link.normal }
+            >
+              Invoices
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <ReportsIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Reports" 
+              style={ global.selectedMenuOption === MenuOptions.Reports ? styles.link.selected : styles.link.normal }
+            >
+              Reports
+            </Link>
+          </MenuItem>
+        </MenuList>
+      </Paper>
     );
   }
 };

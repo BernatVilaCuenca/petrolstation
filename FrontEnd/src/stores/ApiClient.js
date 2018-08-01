@@ -6,7 +6,7 @@ class ApiClient{
             url: `http://${ global.config.graphQlServer.server }:${ global.config.graphQlServer.port }/graphql`
         });
     }
-    query(query, variables, callBack, errorCallBack){
+    request(query, variables, callBack, errorCallBack){
         this.client.query(query, variables)
         .then(callBack)
         .catch(errorCallBack);

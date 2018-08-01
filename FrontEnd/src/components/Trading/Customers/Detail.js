@@ -17,16 +17,16 @@ const ActionRequest = require('../../../dispatcher/ActionRequest');
 const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
 const Events = require('../../../events/Trading/Customers');
+const NotificatorEvents =require('../../../events/Notificator');
 const Validator = require("./Validator")
+const Notifications = require("../../../entities/Notifications/Notifications")
 
 export default class CustomersDetail extends React.Component {
   constructor(props){
     super(props);
-
     let self=this;
-    let currentItem = CustomerFactory.create();
     this.state = {
-        currentItem,
+        currentItem: CustomerFactory.create(),
         enabled: {
           personData: true,
           legalPersonData: true,
@@ -40,33 +40,77 @@ export default class CustomersDetail extends React.Component {
         self.enableSections();
       }
     );
+    global.eventManager.on(
+      Events.Insert, 
+      function(){
+        global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.SuccessTradingCustomersInsert.id]);
+        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
+        global.dispatcher.dispatch(actionRequest);
+      }
+    );
+    global.eventManager.on(
+      Events.Update, 
+      function(){
+        global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.SuccessTradingCustomersUpdate.id]);
+        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
+        global.dispatcher.dispatch(actionRequest);
+      }
+    );
   }
   enableSections = () => {
-    let self = this;
+    let self = this;    
     self.setState({ 
       enabled: {
         personData: self.state.currentItem.Type === Type.Person,
         legalPersonData: self.state.currentItem.Type === Type.LegalPerson,
         contacts: self.state.currentItem.Type === Type.LegalPerson
       } 
-    });
+    });    
   }
   componentWillReceiveProps(newProps) {
+    let self = this;
     if(newProps && newProps.id){
       let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, newProps.id);
       global.dispatcher.dispatch(actionRequest);
+    }else{
+      self.setState ({
+        currentItem: CustomerFactory.create(),
+        enabled: {
+          personData: true,
+          legalPersonData: true,
+          contacts: true
+        }
+      });
     }
   }
   close = () => {
     this.props.onClose();
   };
+  prepareItem = () => {
+    let self = this;
+    let currentItem = self.state.currentItem;
+    if(currentItem.Type === Type.Person)
+      currentItem.LegalPersonData = null;
+    else
+      currentItem.PersonData = null;    
+    self.setState({
+      currentItem
+    });
+  };
   save = () => {
     let self = this;
-    if(Validator.Validate()){
-      let actionRequest = new ActionRequest(Modules.Customers, Actions.Insert, self.state.currentItem);
+    if(Validator.Validate(self.state.currentItem)){
+      self.prepareItem();
+      let actionRequest = 
+        new ActionRequest(
+          Modules.Customers, 
+          self.state.currentItem._id ? Actions.Update : Actions.Insert, 
+          self.state.currentItem
+        );
       global.dispatcher.dispatch(actionRequest);
-      //this.props.onClose();
+      this.props.onClose();      
     } else {
+      global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.ErrorFillingForm.id]);
     }
   };
   handleTypeChange = event => {
@@ -105,7 +149,7 @@ export default class CustomersDetail extends React.Component {
     const SelectSizeL = StyledComponents.selects.L;
     const ButtonSizeS = StyledComponents.buttons.S;
     const Title = StyledComponents.title;
-
+    
     return (
       <div>
         <Dialog
@@ -117,25 +161,22 @@ export default class CustomersDetail extends React.Component {
           <DialogContent>
             <form>
               <Title>Customer</Title>
-              <div>
-                <LabelSizeS>Type</LabelSizeS>
-                <SelectSizeL 
-                  id="Type"
-                  value={this.state.currentItem.Type} 
-                  onChange={this.handleTypeChange}
-                >
-                  <option value={Type.Person}>Person</option>
-                  <option value={Type.LegalPerson}>Legal person</option>
-                </SelectSizeL>
-              </div>              
+              <LabelSizeS>Type</LabelSizeS>
+              <SelectSizeL 
+                id="Type"
+                value={this.state.currentItem.Type} 
+                onChange={this.handleTypeChange}
+                className={ExternalClasses.controls}
+              >
+                <option value={Type.Person}>Person</option>
+                <option value={Type.LegalPerson}>Legal person</option>
+              </SelectSizeL>
               <PersonData enabled={ this.state.enabled.personData } onChange={this.onChangePersonData}></PersonData>
               <LegalPersonData enabled={ this.state.enabled.legalPersonData } onChange={this.onChangeLegalPersonData}></LegalPersonData>
               <Contacts enabled={ this.state.enabled.contacts } onChange={this.onChangeContacts}></Contacts>
               <Addresses onChange={this.onChangeAddresses}></Addresses>
-              <div>
-                <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
-                <ButtonSizeS type="button" onClick={this.close} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>
-              </div>
+              <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
+              <ButtonSizeS type="button" onClick={this.close} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>              
             </form>
           </DialogContent>
         </Dialog>

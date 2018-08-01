@@ -74,50 +74,61 @@ export default class ContactsComponent extends React.Component {
                 </div>
                 {
                     this.state.data.map(function(contact, index){
+                        const controlId = {
+                            Name: `Contacts_Name${index}`,
+                            Surname: `Contacts_Surname${index}`,
+                            DocumentId: `Contacts_DocumentId${index}`,
+                            Phone: `Contacts_Phone${index}`,
+                            Email: `Contacts_Email${index}`
+                        };
                         return (
                             <div key={index}>
                                 <div>
                                     <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="Name"
                                         value={contact.Name}
                                         onChange={self.handleChange('Name', index)}
+                                        id={controlId.Name}
+                                        className={ExternalClasses.controls}
                                     />
                                     <LabelSizeS>Surname <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="Surname"
                                         value={contact.Surname}
                                         onChange={self.handleChange('Surname', index)}
+                                        id={controlId.Surname}
+                                        className={ExternalClasses.controls}
                                     />
                                     <LabelSizeM>Document Id <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeM
                                         type="text"
-                                        label="DocumentId"
                                         value={contact.DocumentId}
                                         onChange={self.handleChange('DocumentId', index)}
+                                        id={controlId.DocumentId}
+                                        className={ExternalClasses.controls}
                                     />
                                 </div>
                                 <div>
                                     <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="Phone"
                                         value={contact.Phone}
                                         onChange={self.handleChange('Phone', index)}
+                                        id={controlId.Phone}
+                                        className={ExternalClasses.controls}
                                     />
-                                    <LabelSizeS>Email <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeS>Email </LabelSizeS>
                                     <InputSizeL
                                         type="text"
-                                        label="Email"
                                         value={contact.Email}
                                         onChange={self.handleChange('Email', index)}
+                                        id={controlId.Email}
+                                        className={ExternalClasses.controls}
                                     />
                                     <ImageButton 
                                         onClick={self.deleteContact(index)} 
                                         className={ExternalClasses.buttons.delete}
-                                        aria-hidden="true"
                                     ></ImageButton>
                                 </div>
                                 <br/>

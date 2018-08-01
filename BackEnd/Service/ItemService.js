@@ -48,6 +48,7 @@ class ItemService {
     insert(item){
         let self=this;
         let deferred = Q.defer();
+        delete item._id;
         self.applyAction(item, self.actions.INSERT)
         .then(function(result){ deferred.resolve(result); })
         .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.INSERT] ] }); });
@@ -73,6 +74,7 @@ class ItemService {
         let self=this;
         let className = self.constructor.name;
         let deferred = Q.defer();
+        self.prepareItem(item);
         self.repository[action](item)
         .then(function(result){
             if(result && result.success)

@@ -3,7 +3,7 @@ const NotificatorEvents = require('../../events/Notificator');
 
 class DepartmentsStore{
     getAll(){
-        global.apiClient.query(
+        global.apiClient.request(
             `{ 
                 departments {
                     success
@@ -26,7 +26,7 @@ class DepartmentsStore{
                         global.eventManager.emit(DepartmentsEvents.GetAll, result.data);
                     else
                         global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
-                }                
+                }                                
             },
             function(result){
                 global.eventManager.emit(NotificatorEvents.Notificate, result.errors);

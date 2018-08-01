@@ -1,6 +1,7 @@
 import React from 'react';
 
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
+const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 
 const PersonDataFactory = require("../../../entities/Trading/Customers/PersonDataFactory");
 const Type = require("../../../entities/Trading/Customers/Type");
@@ -31,7 +32,6 @@ export default class PersonDataComponent extends React.Component {
             ControlsUtils.hideElement("PersonData");
     }
     handleChange = (name) => event => {
-        let self=this;
         let personData = this.state.data;
         personData[name] = event.target.value;
         this.setState({ data: personData });
@@ -50,39 +50,44 @@ export default class PersonDataComponent extends React.Component {
                   <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
                   <InputSizeL
                     type="text"
-                    label="Name"
                     value={this.state.data.Name}
                     onChange={this.handleChange('Name')}
+                    id="PersonData_Name"
+                    className={ExternalClasses.controls}
                   />
                   <LabelSizeS>Surname <LabelRequired>*</LabelRequired></LabelSizeS>
                   <InputSizeL
                     type="text"
-                    label="Surname"
                     value={this.state.data.Surname}
                     onChange={this.handleChange('Surname')}
+                    id="PersonData_Surname"
+                    className={ExternalClasses.controls}
                   />
                   <LabelSizeS>Id <LabelRequired>*</LabelRequired></LabelSizeS>
                   <InputSizeM
                     type="text"
-                    label="DocumentId"
                     value={this.state.data.DocumentId}
                     onChange={this.handleChange('DocumentId')}
+                    id="PersonData_DocumentId"
+                    className={ExternalClasses.controls}
                   />
                 </div>
                 <div>
                   <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>
                   <InputSizeL
                     type="text"
-                    label="Phone"
                     value={this.state.data.Phone}
                     onChange={this.handleChange('Phone')}
+                    id="PersonData_Phone"
+                    className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Email <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <LabelSizeS>Email </LabelSizeS>
                   <InputSizeL
                     type="text"
-                    label="Email"
                     value={this.state.data.Email}
                     onChange={this.handleChange('Email')}
+                    id="PersonData_Email"
+                    className={ExternalClasses.controls}
                   />
                 </div>
                 <hr/>
