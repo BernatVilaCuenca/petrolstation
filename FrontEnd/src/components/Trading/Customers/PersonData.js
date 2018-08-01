@@ -15,8 +15,7 @@ export default class PersonDataComponent extends React.Component {
         };
     }
     objectChanged(oldData, newData){
-        let self=this;
-
+        
         if(oldData === null && newData !== null) return true;
         if(oldData !== null && newData === null) return true;
 
