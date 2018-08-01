@@ -4,9 +4,6 @@ const StyledComponents = require("../../../styles/StyledComponents/Detail").styl
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 
 const LegalPersonDataFactory = require("../../../entities/Trading/Customers/LegalPersonDataFactory");
-const Type = require("../../../entities/Trading/Customers/Type");
-const ControlsUtils = require("../../../utils/Controls");
-const Events = require('../../../events/Trading/Customers');
 
 export default class LegalPersonDataComponent extends React.Component {
     constructor(props){        
@@ -15,24 +12,19 @@ export default class LegalPersonDataComponent extends React.Component {
         self.state = {
             data: LegalPersonDataFactory.create()
         };
-        global.eventManager.on(
-            Events.GetOne,
-            function(result){
-                var legalPersonData = LegalPersonDataFactory.create();
-                if(result && result.Type === Type.LegalPerson)
-                legalPersonData = result.LegalPersonData;
-                self.setState({ 
-                    data: legalPersonData,
-                    currentId: result._id
-                });                
-            }
-        );
     }
-    componentWillReceiveProps(newProps) {  
-        if(newProps && newProps.enabled)
-            ControlsUtils.showElement("LegalPersonData");
-        else
-            ControlsUtils.hideElement("LegalPersonData");
+    dataChanged(prevProps){
+        let self=this;
+        for(var property in prevProps.data){
+            if(prevProps.data[property] !== self.props.data[property])
+                return true;
+        }
+        return false;
+    }
+    componentDidUpdate(prevProps){
+        let self=this;
+        if(self.dataChanged(prevProps))
+            self.setState({data: self.props.data});        
     }
     handleChange = (name) => event => {
         let self=this;

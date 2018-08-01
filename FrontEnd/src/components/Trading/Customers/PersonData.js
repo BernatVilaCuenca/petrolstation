@@ -4,9 +4,7 @@ const StyledComponents = require("../../../styles/StyledComponents/Detail").styl
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 
 const PersonDataFactory = require("../../../entities/Trading/Customers/PersonDataFactory");
-const Type = require("../../../entities/Trading/Customers/Type");
-const ControlsUtils = require("../../../utils/Controls");
-const Events = require('../../../events/Trading/Customers');
+const StringUtils = require("../../../utils/String");
 
 export default class PersonDataComponent extends React.Component {
     constructor(props){
@@ -15,24 +13,40 @@ export default class PersonDataComponent extends React.Component {
         self.state = {
             data: PersonDataFactory.create()
         };
-        global.eventManager.on(
-            Events.GetOne,
-            function(result){
-                var personData = PersonDataFactory.create();
-                if(result && result.Type === Type.Person)
-                    personData = result.PersonData;
-                self.setState({
-                    data: personData,
-                    currentId: result._id
-                });                
-            }
-        );
     }
-    componentWillReceiveProps(newProps) {
-        if(newProps && newProps.enabled)
-            ControlsUtils.showElement("PersonData");
-        else
-            ControlsUtils.hideElement("PersonData");
+    objectChanged(oldData, newData){
+        let self=this;
+
+        if(oldData === null && newData !== null) return true;
+        if(oldData !== null && newData === null) return true;
+
+        for(var property in oldData){
+            if(
+                oldData.hasOwnProperty(property) &&
+                newData.hasOwnProperty(property) &&
+                oldData[property] !== newData[property]
+            )
+                return true;
+        }
+        return false;
+    }
+    componentDidUpdate(prevProps){
+        let self=this;
+
+        let oldData = prevProps.data;
+        let newData = self.props.data;
+
+        if(self.objectChanged(oldData, newData)){
+            if(newData === null) newData = PersonDataFactory.create();
+            for(var property in newData){
+                if(
+                    newData.hasOwnProperty(property) &&
+                    newData[property] === null
+                )
+                    newData[property] = StringUtils.Empty;
+            }
+            self.setState({data: newData});
+        }
     }
     handleChange = (name) => event => {
         let personData = this.state.data;
@@ -41,7 +55,6 @@ export default class PersonDataComponent extends React.Component {
         this.props.onChange(personData);
     };
     render(){
-
         const LabelSizeS = StyledComponents.labels.S;
         const LabelRequired = StyledComponents.labels.required;
         const InputSizeL = StyledComponents.inputs.L;

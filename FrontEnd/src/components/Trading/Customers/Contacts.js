@@ -3,8 +3,6 @@ import React from 'react';
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 
-const ControlsUtils = require("../../../utils/Controls");
-const Events = require('../../../events/Trading/Customers');
 const ContactFactory = require("../../../entities/Trading/Customers/ContactFactory");
 
 export default class ContactsComponent extends React.Component {
@@ -14,22 +12,20 @@ export default class ContactsComponent extends React.Component {
         self.state = {
             data: []
         };
-        global.eventManager.on(
-            Events.GetOne,
-            function(result){
-                self.setState({ 
-                    data: result.Contacts,
-                    currentId: result._id
-                });                
-            }
-        );
     }
-    componentWillReceiveProps(newProps) {
-        if(newProps && newProps.enabled)
-            ControlsUtils.showElement("Contacts");
-        else
-            ControlsUtils.hideElement("Contacts");
-    };
+    dataChanged(prevProps){
+        let self=this;
+        for(var property in prevProps.data){
+            if(prevProps.data[property] !== self.props.data[property])
+                return true;
+        }
+        return false;
+    }
+    componentDidUpdate(prevProps){
+        let self=this;
+        if(self.dataChanged(prevProps))
+            self.setState({data: self.props.data});        
+    }
     addContact = () => {
         let self=this;
         let contacts = self.state.data;

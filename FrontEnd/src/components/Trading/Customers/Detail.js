@@ -171,10 +171,23 @@ export default class CustomersDetail extends React.Component {
                 <option value={Type.Person}>Person</option>
                 <option value={Type.LegalPerson}>Legal person</option>
               </SelectSizeL>
-              <PersonData enabled={ this.state.enabled.personData } onChange={this.onChangePersonData}></PersonData>              
-              <LegalPersonData enabled={ this.state.enabled.legalPersonData } onChange={this.onChangeLegalPersonData}></LegalPersonData>
-              <Contacts enabled={ this.state.enabled.contacts } onChange={this.onChangeContacts}></Contacts>
-              <Addresses onChange={this.onChangeAddresses}></Addresses>
+              {
+                this.state.enabled.personData ?
+                <PersonData data={ this.state.currentItem.PersonData} onChange={this.onChangePersonData}></PersonData>
+                : null
+              }
+              {
+                this.state.enabled.legalPersonData ?
+                <LegalPersonData data={ this.state.currentItem.LegalPersonData} onChange={this.onChangeLegalPersonData}></LegalPersonData>
+                : null
+              }
+              {
+                this.state.enabled.contacts ?
+                <Contacts data={ this.state.currentItem.Contacts} onChange={this.onChangeContacts}></Contacts>
+                : null
+              }
+              <Addresses data={ this.state.currentItem.Addresses} onChange={this.onChangeAddresses}></Addresses>
+              
               <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
               <ButtonSizeS type="button" onClick={this.close} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>              
             </form>

@@ -14,17 +14,19 @@ export default class AddressesComponent extends React.Component {
         self.state = {
             data: []
         };
-        global.eventManager.on(
-            Events.GetOne,
-            function(result){
-                self.setState({ 
-                    data: result.Addresses,
-                    currentId: result._id 
-                });
-                for(let index in result.Addresses)
-                    self.appendTownsOnSelectDepartment (index);                
-            }
-        );
+    }
+    dataChanged(prevProps){
+        let self=this;
+        for(var property in prevProps.data){
+            if(prevProps.data[property] !== self.props.data[property])
+                return true;
+        }
+        return false;
+    }
+    componentDidUpdate(prevProps){
+        let self=this;
+        if(self.dataChanged(prevProps))
+            self.setState({data: self.props.data});        
     }
     addAddress = () => {
         let self=this;
