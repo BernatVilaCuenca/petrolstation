@@ -18,6 +18,7 @@ const singleResultSchema = `{
     data {
         _id
         Type
+        Deletable
         PersonData {
             Name
             Surname
@@ -31,7 +32,9 @@ const singleResultSchema = `{
             Email
             DocumentId
         }
-        Addresses {            
+        Addresses { 
+            _id
+            Deletable           
             DepartmentId
             TownId
             PostCode

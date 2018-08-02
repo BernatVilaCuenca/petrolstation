@@ -12,7 +12,7 @@ const contactSchema = new Mongoose.Schema({
     _id: false
 });
 const addressSchema = new Mongoose.Schema({
-    IsDefault: Boolean,
+    Deletable: Boolean,
 	DepartmentId: String,
     TownId: String,
     PostCode: String,
@@ -22,11 +22,11 @@ const addressSchema = new Mongoose.Schema({
     Door: String,
     Others: String
 },{
-    versionKey:false,
-    _id: false
+    versionKey:false
 });
 const schema = new Mongoose.Schema({
     Type: String,
+    Deletable: Boolean, 
     PersonData:{
         Name: String,
         Surname: String,

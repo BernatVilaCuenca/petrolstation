@@ -3,7 +3,8 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLBoolean
 } = require("graphql");
 
 const LegalPersonDataInputObjectType = require("./LegalPersonData/InputObjectType");
@@ -16,6 +17,7 @@ module.exports = new GraphQLInputObjectType({
     fields:()=>(
         {
             _id : { type: GraphQLID },
+            Deletable: { type: GraphQLBoolean },
             Type : { type: new GraphQLNonNull(GraphQLString) },
             PersonData : { type: PersonDataInputObjectType },
             LegalPersonData : { type: LegalPersonDataInputObjectType },

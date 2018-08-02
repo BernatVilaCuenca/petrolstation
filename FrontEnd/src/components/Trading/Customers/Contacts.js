@@ -1,6 +1,5 @@
 import React from 'react';
 
-const _ = require("lodash");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 const ContactFactory = require("../../../entities/Trading/Customers/ContactFactory");

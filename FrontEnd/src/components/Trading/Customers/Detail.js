@@ -72,18 +72,17 @@ export default class CustomersDetail extends React.Component {
     });
     self.enableSections();
   }
+  componentDidMount(){
+    let self=this;
+    self.init();
+  }
   componentDidUpdate(){
     let self=this;    
     let oldData = self.state.currentItem._id;
     let newData = self.props.id;
-
-    if(oldData != newData){
-      if(newData){
-        global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetOne, newData));
-      }else{
-        self.init();
-      }
-    }
+    
+    if(oldData !== newData && newData !== null)
+      global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetOne, newData));
   }
   close = () => {
     let self = this;

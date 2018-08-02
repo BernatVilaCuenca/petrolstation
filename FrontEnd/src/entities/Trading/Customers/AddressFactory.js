@@ -3,6 +3,7 @@ const StringUtils = require("../../../utils/String");
 module.exports = class AddressFactory {
     static create(){
         return{
+            Deletable: true,
             DepartmentId: StringUtils.Empty,
             TownId: StringUtils.Empty,
             PostCode: StringUtils.Empty,

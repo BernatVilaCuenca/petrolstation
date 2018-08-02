@@ -4,7 +4,8 @@ const {
     GraphQLString,
     GraphQLID,
     GraphQLList,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLBoolean
 } = graphQL;
 
 const LegalPersonDataObjectType = require("./LegalPersonData/ObjectType");
@@ -17,6 +18,7 @@ module.exports = new GraphQLObjectType({
     fields:()=>(
         {
             _id : { type: GraphQLID },
+            Deletable: { type: GraphQLBoolean},
             Type : { type: new GraphQLNonNull(GraphQLString) },
             PersonData : { type: PersonDataObjectType },
             LegalPersonData : { type: LegalPersonDataObjectType },
