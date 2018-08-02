@@ -17,7 +17,7 @@ export default class Menu extends Component {
     
   render() {
     let styles = {
-      content: { float: 'left', width: '150px', height: '970px' },
+      content: { float: 'left', width: '150px', height: '940px' },
       link: {
         normal: { textDecoration: 'none', color:'#000000', fontSize:'15px' }
       }

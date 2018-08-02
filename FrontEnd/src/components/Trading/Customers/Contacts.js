@@ -1,9 +1,11 @@
 import React from 'react';
 
+const _ = require("lodash");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
-
 const ContactFactory = require("../../../entities/Trading/Customers/ContactFactory");
+const ArrayUtils = require("../../../utils/Array");
+const StringUtils = require("../../../utils/String");
 
 export default class ContactsComponent extends React.Component {
     constructor(props){
@@ -13,18 +15,25 @@ export default class ContactsComponent extends React.Component {
             data: []
         };
     }
-    dataChanged(prevProps){
+    componentDidUpdate(){
         let self=this;
-        for(var property in prevProps.data){
-            if(prevProps.data[property] !== self.props.data[property])
-                return true;
+
+        let oldData = self.state.data;
+        let newData = self.props.data;
+
+        if(! ArrayUtils.isEqual(oldData, newData)){
+            for(let i in newData){
+                if(newData[i] === null) newData[i] = ContactFactory.create();
+                for(var property in newData[i]){
+                    if(
+                        newData[i].hasOwnProperty(property) &&
+                        newData[i][property] === null
+                    )
+                        newData[i][property] = StringUtils.Empty;
+                }
+            }
+            self.setState({data: newData});
         }
-        return false;
-    }
-    componentDidUpdate(prevProps){
-        let self=this;
-        if(self.dataChanged(prevProps))
-            self.setState({data: self.props.data});        
     }
     addContact = () => {
         let self=this;

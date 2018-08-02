@@ -67,24 +67,35 @@ export default class CustomersDetail extends React.Component {
       } 
     });    
   }
-  componentWillReceiveProps(newProps) {
+  componentDidMount(){
     let self = this;
-    if(newProps && newProps.id){
-      let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, newProps.id);
-      global.dispatcher.dispatch(actionRequest);
-    }else{
-      self.setState ({
-        currentItem: CustomerFactory.create(),
-        enabled: {
-          personData: true,
-          legalPersonData: true,
-          contacts: true
-        }
-      });
+    self.enableSections();
+  }
+  componentDidUpdate(){
+    let self=this;
+
+    let oldData = self.state.currentItem._id;
+    let newData = self.props.id;
+
+    if(oldData != newData){
+      if(newData){
+        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, newData);
+        global.dispatcher.dispatch(actionRequest);
+      }else{
+        self.setState ({
+          currentItem: CustomerFactory.create()
+        });
+        self.enableSections();
+      }
     }
   }
   close = () => {
-    this.props.onClose();
+    let self = this;
+    self.setState ({
+      currentItem: CustomerFactory.create()
+    });
+    self.enableSections();
+    self.props.onClose();
   };
   prepareItem = () => {
     let self = this;
@@ -108,7 +119,7 @@ export default class CustomersDetail extends React.Component {
           self.state.currentItem
         );
       global.dispatcher.dispatch(actionRequest);
-      this.props.onClose();      
+      self.close();      
     } else {
       global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.ErrorFillingForm.id]);
     }
@@ -186,8 +197,7 @@ export default class CustomersDetail extends React.Component {
                 <Contacts data={ this.state.currentItem.Contacts} onChange={this.onChangeContacts}></Contacts>
                 : null
               }
-              <Addresses data={ this.state.currentItem.Addresses} onChange={this.onChangeAddresses}></Addresses>
-              
+              <Addresses data={ this.state.currentItem.Addresses} onChange={this.onChangeAddresses}></Addresses>              
               <ButtonSizeS type="button" onClick={this.save} className={ExternalClasses.buttons.primary} >Save</ButtonSizeS>
               <ButtonSizeS type="button" onClick={this.close} className={ExternalClasses.buttons.secondary} >Close</ButtonSizeS>              
             </form>

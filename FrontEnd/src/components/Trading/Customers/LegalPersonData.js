@@ -1,9 +1,10 @@
 import React from 'react';
 
+const _ = require("lodash");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
-
 const LegalPersonDataFactory = require("../../../entities/Trading/Customers/LegalPersonDataFactory");
+const StringUtils = require("../../../utils/String");
 
 export default class LegalPersonDataComponent extends React.Component {
     constructor(props){        
@@ -13,18 +14,23 @@ export default class LegalPersonDataComponent extends React.Component {
             data: LegalPersonDataFactory.create()
         };
     }
-    dataChanged(prevProps){
+    componentDidUpdate(){
         let self=this;
-        for(var property in prevProps.data){
-            if(prevProps.data[property] !== self.props.data[property])
-                return true;
+
+        let oldData = self.state.data;
+        let newData = self.props.data;
+
+        if(! _.isEqual(oldData, newData)){
+            if(newData === null) newData = LegalPersonDataFactory.create();
+            for(var property in newData){
+                if(
+                    newData.hasOwnProperty(property) &&
+                    newData[property] === null
+                )
+                    newData[property] = StringUtils.Empty;
+            }
+            self.setState({data: newData});
         }
-        return false;
-    }
-    componentDidUpdate(prevProps){
-        let self=this;
-        if(self.dataChanged(prevProps))
-            self.setState({data: self.props.data});        
     }
     handleChange = (name) => event => {
         let self=this;

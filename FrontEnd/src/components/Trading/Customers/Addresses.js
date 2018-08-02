@@ -1,60 +1,76 @@
 import React from 'react';
 
+const _ = require("lodash");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
-
-const Events = require('../../../events/Trading/Customers');
 const AddressFactory = require("../../../entities/Trading/Customers/AddressFactory");
-const ControlUtils = require("../../../utils/Controls");
+const ArrayUtils = require("../../../utils/Array");
+const StringUtils = require("../../../utils/String");
 
 export default class AddressesComponent extends React.Component {
     constructor(props){
         super(props);
         let self=this;
         self.state = {
-            data: []
+            data: [],
+            towns: []
         };
     }
-    dataChanged(prevProps){
-        let self=this;
-        for(var property in prevProps.data){
-            if(prevProps.data[property] !== self.props.data[property])
-                return true;
+    createTownsListForDepartment(iAddress, departmentId){
+        let self = this;
+        let towns = self.state.towns;
+        for(let iDepartment in global.departments){
+            let department = global.departments[iDepartment];
+            if(department._id === departmentId){
+                towns[iAddress] = department.Towns;
+                break;
+            }
         }
-        return false;
+        self.setState ({
+            towns
+        });
     }
-    componentDidUpdate(prevProps){
+    componentDidUpdate(){
         let self=this;
-        if(self.dataChanged(prevProps))
-            self.setState({data: self.props.data});        
+        let oldData = self.state.data;
+        let newData = self.props.data;
+
+        if(! ArrayUtils.isEqual(oldData, newData)){            
+            for(let i in newData){
+                if(newData[i] === null) newData[i] = AddressFactory.create();
+                for(var property in newData[i]){
+                    if(
+                        newData[i].hasOwnProperty(property) &&
+                        newData[i][property] === null
+                    )
+                        newData[i][property] = StringUtils.Empty;
+                }
+                self.createTownsListForDepartment(i, newData[i].DepartmentId);
+            }            
+            self.setState({ data: newData });            
+        }
     }
     addAddress = () => {
-        let self=this;
+        let self=this;        
         let addresses = self.state.data;
-        addresses.push(AddressFactory.create())
-        self.setState({ data: addresses });
+        addresses.push(AddressFactory.create());
+        let towns = self.state.towns;
+        towns.push([]);
+        self.setState({ 
+            data: addresses,
+            towns
+        });
     };
     deleteAddress = (index) => () => {
         let self=this;
         let addresses = self.state.data;
         addresses.splice(index, 1);
-        self.setState({ data: addresses });
-    };
-    appendTownsOnSelectDepartment = (index) => {
-        let self=this;
-        let addresses = self.state.data;
-        let selectedDepartment = addresses[index].DepartmentId;
-        
-        for(let iDepartment in global.departments)
-            if(global.departments[iDepartment]._id === selectedDepartment){
-                ControlUtils.appendOptionsToSelectControl(
-                    `Address_TownId${index}`, 
-                    global.departments[iDepartment].Towns, 
-                    addresses[index].TownId,
-                    {Text: 'Name', Value: '_id'}
-                );
-                break;
-            }     
+        let towns = self.state.towns;
+        towns.splice(index, 1);
+        self.setState({ 
+            data: addresses,
+            towns
+        });
     };
     handleDepartmentChange = (index) => event => {
         let self=this;
@@ -62,7 +78,7 @@ export default class AddressesComponent extends React.Component {
         addresses[index].DepartmentId = event.target.value;
         self.setState({ data: addresses });
         self.props.onChange(addresses);
-        self.appendTownsOnSelectDepartment(index);        
+        self.createTownsListForDepartment(index, addresses[index].DepartmentId);
     };
     handleChange = (name, index) => event => {
         let self=this;
@@ -93,14 +109,14 @@ export default class AddressesComponent extends React.Component {
                 <div style={StyleAlignedSection}>
                     <SubTitle style={StyleAlignedElement}>Addresses</SubTitle>
                     <ImageButton 
-                        onClick={this.addAddress} 
+                        onClick={self.addAddress} 
                         className={ExternalClasses.buttons.add}
                         aria-hidden="true"
                         style={StyleAlignedImageButton}
                     ></ImageButton>
                 </div>
                 {
-                    this.state.data.map(function(address, index){
+                    self.state.data.map(function(address, index){
                         const controlId = {
                             DepartmentId: `Address_DepartmentId${index}`,
                             TownId: `Address_TownId${index}`,
@@ -136,6 +152,11 @@ export default class AddressesComponent extends React.Component {
                                         className={ExternalClasses.controls}
                                     >
                                         <option value="">Select an option ...</option>
+                                    {
+                                        self.state.towns[index].map(function(town){
+                                            return(<option key={town._id} value={town._id}>{town.Name}</option>);
+                                        })
+                                    }
                                     </SelectSizeL>
                                     <LabelSizeM>PostCode <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeM

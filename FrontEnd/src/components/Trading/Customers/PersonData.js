@@ -1,8 +1,8 @@
 import React from 'react';
 
+const _ = require("lodash");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
-
 const PersonDataFactory = require("../../../entities/Trading/Customers/PersonDataFactory");
 const StringUtils = require("../../../utils/String");
 
@@ -14,28 +14,13 @@ export default class PersonDataComponent extends React.Component {
             data: PersonDataFactory.create()
         };
     }
-    objectChanged(oldData, newData){
-        
-        if(oldData === null && newData !== null) return true;
-        if(oldData !== null && newData === null) return true;
-
-        for(var property in oldData){
-            if(
-                oldData.hasOwnProperty(property) &&
-                newData.hasOwnProperty(property) &&
-                oldData[property] !== newData[property]
-            )
-                return true;
-        }
-        return false;
-    }
-    componentDidUpdate(prevProps){
+    componentDidUpdate(){
         let self=this;
 
-        let oldData = prevProps.data;
+        let oldData = self.state.data;
         let newData = self.props.data;
 
-        if(self.objectChanged(oldData, newData)){
+        if(! _.isEqual(oldData, newData)){
             if(newData === null) newData = PersonDataFactory.create();
             for(var property in newData){
                 if(
@@ -48,10 +33,11 @@ export default class PersonDataComponent extends React.Component {
         }
     }
     handleChange = (name) => event => {
-        let personData = this.state.data;
+        let self=this;
+        let personData = self.state.data;
         personData[name] = event.target.value;
-        this.setState({ data: personData });
-        this.props.onChange(personData);
+        self.setState({ data: personData });
+        self.props.onChange(personData);
     };
     render(){
         const LabelSizeS = StyledComponents.labels.S;
