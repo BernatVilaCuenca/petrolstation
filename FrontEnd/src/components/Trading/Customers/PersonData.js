@@ -41,6 +41,7 @@ export default class PersonDataComponent extends React.Component {
     };
     render(){
         const LabelSizeS = StyledComponents.labels.S;
+        const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
         const InputSizeL = StyledComponents.inputs.L;
         const InputSizeM = StyledComponents.inputs.M;
@@ -64,7 +65,7 @@ export default class PersonDataComponent extends React.Component {
                     id="PersonData_Surname"
                     className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Id <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <LabelSizeM>Document Id <LabelRequired>*</LabelRequired></LabelSizeM>
                   <InputSizeM
                     type="text"
                     value={this.state.data.DocumentId}

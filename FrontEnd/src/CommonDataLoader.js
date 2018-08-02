@@ -15,8 +15,6 @@ module.exports = class CommonDataLoader {
                 global.departments = result;
             }
         );
-
-        let actionRequest = new ActionRequest(Modules.Departments, Actions.GetAll);
-        global.dispatcher.dispatch(actionRequest);
+        global.dispatcher.dispatch(new ActionRequest(Modules.Departments, Actions.GetAll));
     }
 };

@@ -40,8 +40,7 @@ export default class CustomersList extends Component {
     );    
   }
   componentDidMount(){
-    let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
-    global.dispatcher.dispatch(actionRequest);
+    global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetAll));
   }
   editItem = (id) => {
     let self=this;      

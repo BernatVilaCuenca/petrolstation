@@ -44,16 +44,14 @@ export default class CustomersDetail extends React.Component {
       Events.Insert, 
       function(){
         global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.SuccessTradingCustomersInsert.id]);
-        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
-        global.dispatcher.dispatch(actionRequest);
+        global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetAll));
       }
     );
     global.eventManager.on(
       Events.Update, 
       function(){
         global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.SuccessTradingCustomersUpdate.id]);
-        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetAll);
-        global.dispatcher.dispatch(actionRequest);
+        global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetAll));
       }
     );
   }
@@ -67,37 +65,32 @@ export default class CustomersDetail extends React.Component {
       } 
     });    
   }
-  componentDidMount(){
-    let self = this;
-    self.enableSections();
-  }
-  componentDidUpdate(){
-    let self=this;
-
-    let oldData = self.state.currentItem._id;
-    let newData = self.props.id;
-
-    if(oldData != newData){
-      if(newData){
-        let actionRequest = new ActionRequest(Modules.Customers, Actions.GetOne, newData);
-        global.dispatcher.dispatch(actionRequest);
-      }else{
-        self.setState ({
-          currentItem: CustomerFactory.create()
-        });
-        self.enableSections();
-      }
-    }
-  }
-  close = () => {
+  init = () => {
     let self = this;
     self.setState ({
       currentItem: CustomerFactory.create()
     });
     self.enableSections();
+  }
+  componentDidUpdate(){
+    let self=this;    
+    let oldData = self.state.currentItem._id;
+    let newData = self.props.id;
+
+    if(oldData != newData){
+      if(newData){
+        global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetOne, newData));
+      }else{
+        self.init();
+      }
+    }
+  }
+  close = () => {
+    let self = this;
+    self.init();
     self.props.onClose();
   };
-  prepareItem = () => {
+  prepareItemBeforeSaving = () => {
     let self = this;
     let currentItem = self.state.currentItem;
     if(currentItem.Type === Type.Person)
@@ -111,14 +104,14 @@ export default class CustomersDetail extends React.Component {
   save = () => {
     let self = this;
     if(Validator.Validate(self.state.currentItem)){
-      self.prepareItem();
-      let actionRequest = 
+      self.prepareItemBeforeSaving();
+      global.dispatcher.dispatch(
         new ActionRequest(
           Modules.Customers, 
           self.state.currentItem._id ? Actions.Update : Actions.Insert, 
           self.state.currentItem
-        );
-      global.dispatcher.dispatch(actionRequest);
+        )
+      );
       self.close();      
     } else {
       global.eventManager.emit(NotificatorEvents.Notificate, [Notifications.ErrorFillingForm.id]);
