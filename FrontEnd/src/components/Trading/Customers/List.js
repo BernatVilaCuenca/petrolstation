@@ -6,6 +6,7 @@ import Menu from '../../Menu';
 import Notificator from '../../Notificator';
 import Ribbon from './Ribbon';
 import Detail from "./Detail";
+import Delete from "./Delete";
 import TableBuilder from "../../TableBuilder";
 
 const ActionRequest = require('../../../dispatcher/ActionRequest');
@@ -13,6 +14,7 @@ const Modules = require('../../../dispatcher/Modules');
 const Actions = require('../../../dispatcher/Trading/Customers/Actions');
 const Events = require('../../../events/Trading/Customers');
 const Type = require("../../../entities/Trading/Customers/Type");
+const CustomerFactory = require("../../../entities/Trading/Customers/CustomerFactory");
 
 const ExternalClasses = require("../../../styles/ExternalClasses/List");
 const StyledComponents = require("../../../styles/StyledComponents/List").styles;
@@ -26,7 +28,7 @@ export default class CustomersList extends Component {
     let self=this;
     self.state = {
       items: [],
-      currentId: null,
+      currentItem: CustomerFactory.create(),
       open: {
         Detail: false,
         Delete: false
@@ -42,20 +44,38 @@ export default class CustomersList extends Component {
   componentDidMount(){
     global.dispatcher.dispatch(new ActionRequest(Modules.Customers, Actions.GetAll));
   }
-  editItem = (id) => {
-    let self=this;      
-    self.setState({open: {Detail: true}, currentId: id});  
+  editItem = (item) => {
+    let self = this;
+    let newState = self.state;
+    newState.open.Detail = true;
+    newState.currentItem = item;
+    self.setState(newState);  
   }
   newItem = () => {
-    let self=this;      
-    self.setState({open: {Detail: true}, currentId: null});  
+    let self = this;
+    let newState = self.state;
+    newState.open.Detail = true;
+    newState.currentItem = CustomerFactory.create();
+    self.setState(newState);
   }
-  deleteItem = (id) => {
-    let self=this;    
-    self.setState({open: {Delete: true}, currentId: id});
+  deleteItem = (item) => {
+    let self = this;
+    let newState = self.state;
+    newState.open.Delete = true;
+    newState.currentItem = item;
+    self.setState(newState);
   }
   closeDetail = () => {
-    this.setState({open: {Detail: false}});
+    let self = this;
+    let newState = self.state;
+    newState.open.Detail = false;
+    self.setState(newState);
+  }
+  closeDelete = () => {
+    let self = this;
+    let newState = self.state;
+    newState.open.Delete = false;
+    self.setState(newState);
   }
   render() {
     const ImageButton = StyledComponents.buttons.image;
@@ -70,8 +90,13 @@ export default class CustomersList extends Component {
           />
           <Detail 
             open={this.state.open.Detail} 
-            id={this.state.currentId} 
+            id={this.state.currentItem._id} 
             onClose={this.closeDetail}
+          />
+          <Delete 
+            open={this.state.open.Delete} 
+            item={this.state.currentItem} 
+            onClose={this.closeDelete}
           />
           <Table>
             <ReactTable
@@ -87,7 +112,8 @@ export default class CustomersList extends Component {
                     [
                       { id: Type.Person, value: 'Person'}, 
                       { id: Type.LegalPerson, value: 'Legal person'}
-                    ]
+                    ],
+                    {width: 150}
                   )
                 ]
               },{
@@ -96,8 +122,8 @@ export default class CustomersList extends Component {
               }, {
                 Header: "Information",
                 columns: [
-                  TableBuilder.createFilterableColumn('Phone', 'Phone'),
-                  { Header: "Document Id", accessor: 'DocumentId', filterable: false},
+                  TableBuilder.createFilterableColumn('Phone', 'Phone',{ width: 150 }),
+                  { Header: "Document Id", accessor: 'DocumentId', filterable: false, width:150},
                   { Header: "Email", accessor: 'Email', filterable: false }
                 ]
               }, {
@@ -106,25 +132,30 @@ export default class CustomersList extends Component {
                   { 
                     Header: "Options", 
                     filterable: false,
+                    width:70,
                     Cell: row =>(
                       <div>
                         <ImageButton 
-                          onClick={this.deleteItem.bind(this, row.original._id)} 
-                          className={ExternalClasses.buttons.delete}
-                          title="Delete customer"
-                        ></ImageButton>
-                        <ImageButton 
-                          onClick={this.editItem.bind(this, row.original._id)} 
+                          onClick={this.editItem.bind(this, row.original)} 
                           className={ExternalClasses.buttons.edit}
                           title="Edit customer"
-                        ></ImageButton>                        
+                        ></ImageButton>
+                        {
+                          row.original.Deletable ?
+                          <ImageButton 
+                            onClick={this.deleteItem.bind(this, row.original)} 
+                            className={ExternalClasses.buttons.delete}
+                            title="Delete customer"
+                          ></ImageButton>
+                          : null
+                        }
                       </div>
                     )
                   }
                 ]
               }
             ]}
-            defaultPageSize={20}
+            defaultPageSize={18}
             className={ExternalClasses.list}
           />
         </Table>

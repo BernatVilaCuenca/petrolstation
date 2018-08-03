@@ -3,6 +3,5 @@ module.exports = Object.freeze({
     GetOne : 'GetOneCustomerResponse',
     Insert : 'InsertCustomerResponse',
     Update : 'UpdateCustomerResponse',
-    Response : 'DeleteCustomerResponse',
-    Modify : 'CustomerModifiedResponse'
+    Delete : 'DeleteCustomerResponse'
 });

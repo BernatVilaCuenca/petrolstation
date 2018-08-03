@@ -77,12 +77,15 @@ class ListableItemService {
         .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.DELETE] ] }); });
         return deferred.promise;
     }
-    applyAction(item, action){
+    applyAction(data, action){
         let self=this;
         let className = self.constructor.name;
         let deferred = Q.defer();
-        self.prepareItem(item);
-        self.repository[action](item)
+        
+        if([ self.actions.INSERT, self.actions.UPDATE ].indexOf(action) > -1)
+            self.prepareItem(data);
+        
+        self.repository[action](data)
         .then(function(result){
             if(result && result.success) {
                 let listItem = self.createListItem(result.data);

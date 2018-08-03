@@ -82,8 +82,7 @@ export default class LegalPersonDataComponent extends React.Component {
                     className={ExternalClasses.controls}
                   />
                 </div>
-                <hr/>
-              </div>
+            </div>
         );
     }
 };

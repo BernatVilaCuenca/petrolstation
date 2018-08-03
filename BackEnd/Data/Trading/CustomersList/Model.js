@@ -6,7 +6,8 @@ const schema = new Mongoose.Schema({
     CompleteName: String,
     Phone: String,
     Email: String,
-    DocumentId: String
+    DocumentId: String,
+    Deletable: Boolean
 },{
     versionKey:false
 });

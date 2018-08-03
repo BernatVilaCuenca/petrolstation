@@ -157,7 +157,7 @@ export default class CustomersDetail extends React.Component {
       <div>
         <Dialog
           open={this.props.open}
-          onClose={this.handleClose}
+          onClose={this.close}
           maxWidth={'md'}
           fullWidth={true}
         >

@@ -16,6 +16,6 @@ const data = {
         `
     },
     title: Styled.div`float: left; margin-left: 10px; font-weight: bold`,
-    ribbon: Styled.div`float: left; width: 90%`
+    ribbon: Styled.div`display: block; float: left;  min-width:50vw`
 };
 export const styles = data;

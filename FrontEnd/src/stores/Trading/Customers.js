@@ -6,6 +6,7 @@ const multipleResultSchema = `{
     data {
         _id
         Type
+        Deletable
         CompleteName
         Phone
         Email
@@ -147,5 +148,30 @@ module.exports = class CustomersStore{
         );
     }
     delete(data){
+        global.apiClient.request(
+            `mutation deleteCustomer(
+                $id: ID
+            ){ 
+                deleteCustomer (
+                    id: $id
+                )
+                ${singleResultSchema}
+            }`,
+            { 
+                id: data
+            },
+            function(result){
+                if(result && result.data && result.data.deleteCustomer){
+                    result = result.data.deleteCustomer;
+                    if(result.success)
+                        global.eventManager.emit(CustomersEvents.Delete, result.data);
+                    else
+                        global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
+                }                
+            },
+            function(result){
+                global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
+            }
+        );
     }
 }

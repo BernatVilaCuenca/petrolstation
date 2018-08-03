@@ -3,7 +3,7 @@ import matchSorter from 'match-sorter';
 
 export default class TableBuilder{
 
-    static createFilterableColumn(header, id){
+    static createFilterableColumn(header, id, columnOptions){
         let result = {
             Header: header,
             id: id,
@@ -12,9 +12,11 @@ export default class TableBuilder{
               matchSorter(rows, filter.value, { keys: [id] }),
             filterAll: true
         };
+        if(columnOptions) 
+            result = Object.assign (result, columnOptions);
         return result;
     }
-    static createFilterableBySelectionColumn(header, id, options){
+    static createFilterableBySelectionColumn(header, id, options, columnOptions){
         let optionsContent = options.map(function(option){
             return (<option key={option.id} value={option.id}>{option.value}</option>);
         });
@@ -44,6 +46,8 @@ export default class TableBuilder{
                 {optionsContent}
               </select>
         };
+        if(columnOptions)
+            result = Object.assign (result, columnOptions);
         return result;
     }
 }

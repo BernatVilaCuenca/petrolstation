@@ -142,7 +142,6 @@ export default class ContactsComponent extends React.Component {
                         );
                     })
                 }
-                <hr/>
             </div>
         );
     }

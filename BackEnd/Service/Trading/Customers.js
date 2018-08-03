@@ -8,7 +8,8 @@ class CustomersService extends ListableItemService{
     createListItem(item){
         let listItem = {
             _id: item._id,
-            Type: item.Type
+            Type: item.Type,
+            Deletable: item.Deletable
         };
         if(item.Type === 'Person'){
             listItem.Phone = item.PersonData.Phone;

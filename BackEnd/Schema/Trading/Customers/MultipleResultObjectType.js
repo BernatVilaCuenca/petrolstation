@@ -3,7 +3,8 @@ const {
     GraphQLObjectType, 
     GraphQLString,
     GraphQLID,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLBoolean
 } = graphQL;
 
 module.exports = new GraphQLObjectType({
@@ -11,6 +12,7 @@ module.exports = new GraphQLObjectType({
     fields:()=>(
         {
             _id : { type: GraphQLID },
+            Deletable : { type: GraphQLBoolean },
             Type : { type: new GraphQLNonNull(GraphQLString) },
             CompleteName : { type: GraphQLString },
             Phone : { type: GraphQLString },

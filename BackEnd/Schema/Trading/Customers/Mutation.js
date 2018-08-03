@@ -34,12 +34,11 @@ module.exports = {
     delete:{
         type: SingleResult,
         args:{
-            _id : { type: GraphQLID }
+            id : { type: GraphQLID }
         },
         resolve(parent, args){            
-            let item = args.Customer;
             let globalResult = 
-                global.customersService.delete(args._id)
+                global.customersService.delete(args.id)
                 .then(function(result){ return result; })
                 .catch(function(result){ return result; });
             return globalResult;           

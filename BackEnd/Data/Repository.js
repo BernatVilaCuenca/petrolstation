@@ -66,11 +66,11 @@ class Repository{
         var deferred = Q.defer();
         this.model.findById(id, function(errorOnFetch, itemToDelete){	
             if(errorOnFetch){
-                deferred.resolve({ success: false, errors: [ errors.getOne ]});
+                deferred.resolve({ success: false, errors: [ self.errors.getOne ]});
             }else{
                 itemToDelete.remove(function(errorOnDelete){	
                     if(errorOnDelete){
-                        deferred.resolve({ success: false, errors: [ errors.delete ]});
+                        deferred.resolve({ success: false, errors: [ self.errors.delete ]});
                     }else{
                         deferred.resolve({ success: true, data: itemToDelete });
                     }

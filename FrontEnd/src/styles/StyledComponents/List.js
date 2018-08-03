@@ -7,6 +7,6 @@ const data = {
             cursor: pointer;
         `
     },
-    table: Styled.div`float:left; width: 80%`
+    table: Styled.div`display:block; float:left; width:80vw`
 };
 export const styles = data;

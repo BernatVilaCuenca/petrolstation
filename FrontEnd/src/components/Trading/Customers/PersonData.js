@@ -92,7 +92,6 @@ export default class PersonDataComponent extends React.Component {
                     className={ExternalClasses.controls}
                   />
                 </div>
-                <hr/>
             </div>
         );
     }

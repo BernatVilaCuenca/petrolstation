@@ -97,6 +97,7 @@ export default class AddressesComponent extends React.Component {
         const InputSizeXS = StyledComponents.inputs.XS;
         const InputSizeM = StyledComponents.inputs.M;
         const InputSizeL = StyledComponents.inputs.L;
+        const InputSizeXXL = StyledComponents.inputs.XXL;
         const SelectSizeL = StyledComponents.selects.L;
         
         const StyleAlignedElement = {float:'left', marginRight: '10px'};
@@ -136,7 +137,7 @@ export default class AddressesComponent extends React.Component {
                                         id={controlId.DepartmentId} 
                                         className={ExternalClasses.controls}
                                     >
-                                        <option value="">Seleccionar ...</option>
+                                        <option value="">Select an option ...</option>
                                     {                                        
                                         global.departments.map(function(department){
                                             return(<option key={department._id} value={department._id}>{department.Name}</option>);
@@ -202,24 +203,27 @@ export default class AddressesComponent extends React.Component {
                                 </div>
                                 <div>
                                     <LabelSizeS>Others</LabelSizeS>
-                                    <InputSizeL
+                                    <InputSizeXXL
                                         type="text"
                                         value={address.Others}
                                         id={controlId.Others} 
                                         onChange={self.handleChange('Others', index)}
                                         className={ExternalClasses.controls}
-                                    />
-                                    <ImageButton 
-                                        onClick={self.deleteAddress(index)} 
-                                        className={ExternalClasses.buttons.delete}
-                                    ></ImageButton>
+                                    />                                    
+                                    {
+                                        address.Deletable ?
+                                        <ImageButton 
+                                            onClick={self.deleteAddress(index)} 
+                                            className={ExternalClasses.buttons.delete}
+                                        ></ImageButton>
+                                        : null
+                                    }
                                 </div>
                                 <br/>
                             </div>
                         );
                     })
                 }
-                <hr/>
             </div>
         );
     }
