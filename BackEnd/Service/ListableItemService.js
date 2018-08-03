@@ -92,7 +92,7 @@ class ListableItemService {
                 self.repositoryList[action](listItem)
                 .then(function(resultInList){
                     if(resultInList && resultInList.success)
-                        LogManager.LogInfo(`${className}.${action} the new item ${resultInList.data._id}`);
+                        LogManager.LogInfo(`${className}.${action}`);
                     else
                         LogManager.LogError(`Error on ${className}.${action}`);
                     deferred.resolve(result);

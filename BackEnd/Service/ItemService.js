@@ -70,15 +70,14 @@ class ItemService {
         .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[self.actions.DELETE] ] }); });
         return deferred.promise;
     }
-    applyAction(item, action){
+    applyAction(data, action){
         let self=this;
         let className = self.constructor.name;
-        let deferred = Q.defer();
-        self.prepareItem(item);
-        self.repository[action](item)
+        let deferred = Q.defer();        
+        self.repository[action](data)
         .then(function(result){
             if(result && result.success)
-                LogManager.LogInfo(`${className}.${action} the item ${result.data._id}`);
+                LogManager.LogInfo(`${className}.${action}`);
             else
                 LogManager.LogError(`Error on ${className}.${action}`);
             deferred.resolve(result);         
