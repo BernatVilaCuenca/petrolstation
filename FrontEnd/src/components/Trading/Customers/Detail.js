@@ -2,10 +2,10 @@ import React from 'react';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import PersonData from './PersonData';
-import LegalPersonData from './LegalPersonData';
-import Contacts from './Contacts';
-import Addresses from './Addresses';
+import PersonData from '../../Shared/PersonData';
+import LegalPersonData from '../../Shared/LegalPersonData';
+import Contacts from '../../Shared/Contacts';
+import Addresses from '../../Shared/Addresses';
 
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
