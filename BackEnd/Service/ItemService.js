@@ -45,6 +45,8 @@ class ItemService {
         });
         return deferred.promise;
     }
+    prepareItem(item){        
+    }
     insert(item){
         let self=this;
         let deferred = Q.defer();
@@ -74,6 +76,10 @@ class ItemService {
         let self=this;
         let className = self.constructor.name;
         let deferred = Q.defer();        
+
+        if([ self.actions.INSERT, self.actions.UPDATE ].indexOf(action) > -1)
+            self.prepareItem(data);
+
         self.repository[action](data)
         .then(function(result){
             if(result && result.success)
