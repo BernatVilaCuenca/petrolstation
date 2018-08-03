@@ -1,10 +1,10 @@
 import React from 'react';
 
-const StyledComponents = require("../../styles/StyledComponents/Detail").styles;
-const ExternalClasses = require("../../styles/ExternalClasses/Detail");
-const AddressFactory = require("../../entities/Trading/Customers/AddressFactory");
-const ArrayUtils = require("../../utils/Array");
-const StringUtils = require("../../utils/String");
+const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
+const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
+const AddressFactory = require("../../../entities/Trading/Customers/AddressFactory");
+const ArrayUtils = require("../../../utils/Array");
+const StringUtils = require("../../../utils/String");
 
 export default class AddressesComponent extends React.Component {
     constructor(props){

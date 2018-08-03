@@ -1,10 +1,10 @@
 import React from 'react';
 
 const _ = require("lodash");
-const StyledComponents = require("../../styles/StyledComponents/Detail").styles;
-const ExternalClasses = require("../../styles/ExternalClasses/Detail");
-const LegalPersonDataFactory = require("../../entities/Trading/Customers/LegalPersonDataFactory");
-const StringUtils = require("../../utils/String");
+const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
+const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
+const LegalPersonDataFactory = require("../../../entities/Trading/Customers/LegalPersonDataFactory");
+const StringUtils = require("../../../utils/String");
 
 export default class LegalPersonDataComponent extends React.Component {
     constructor(props){        
