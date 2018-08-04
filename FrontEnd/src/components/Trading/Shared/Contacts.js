@@ -81,14 +81,14 @@ export default class ContactsComponent extends React.Component {
                 {
                     this.state.data.map(function(contact, index){
                         const controlId = {
-                            Name: `Contacts_Name${index}`,
-                            Surname: `Contacts_Surname${index}`,
-                            DocumentId: `Contacts_DocumentId${index}`,
-                            Phone: `Contacts_Phone${index}`,
-                            Email: `Contacts_Email${index}`
+                            Name: `Contacts_Name_${index}`,
+                            Surname: `Contacts_Surname_${index}`,
+                            DocumentId: `Contacts_DocumentId_${index}`,
+                            Phone: `Contacts_Phone_${index}`,
+                            Email: `Contacts_Email_${index}`
                         };
                         return (
-                            <div key={index}>
+                            <div key={index} id={`Contact_${index}`}>
                                 <div>
                                     <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
                                     <InputSizeL

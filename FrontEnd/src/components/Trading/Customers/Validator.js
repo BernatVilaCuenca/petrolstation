@@ -23,26 +23,25 @@ module.exports = class CustomerValidator {
                 { id:'LegalPersonData_DocumentId', dataType: DataTypes.String, requirementType: RequirementTypes.Required },
                 { id:'LegalPersonData_Email', dataType: DataTypes.Email, requirementType: RequirementTypes.Optional }
             ]);
-        
         if(item.Addresses)
-            for(let index in item.Addresses){
+            for(let index in item.Addresses){                
                 controls = controls.concat([
-                    { id:`Address_DepartmentId${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Address_TownId${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Address_PostCode${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Address_StreetName${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Address_HouseNumber${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required }
+                    { id:`Address_DepartmentId_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Address_TownId_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Address_PostCode_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Address_StreetName_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Address_HouseNumber_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required }
                 ]); 
             }
 
         if(item.Contacts)
             for(let index in item.Contacts){
                 controls = controls.concat([
-                    { id:`Contacts_Name${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Contacts_Surname${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Contacts_DocumentId${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
-                    { id:`Contacts_Phone${index}`, dataType: DataTypes.Numeric, requirementType: RequirementTypes.Required },
-                    { id:`Contacts_Email${index}`, dataType: DataTypes.Email, requirementType: RequirementTypes.Optional }
+                    { id:`Contacts_Name_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Contacts_Surname_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Contacts_DocumentId_${index}`, dataType: DataTypes.String, requirementType: RequirementTypes.Required },
+                    { id:`Contacts_Phone_${index}`, dataType: DataTypes.Numeric, requirementType: RequirementTypes.Required },
+                    { id:`Contacts_Email_${index}`, dataType: DataTypes.Email, requirementType: RequirementTypes.Optional }
                 ]); 
             }
         let result = Validator.Validate(controls);

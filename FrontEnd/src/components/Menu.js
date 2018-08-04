@@ -6,10 +6,11 @@ import { Link } from "react-router-dom";
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import CustomersIcon from '@material-ui/icons/Person';
-import ProvidersIcon from '@material-ui/icons/ContactPhone';
-import BudgetsIcon from '@material-ui/icons/Folder';
-import InvoicesIcon from '@material-ui/icons/FolderSpecial';
+import ProvidersIcon from '@material-ui/icons/PersonOutline';
+import BudgetsIcon from '@material-ui/icons/InsertDriveFile';
+import InvoicesIcon from '@material-ui/icons/EuroSymbol';
 import ReportsIcon from '@material-ui/icons/Assessment';
+import CompanyIcon from '@material-ui/icons/Face';
 
 const MenuOptions = require("./MenuOptions");
 
@@ -17,7 +18,7 @@ export default class Menu extends Component {
     
   render() {
     let styles = {
-      content: { dispaly: 'block', float: 'left', height: '100vh', minWidth:'150px' },
+      content: { display: 'block', float: 'left', height: '100vh', minWidth:'150px' },
       link: {
         normal: { textDecoration: 'none', color:'#000000', fontSize:'15px' }
       }
@@ -80,6 +81,17 @@ export default class Menu extends Component {
               style={ global.selectedMenuOption === MenuOptions.Reports ? styles.link.selected : styles.link.normal }
             >
               Reports
+            </Link>
+          </MenuItem>
+          <MenuItem>
+            <ListItemIcon>
+              <CompanyIcon />
+            </ListItemIcon>
+            <Link 
+              to="/Company" 
+              style={ global.selectedMenuOption === MenuOptions.Company ? styles.link.selected : styles.link.normal }
+            >
+              Company
             </Link>
           </MenuItem>
         </MenuList>

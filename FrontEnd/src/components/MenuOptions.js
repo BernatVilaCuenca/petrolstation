@@ -4,5 +4,6 @@ module.exports = Object.freeze({
     Budgets: 'Budgets',
     Invoices: 'Invoices',
     Reports: 'Reports',
+    Company: 'Company',
     None: 'None'
 });

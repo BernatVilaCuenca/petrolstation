@@ -155,7 +155,7 @@ export default class CustomersList extends Component {
                 ]
               }
             ]}
-            defaultPageSize={18}
+            defaultPageSize={12}
             className={ExternalClasses.list}
           />
         </Table>
