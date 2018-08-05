@@ -14,6 +14,7 @@ const OwnEnterpriseFactory = require("../../../entities/Trading/OwnEnterprise/Ow
 const NotificatorEvents =require('../../../events/Notificator');
 const Validator = require("./Validator")
 const Notifications = require("../../../entities/Notifications/Notifications")
+const MenuOptions = require("../../MenuOptions");
 
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
