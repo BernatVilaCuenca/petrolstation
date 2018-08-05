@@ -1,4 +1,5 @@
 module.exports = Object.freeze({
     Customers: 'Customers',
-    Departments: 'Departments'
+    Departments: 'Departments',
+    OwnEnterprise: 'OwnEnterprise'
 });

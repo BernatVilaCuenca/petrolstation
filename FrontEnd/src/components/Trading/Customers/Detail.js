@@ -91,24 +91,22 @@ export default class CustomersDetail extends React.Component {
   };
   prepareItemBeforeSaving = () => {
     let self = this;
-    let currentItem = self.state.currentItem;
-    if(currentItem.Type === Type.Person)
-      currentItem.LegalPersonData = null;
+    let item = Object.assign({}, self.state.currentItem);
+    if(item.Type === Type.Person)
+      item.LegalPersonData = null;
     else
-      currentItem.PersonData = null;    
-    self.setState({
-      currentItem
-    });
+      item.PersonData = null;    
+    return item;
   };
   save = () => {
     let self = this;
     if(Validator.Validate(self.state.currentItem)){
-      self.prepareItemBeforeSaving();
+      let item = self.prepareItemBeforeSaving();
       global.dispatcher.dispatch(
         new ActionRequest(
           Modules.Customers, 
-          self.state.currentItem._id ? Actions.Update : Actions.Insert, 
-          self.state.currentItem
+          item._id ? Actions.Update : Actions.Insert, 
+          item
         )
       );
       self.close();      
@@ -148,7 +146,7 @@ export default class CustomersDetail extends React.Component {
     self.setState({ currentItem });
   };
   render() {
-    const LabelSizeS = StyledComponents.labels.S;
+    const LabelSizeM = StyledComponents.labels.M;
     const SelectSizeL = StyledComponents.selects.L;
     const ButtonSizeS = StyledComponents.buttons.S;
     const Title = StyledComponents.title;
@@ -158,13 +156,13 @@ export default class CustomersDetail extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.close}
-          maxWidth={'md'}
+          maxWidth={false}
           fullWidth={true}
         >
           <DialogContent>
             <form>
               <Title>Customer</Title>
-              <LabelSizeS>Type</LabelSizeS>
+              <LabelSizeM>Type</LabelSizeM>
               <SelectSizeL 
                 id="Type"
                 value={this.state.currentItem.Type} 

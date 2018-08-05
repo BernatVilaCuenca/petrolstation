@@ -1,6 +1,6 @@
 const { GraphQLID, GraphQLBoolean, GraphQLString, GraphQLObjectType } = require("graphql");
-const DepartmentObjectType = require("../../../Geographics/Departments/ObjectType");
-const TownObjectType = require("../../../Geographics/Towns/ObjectType");
+const DepartmentObjectType = require("../../Geographics/Departments/ObjectType");
+const TownObjectType = require("../../Geographics/Towns/ObjectType");
 
 module.exports = new GraphQLObjectType({
     name:"Address",

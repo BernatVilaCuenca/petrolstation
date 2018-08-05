@@ -9,7 +9,7 @@ const {
 
 const LegalPersonDataInputObjectType = require("./LegalPersonData/InputObjectType");
 const PersonDataInputObjectType = require("./PersonData/InputObjectType");
-const AddressInputObjectType = require("./Address/InputObjectType");
+const AddressInputObjectType = require("../../Shared/Address/InputObjectType");
 const ContactInputObjectType = require("./Contact/InputObjectType");
 
 module.exports = new GraphQLInputObjectType({

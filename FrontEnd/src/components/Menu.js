@@ -88,8 +88,8 @@ export default class Menu extends Component {
               <CompanyIcon />
             </ListItemIcon>
             <Link 
-              to="/Company" 
-              style={ global.selectedMenuOption === MenuOptions.Company ? styles.link.selected : styles.link.normal }
+              to="/OwnEnterprise" 
+              style={ global.selectedMenuOption === MenuOptions.OwnEnterprise ? styles.link.selected : styles.link.normal }
             >
               Company
             </Link>

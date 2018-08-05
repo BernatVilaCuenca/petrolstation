@@ -4,7 +4,7 @@ import Address from "../../Shared/Address";
 
 const StyledComponents = require("../../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../../styles/ExternalClasses/Detail");
-const AddressFactory = require("../../../entities/Trading/Customers/AddressFactory");
+const AddressFactory = require("../../../entities/Shared/AddressFactory");
 const ArrayUtils = require("../../../utils/Array");
 
 export default class AddressesComponent extends React.Component {

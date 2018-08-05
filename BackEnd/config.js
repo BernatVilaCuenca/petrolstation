@@ -17,7 +17,22 @@ module.exports = Object.freeze({
 				name: "Trading",
 				collections: {
 					CUSTOMERS: "Customers",
-					CUSTOMERSLIST: "CustomersList"
+					CUSTOMERSLIST: "CustomersList",
+					OWNENTERPRISE: "OwnEnterprise"
+				}
+			},
+			BUDGETS:{
+				name: "Budgets",
+				collections: {
+					BUDGETS: "Budgets",
+					BUDGETSLIST: "BudgetsList"
+				} 
+			},
+			INVOICES: {
+				name: "Invoices",
+				collections: {
+					INVOICES: "Invoices",
+					INVOICESLIST: "InvoicesList"
 				}
 			}
 		}

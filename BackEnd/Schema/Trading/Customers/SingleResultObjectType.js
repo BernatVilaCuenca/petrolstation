@@ -10,7 +10,7 @@ const {
 
 const LegalPersonDataObjectType = require("./LegalPersonData/ObjectType");
 const PersonDataObjectType = require("./PersonData/ObjectType");
-const AddressObjectType = require("./Address/ObjectType");
+const AddressObjectType = require("../../Shared/Address/ObjectType");
 const ContactObjectType = require("./Contact/ObjectType");
 
 module.exports = new GraphQLObjectType({

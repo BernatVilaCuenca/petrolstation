@@ -40,14 +40,16 @@ export default class LegalPersonDataComponent extends React.Component {
         self.props.onChange(legalPersonData);
     };
     render(){
-        const LabelSizeS = StyledComponents.labels.S;
+        const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
+        const InputSizeM = StyledComponents.inputs.M;
         const InputSizeL = StyledComponents.inputs.L;
+        const InputSizeXL = StyledComponents.inputs.XL;
 
         return (
             <div id="LegalPersonData">
                 <div>
-                  <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <LabelSizeM>Name <LabelRequired>*</LabelRequired></LabelSizeM>
                   <InputSizeL
                     type="text"
                     value={this.state.data.BusinessName}
@@ -55,8 +57,8 @@ export default class LegalPersonDataComponent extends React.Component {
                     id="LegalPersonData_BusinessName"
                     className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Id <LabelRequired>*</LabelRequired></LabelSizeS>                    
-                  <InputSizeL
+                  <LabelSizeM>Id <LabelRequired>*</LabelRequired></LabelSizeM>                    
+                  <InputSizeM
                     type="text"
                     value={this.state.data.DocumentId}
                     onChange={this.handleChange('DocumentId')}
@@ -65,7 +67,7 @@ export default class LegalPersonDataComponent extends React.Component {
                   />
                 </div>
                 <div>
-                  <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>                    
+                  <LabelSizeM>Phone <LabelRequired>*</LabelRequired></LabelSizeM>                    
                   <InputSizeL
                     type="text"
                     value={this.state.data.Phone}
@@ -73,8 +75,8 @@ export default class LegalPersonDataComponent extends React.Component {
                     id="LegalPersonData_Phone"
                     className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Email </LabelSizeS>                    
-                  <InputSizeL
+                  <LabelSizeM>Email </LabelSizeM>                    
+                  <InputSizeXL
                     type="text"
                     value={this.state.data.Email}
                     onChange={this.handleChange('Email')}

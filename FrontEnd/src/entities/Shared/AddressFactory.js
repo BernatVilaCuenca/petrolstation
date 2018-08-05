@@ -1,4 +1,4 @@
-const StringUtils = require("../../../utils/String");
+const StringUtils = require("../../utils/String");
 
 module.exports = class AddressFactory {
     static create(){

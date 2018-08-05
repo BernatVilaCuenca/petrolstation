@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import Main from './components/Main';
 import Customers from './components/Trading/Customers/List';
+import OwnEnterprise from './components/Trading/OwnEnterprise/Detail';
 
 const Config = require("./config");
 global.config = Config;
@@ -25,6 +26,7 @@ ReactDOM.render(
         <div>
             <Route exact path='/' component={Main}></Route>
             <Route path='/Customers' component={Customers}></Route>
+            <Route path='/OwnEnterprise' component={OwnEnterprise}></Route>
         </div>
     </Router>
     , document.getElementById('root')

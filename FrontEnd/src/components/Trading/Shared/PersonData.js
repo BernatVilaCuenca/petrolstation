@@ -40,16 +40,16 @@ export default class PersonDataComponent extends React.Component {
         self.props.onChange(personData);
     };
     render(){
-        const LabelSizeS = StyledComponents.labels.S;
         const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
-        const InputSizeL = StyledComponents.inputs.L;
         const InputSizeM = StyledComponents.inputs.M;
+        const InputSizeL = StyledComponents.inputs.L;
+        const InputSizeXL = StyledComponents.inputs.XL;
 
         return (
             <div id="PersonData">
                 <div>
-                  <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <LabelSizeM>Name <LabelRequired>*</LabelRequired></LabelSizeM>
                   <InputSizeL
                     type="text"
                     value={this.state.data.Name}
@@ -57,8 +57,8 @@ export default class PersonDataComponent extends React.Component {
                     id="PersonData_Name"
                     className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Surname <LabelRequired>*</LabelRequired></LabelSizeS>
-                  <InputSizeL
+                  <LabelSizeM>Surname <LabelRequired>*</LabelRequired></LabelSizeM>
+                  <InputSizeXL
                     type="text"
                     value={this.state.data.Surname}
                     onChange={this.handleChange('Surname')}
@@ -75,7 +75,7 @@ export default class PersonDataComponent extends React.Component {
                   />
                 </div>
                 <div>
-                  <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>
+                  <LabelSizeM>Phone <LabelRequired>*</LabelRequired></LabelSizeM>
                   <InputSizeL
                     type="text"
                     value={this.state.data.Phone}
@@ -83,8 +83,8 @@ export default class PersonDataComponent extends React.Component {
                     id="PersonData_Phone"
                     className={ExternalClasses.controls}
                   />
-                  <LabelSizeS>Email </LabelSizeS>
-                  <InputSizeL
+                  <LabelSizeM>Email </LabelSizeM>
+                  <InputSizeXL
                     type="text"
                     value={this.state.data.Email}
                     onChange={this.handleChange('Email')}

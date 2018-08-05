@@ -7,7 +7,7 @@ db.OwnEnterprise.insert({
 	"Email":"construccions.torne@gmail.com",
 	"Account" : {
 		"Bank":"Caixa Catalunya-BBVA",
-		"CompleteNumber": "1234 5678 1234 5678"
+		"CompleteNumber": "ES0112345678901234567890"
 	},
 	"Address":{
 		"DepartmentId" : "D01",

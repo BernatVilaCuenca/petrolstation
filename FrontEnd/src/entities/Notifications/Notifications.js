@@ -65,5 +65,20 @@ module.exports = Object.freeze({
         id:'SuccessTradingCustomersDelete', 
         message:'Customer deleted succesfuly',
         type: Type.Information
+    },
+    ErrorTradingOwnEnterpriseGetOne: { 
+        id:'ErrorTradingOwnEnterpriseGetOne', 
+        message:'Error while getting the company data',
+        type: Type.Error
+    },
+    ErrorTradingOwnEnterpriseUpdate: { 
+        id:'ErrorTradingOwnEnterpriseUpdate', 
+        message:'Error while updating the company data',
+        type: Type.Error
+    },
+    SuccessTradingOwnEnterpriseUpdate: { 
+        id:'SuccessTradingOwnEnterpriseUpdate', 
+        message:'Company data updated succesfuly',
+        type: Type.Information
     }
 });

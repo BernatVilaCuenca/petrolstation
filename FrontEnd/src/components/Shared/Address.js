@@ -3,7 +3,7 @@ import _ from 'lodash';
 
 const StyledComponents = require("../../styles/StyledComponents/Detail").styles;
 const ExternalClasses = require("../../styles/ExternalClasses/Detail");
-const AddressFactory = require("../../entities/Trading/Customers/AddressFactory");
+const AddressFactory = require("../../entities/Shared/AddressFactory");
 const StringUtils = require("../../utils/String");
 
 export default class AddressComponent extends React.Component {
@@ -79,7 +79,6 @@ export default class AddressComponent extends React.Component {
         let self = this;
         const ImageButton = StyledComponents.buttons.image;
         const LabelSizeXS = StyledComponents.labels.XS;
-        const LabelSizeS = StyledComponents.labels.S;
         const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
         const InputSizeXS = StyledComponents.inputs.XS;
@@ -87,6 +86,7 @@ export default class AddressComponent extends React.Component {
         const InputSizeL = StyledComponents.inputs.L;
         const InputSizeXXL = StyledComponents.inputs.XXL;
         const SelectSizeL = StyledComponents.selects.L;
+        const SelectSizeXL = StyledComponents.selects.XL;
         
         let index = self.props.index;
         const controlId = {
@@ -102,7 +102,7 @@ export default class AddressComponent extends React.Component {
         return (                            
             <div key={index} id={`Address_${index}`} >
                 <div>
-                    <LabelSizeS>Department <LabelRequired>*</LabelRequired></LabelSizeS>
+                    <LabelSizeM>Department <LabelRequired>*</LabelRequired></LabelSizeM>
                     <SelectSizeL 
                         value={self.state.data.DepartmentId} 
                         onChange={self.handleDepartmentChange()}
@@ -116,8 +116,8 @@ export default class AddressComponent extends React.Component {
                         })
                     }
                     </SelectSizeL>
-                    <LabelSizeS>Town <LabelRequired>*</LabelRequired></LabelSizeS>
-                    <SelectSizeL 
+                    <LabelSizeM>Town <LabelRequired>*</LabelRequired></LabelSizeM>
+                    <SelectSizeXL 
                         value={self.state.data.TownId} 
                         id={controlId.TownId} 
                         onChange={self.handleChange('TownId')}
@@ -129,7 +129,7 @@ export default class AddressComponent extends React.Component {
                             return(<option key={town._id} value={town._id}>{town.Name}</option>);
                         })
                     }
-                    </SelectSizeL>
+                    </SelectSizeXL>
                     <LabelSizeM>PostCode <LabelRequired>*</LabelRequired></LabelSizeM>
                     <InputSizeM
                         type="text"
@@ -140,7 +140,7 @@ export default class AddressComponent extends React.Component {
                     />
                 </div>
                 <div>
-                    <LabelSizeS>Street <LabelRequired>*</LabelRequired></LabelSizeS>
+                    <LabelSizeM>Street <LabelRequired>*</LabelRequired></LabelSizeM>
                     <InputSizeL
                         type="text"
                         value={self.state.data.StreetName}
@@ -148,7 +148,7 @@ export default class AddressComponent extends React.Component {
                         onChange={self.handleChange('StreetName')}
                         className={ExternalClasses.controls}
                     />
-                    <LabelSizeS>Building <LabelRequired>*</LabelRequired></LabelSizeS>
+                    <LabelSizeM>Building <LabelRequired>*</LabelRequired></LabelSizeM>
                     <InputSizeXS
                         type="text"
                         value={self.state.data.HouseNumber}
@@ -174,7 +174,7 @@ export default class AddressComponent extends React.Component {
                     />
                 </div>
                 <div>
-                    <LabelSizeS>Others</LabelSizeS>
+                    <LabelSizeM>Others</LabelSizeM>
                     <InputSizeXXL
                         type="text"
                         value={self.state.data.Others}

@@ -16,6 +16,19 @@ module.exports = Object.freeze({
             insert: "ErrorTradingCustomersInsert",
             update: "ErrorTradingCustomersUpdate",
             delete: "ErrorTradingCustomersDelete"
+        },
+        OwnEnterprise:{
+            getOne: "ErrorTradingOwnEnterpriseGetOne",
+            update: "ErrorTradingOwnEnterpriseUpdate"
+        }
+    },
+    Budgets:{
+        Budgets:{
+            getAll: "ErrorBudgetsGetAll",
+            getOne: "ErrorBudgetsGetOne",
+            insert: "ErrorBudgetsInsert",
+            update: "ErrorBudgetsUpdate",
+            delete: "ErrorBudgetsDelete"
         }
     }
 });

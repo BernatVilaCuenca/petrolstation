@@ -57,11 +57,11 @@ export default class ContactsComponent extends React.Component {
         let self = this;
         const SubTitle = StyledComponents.subTitle;
         const ImageButton = StyledComponents.buttons.image;
-        const LabelSizeS = StyledComponents.labels.S;
         const LabelSizeM = StyledComponents.labels.M;
         const LabelRequired = StyledComponents.labels.required;
-        const InputSizeL = StyledComponents.inputs.L;
         const InputSizeM = StyledComponents.inputs.M;
+        const InputSizeL = StyledComponents.inputs.L;
+        const InputSizeXL = StyledComponents.inputs.XL;
         
         const StyleAlignedElement = {float:'left', marginRight: '10px'};
         const StyleAlignedImageButton = {float:'left', marginRight: '10px', marginTop: '10px'};
@@ -90,7 +90,7 @@ export default class ContactsComponent extends React.Component {
                         return (
                             <div key={index} id={`Contact_${index}`}>
                                 <div>
-                                    <LabelSizeS>Name <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeM>Name <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeL
                                         type="text"
                                         value={contact.Name}
@@ -98,8 +98,8 @@ export default class ContactsComponent extends React.Component {
                                         id={controlId.Name}
                                         className={ExternalClasses.controls}
                                     />
-                                    <LabelSizeS>Surname <LabelRequired>*</LabelRequired></LabelSizeS>
-                                    <InputSizeL
+                                    <LabelSizeM>Surname <LabelRequired>*</LabelRequired></LabelSizeM>
+                                    <InputSizeXL
                                         type="text"
                                         value={contact.Surname}
                                         onChange={self.handleChange('Surname', index)}
@@ -116,7 +116,7 @@ export default class ContactsComponent extends React.Component {
                                     />
                                 </div>
                                 <div>
-                                    <LabelSizeS>Phone <LabelRequired>*</LabelRequired></LabelSizeS>
+                                    <LabelSizeM>Phone <LabelRequired>*</LabelRequired></LabelSizeM>
                                     <InputSizeL
                                         type="text"
                                         value={contact.Phone}
@@ -124,8 +124,8 @@ export default class ContactsComponent extends React.Component {
                                         id={controlId.Phone}
                                         className={ExternalClasses.controls}
                                     />
-                                    <LabelSizeS>Email </LabelSizeS>
-                                    <InputSizeL
+                                    <LabelSizeM>Email </LabelSizeM>
+                                    <InputSizeXL
                                         type="text"
                                         value={contact.Email}
                                         onChange={self.handleChange('Email', index)}
