@@ -25,14 +25,16 @@ module.exports = Object.freeze({
 				name: "Budgets",
 				collections: {
 					BUDGETS: "Budgets",
-					BUDGETSLIST: "BudgetsList"
+					BUDGETSLIST: "BudgetsList",
+					EXTERNALBUDGETS: "ExternalBudgets"
 				} 
 			},
 			INVOICES: {
 				name: "Invoices",
 				collections: {
 					INVOICES: "Invoices",
-					INVOICESLIST: "InvoicesList"
+					INVOICESLIST: "InvoicesList",
+					EXTERNALINVOICES: "ExternalInvoices"
 				}
 			}
 		}
