@@ -15,8 +15,8 @@ const stateStoryElementSchema = new Mongoose.Schema({
 const schema = new Mongoose.Schema({
     BudgetNumber: String,
     BudgetDate: Date,
-    CustomerCompleteName: Mongoose.SchemaTypes.ObjectId,
-    CompleteAddress: Mongoose.SchemaTypes.ObjectId,
+    CustomerCompleteName:String,
+    CompleteAddress: String,
     Title: String,
     Amounts: {
         Total: {

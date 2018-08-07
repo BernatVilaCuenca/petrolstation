@@ -30,7 +30,6 @@ class CustomersService extends ListableItemService{
     prepareItem(data, action){
         let self = this;
         let deferred = Q.defer();
-
         switch(action){
             case Actions.INSERT:
             case Actions.UPDATE:
@@ -40,17 +39,38 @@ class CustomersService extends ListableItemService{
                 }else{
                     data.PersonData = null;
                 }
-                for(let i in data.Addresses){
-                    let address = data.Addresses[i];
-                    self.getDepartment(address.DepartmentId)
-                    .then(function (department) { address.CompleteAddress = `C/${address.StreetName} (${department.Name})`; })
-                    .catch(function () { address.CompleteAddress = `C/${address.StreetName}`; });
+                if(data.Addresses.length === 0)
+                    deferred.resolve(data);
+                else{
+                    let promises = [];
+                    for(let i in data.Addresses){
+                        let address = data.Addresses[i];
+                        promises.push(
+                            self.getDepartment(address.DepartmentId)
+                            .then(function (department) { 
+                                return department.Name;
+                            })
+                            .catch(function () { 
+                                return null;
+                            })
+                        );
+                    }
+                    Q.allSettled(promises)
+                    .then(function (results) {
+                        for(let i in data.Addresses){
+                            if(results[i].value !== null)
+                                data.Addresses[i].CompleteAddress = `C/${data.Addresses[i].StreetName} (${results[i].value})`;
+                            else
+                                data.Addresses[i].CompleteAddress = `C/${data.Addresses[i].StreetName}`;
+                        }
+                        deferred.resolve(data);
+                    });
                 }
             break;
             default:
+                deferred.resolve(data);
             break;
-        }
-        deferred.resolve(data);
+        }        
         return deferred.promise;
     }
     getDepartment(departmentId){

@@ -32,8 +32,8 @@ const stateStoryElementSchema = new Mongoose.Schema({
 const schema = new Mongoose.Schema({
     BudgetNumber: String,
     BudgetDate: Date,
-    CustomerId: ObjectId,
-    AddressId: ObjectId,
+    CustomerId: Mongoose.SchemaTypes.ObjectId,
+    AddressId: Mongoose.SchemaTypes.ObjectId,
     Title: String,
     Description: String,
     Footer: String,
