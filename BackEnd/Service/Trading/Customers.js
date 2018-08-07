@@ -1,9 +1,12 @@
 const Errors = require("../../Errors");
 const ListableItemService = require("../ListableItemService");
+const Actions = require("../Actions");
+const Q = require('q');
 
 class CustomersService extends ListableItemService{
-    constructor(repository, repositoryList){
+    constructor(repository, repositoryList, departmentsRepository){
         super(repository, repositoryList, Errors.Trading.Customers);
+        this.departmentsRepository = departmentsRepository;
     }
     createListItem(item){
         let listItem = {
@@ -24,12 +27,45 @@ class CustomersService extends ListableItemService{
         }
         return listItem;
     }
-    prepareItem(item){
-        if(item.Type === 'Person'){
-            item.LegalPersonData = null;
-        }else{
-            item.PersonData = null;
+    prepareItem(data, action){
+        let self = this;
+        let deferred = Q.defer();
+
+        switch(action){
+            case Actions.INSERT:
+            case Actions.UPDATE:
+                if(data.Type === 'Person'){
+                    data.LegalPersonData = null;
+                    data.PersonData.CompleteName = `${data.PersonData.Name} ${data.PersonData.Surname}`;
+                }else{
+                    data.PersonData = null;
+                }
+                for(let i in data.Addresses){
+                    let address = data.Addresses[i];
+                    self.getDepartment(address.DepartmentId)
+                    .then(function (department) { address.CompleteAddress = `C/${address.StreetName} (${department.Name})`; })
+                    .catch(function () { address.CompleteAddress = `C/${address.StreetName}`; });
+                }
+            break;
+            default:
+            break;
         }
+        deferred.resolve(data);
+        return deferred.promise;
+    }
+    getDepartment(departmentId){
+        let deferred = Q.defer();
+        this.departmentsRepository.getOne(departmentId)
+        .then(function(result){
+            if(result && result.success)
+                deferred.resolve(result.data);
+            else
+                deferred.resolve(null);
+        })
+        .catch(function(){
+            deferred.resolve(null);
+        });
+        return deferred.promise;        
     }
 }
 module.exports = CustomersService;

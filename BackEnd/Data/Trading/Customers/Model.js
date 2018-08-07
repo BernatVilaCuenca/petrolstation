@@ -20,7 +20,8 @@ const addressSchema = new Mongoose.Schema({
     HouseNumber: String,
     FlatNumber: String,
     Door: String,
-    Others: String
+    Others: String,
+    CompleteAddress: String
 },{
     versionKey:false
 });
@@ -30,6 +31,7 @@ const schema = new Mongoose.Schema({
     PersonData:{
         Name: String,
         Surname: String,
+        CompleteName: String,
         Phone: String,
         Email: String,
         DocumentId: String

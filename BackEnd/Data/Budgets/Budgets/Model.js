@@ -40,7 +40,7 @@ const schema = new Mongoose.Schema({
     Chapters: [ chapterSchema ],
     Amounts: {
         Total: {
-            Amount: Number
+            Quantity: Number
         }
     },
     StateStory: [ stateStoryElementSchema ]

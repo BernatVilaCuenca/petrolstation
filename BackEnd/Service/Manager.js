@@ -19,7 +19,7 @@ class ServiceManager{
         
         global.departmentsService = new DepartmentsService(departmentsRepository);
         global.townsService = new TownsService(townsRepository);
-        global.customersService = new CustomersService(customersRepository, customersListRepository);
+        global.customersService = new CustomersService(customersRepository, customersListRepository, departmentsRepository);
         global.ownEnterpriseService = new OwnEnterpriseService(ownEnterpriseRepository);
     }
 }
