@@ -8,6 +8,7 @@ class CustomersService extends ListableItemService{
         super(repository, repositoryList, Errors.Trading.Customers);
     }
     createListItem(item){
+        let deferred = Q.defer();
         let listItem = {
             _id: item._id,
             Type: item.Type,
@@ -24,7 +25,8 @@ class CustomersService extends ListableItemService{
             listItem.DocumentId = item.LegalPersonData.DocumentId;
             listItem.CompleteName = item.LegalPersonData.BusinessName;
         }
-        return listItem;
+        deferred.resolve(listItem);
+        return deferred.promise;
     }
     prepareItem(data, action){
         let self = this;

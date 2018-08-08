@@ -44,7 +44,10 @@ class ListableItemService {
         });
         return deferred.promise;
     }
-    createListItem(item){        
+    createListItem(data){
+        let deferred = Q.defer();
+        deferred.resolve(data);
+        return deferred.promise;
     }
     prepareItem(data, action){
         let deferred = Q.defer();
@@ -86,19 +89,25 @@ class ListableItemService {
             self.repository[action](modifiedData)
             .then(function(result){
                 if(result && result.success) {
-                    let listItem = self.createListItem(result.data);
-                    self.repositoryList[action](listItem)
-                    .then(function(resultInList){
-                        if(resultInList && resultInList.success)
-                            LogManager.LogInfo(`${className}.${action}`);
-                        else
-                            LogManager.LogError(`Error on ${className}.${action}`);
-                        deferred.resolve(result);
+                    self.createListItem(result.data)
+                    .then(function(listItem){
+                        self.repositoryList[action](listItem)
+                        .then(function(resultInList){
+                            if(resultInList && resultInList.success)
+                                LogManager.LogInfo(`${className}.${action}`);
+                            else
+                                LogManager.LogError(`Error on ${className}.${action}`);
+                            deferred.resolve(result);
+                        })
+                        .catch(function(error){
+                            LogManager.LogError(`Error on ${className}.${action}: ${error}`);
+                            deferred.resolve({ success: false, errors: [ self.errors[action] ] });
+                        });
                     })
                     .catch(function(error){
                         LogManager.LogError(`Error on ${className}.${action}: ${error}`);
                         deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-                    });
+                    });                    
                 } else {
                     LogManager.LogError(`Error on ${className}.${action}: ${error}`);
                     deferred.resolve({ success: false, errors: [ self.errors[action] ] });
