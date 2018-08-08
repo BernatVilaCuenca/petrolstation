@@ -2,6 +2,7 @@ const Errors = require("../../Errors");
 const ListableItemService = require("../ListableItemService");
 const Actions = require("../Actions");
 const Q = require('q');
+const Type = require("./Type");
 
 class CustomersService extends ListableItemService{
     constructor(repository, repositoryList){
@@ -14,7 +15,7 @@ class CustomersService extends ListableItemService{
             Type: item.Type,
             Deletable: item.Deletable
         };
-        if(item.Type === 'Person'){
+        if(item.Type === Type.Person){
             listItem.Phone = item.PersonData.Phone;
             listItem.Email = item.PersonData.Email;
             listItem.DocumentId = item.PersonData.DocumentId;
@@ -29,12 +30,11 @@ class CustomersService extends ListableItemService{
         return deferred.promise;
     }
     prepareItem(data, action){
-        let self = this;
         let deferred = Q.defer();
         switch(action){
             case Actions.INSERT:
             case Actions.UPDATE:
-                if(data.Type === 'Person'){
+                if(data.Type === Type.Person){
                     data.LegalPersonData = null;
                     data.PersonData.CompleteName = `${data.PersonData.Name} ${data.PersonData.Surname}`;
                 }else{

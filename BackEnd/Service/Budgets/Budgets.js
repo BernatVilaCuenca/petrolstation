@@ -1,11 +1,13 @@
+const _ = require ('lodash');
 const Errors = require("../../Errors");
 const ListableItemService = require("../ListableItemService");
+const CustomerType = require("../Trading/Type");
 
 class BudgetsService extends ListableItemService{
-    constructor(repository, repositoryList, customerRepository, departmentsRepository){
+    constructor(repository, repositoryList, customerRepository, townsRepository){
         super(repository, repositoryList, Errors.Budgets.Budgets);
         this.customerRepository = customerRepository;
-        this.departmentsRepository = departmentsRepository;
+        this.townsRepository = townsRepository;
     }
     createListItem(item){
         let self = this;
@@ -27,11 +29,10 @@ class BudgetsService extends ListableItemService{
             Amounts,
             StateStory
         };
-
         self.getCustomer(CustomerId)
             .then(function(customer){ 
                 if(customer !== null){
-                    listItem.CustomerCompleteName = customer.Type === 'Person' ? 
+                    listItem.CustomerCompleteName = customer.Type === CustomerType.Person ? 
                                                     customer.PersonData.CompleteName : 
                                                     customer.LegalPersonData.BusinessName;                
                     let iAddress = _.findIndex (
@@ -64,7 +65,7 @@ class BudgetsService extends ListableItemService{
     }
     getCustomer(id){
         let deferred = Q.defer();
-        global.customersService.getOne(id)
+        global.customerRepository.getOne(id)
                                .then(function(result){ 
                                     deferred.resolve((result && result.success) ? result.data : null); 
                                 })
@@ -75,13 +76,13 @@ class BudgetsService extends ListableItemService{
     }
     getTown(id){
         let deferred = Q.defer();
-        global.townsService.getOne(id)
-                            .then(function(result){ 
-                                deferred.resolve((result && result.success) ? result.data : null); 
-                            })
-                            .catch(function(){ 
-                                deferred.resolve(null);
-                            });
+        global.townsRepository.getOne(id)
+                                .then(function(result){ 
+                                    deferred.resolve((result && result.success) ? result.data : null); 
+                                })
+                                .catch(function(){ 
+                                    deferred.resolve(null);
+                                });
         return deferred.promise;
     }
 }

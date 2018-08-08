@@ -3,7 +3,8 @@ const {
     GraphQLObjectType, 
     GraphQLString,
     GraphQLID,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLList
 } = graphQL;
 
 const AmountsObjectType = require("./Amounts/ObjectType");

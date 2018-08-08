@@ -3,7 +3,7 @@ const Config = require("../../../config");
 
 const lineSchema = new Mongoose.Schema({
 	Description: String,
-    Amount: Number
+    Quantity: Number
 },{
     versionKey:false,
     _id: false
@@ -11,7 +11,7 @@ const lineSchema = new Mongoose.Schema({
 
 const chapterSchema = new Mongoose.Schema({
 	Description: String,
-    Amount: Number,
+    Quantity: Number,
     Lines: [ lineSchema ]
 },{
     versionKey:false,

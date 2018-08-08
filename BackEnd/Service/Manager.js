@@ -26,7 +26,7 @@ class ServiceManager{
         global.townsService = new TownsService(townsRepository);
         global.customersService = new CustomersService(customersRepository, customersListRepository);
         global.ownEnterpriseService = new OwnEnterpriseService(ownEnterpriseRepository);
-        global.budgetsService = new BudgetsService(budgetsRepository, budgetsListRepository, customersRepository);
+        global.budgetsService = new BudgetsService(budgetsRepository, budgetsListRepository, customersRepository, townsRepository);
     }
 }
 module.exports = ServiceManager;
