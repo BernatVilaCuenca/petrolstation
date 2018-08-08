@@ -1,0 +1,82 @@
+mutation{
+  insertBudget(
+    Budget:{
+      BudgetNumber:"1234",
+      BudgetDate:"03/10/2018",
+      CustomerId:"5b6a802452686052a8438b3f",
+      AddressId:"5b6a802452686052a8438b40",
+      Title:"Title",
+      Description:"Description",
+      Footer: "Footer",
+      Chapters:[
+        {
+          Description:"Chapter 01 Description",
+          Lines:[
+            {
+              Description:"Line 01.01 Description"
+            }
+          ]
+        },{
+          Description:"Chapter 02 Description",
+          Quantity: 10,
+          Lines:[
+            {
+              Description:"Line 02.01 Description",
+              Quantity: 4
+            },{
+              Description:"Line 02.02 Description",
+              Quantity: 6
+            }
+          ]
+        }
+      ],
+      Amounts:{
+        Total:{
+          Quantity: 15
+        }
+      }
+    }
+  ){
+    success
+      errors
+      data {
+        _id
+        BudgetNumber
+        BudgetDate
+        Customer {
+          _id
+          Deletable
+        }
+        Address {
+          _id
+          Deletable
+          DepartmentId
+          TownId
+          PostCode
+          StreetName
+          HouseNumber
+          FlatNumber
+          Door
+          Others
+        }
+        Title
+        Description
+        Footer
+        Chapters {
+          Description
+          Quantity
+          Lines {
+            Description
+            Quantity
+          }
+        }
+        StateStory {
+          StateName
+          StateDate
+          SendMailData{
+            Destinations
+          }
+        }
+      }
+  }
+}

@@ -6,6 +6,7 @@ const {
     GraphQLNonNull,
     GraphQLList
 } = graphQL;
+const { GraphQLDate } = require('graphql-iso-date');
 
 const AmountsObjectType = require("./Amounts/ObjectType");
 const StateStoryElementObjectType = require("./StateStoryElement/ObjectType");
@@ -16,7 +17,7 @@ module.exports = new GraphQLObjectType({
         {
             _id : { type: GraphQLID },
             BudgetNumber: { type: new GraphQLNonNull(GraphQLString) },
-            BudgetDate: { type: new GraphQLNonNull(GraphQLString) },
+            BudgetDate: { type: new GraphQLNonNull(GraphQLDate) },
             CustomerCompleteName: { type: GraphQLString },
             CompleteAddress: { type: GraphQLString },
             Title: { type: GraphQLString },

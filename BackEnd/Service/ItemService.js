@@ -52,7 +52,7 @@ class ItemService {
         delete item._id;
         self.applyAction(item, Actions.INSERT)
         .then(function(result){ deferred.resolve(result); })
-        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[Actions.INSERT] ] }); });
+        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.INSERT] ] }); });
         return deferred.promise;
     }
     update(item){
@@ -60,7 +60,7 @@ class ItemService {
         let deferred = Q.defer();
         self.applyAction(item, Actions.UPDATE)
         .then(function(result){ deferred.resolve(result); })
-        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[Actions.UPDATE] ] }); });
+        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.UPDATE] ] }); });
         return deferred.promise;
     }
     delete(id){
@@ -68,7 +68,7 @@ class ItemService {
         let deferred = Q.defer();
         self.applyAction(id, Actions.DELETE)
         .then(function(result){ deferred.resolve(result); })
-        .catch(function(error){ deferred.resolve({ success: false, errors: [ self.errors[Actions.DELETE] ] }); });
+        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.DELETE] ] }); });
         return deferred.promise;
     }
     applyAction(data, action){

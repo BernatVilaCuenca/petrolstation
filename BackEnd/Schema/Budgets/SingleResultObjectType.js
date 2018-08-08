@@ -8,6 +8,7 @@ const {
     GraphQLList,
     GraphQLNonNull
 } = graphQL;
+const { GraphQLDate } = require('graphql-iso-date');
 
 const ChapterObjectType = require("./Chapter/ObjectType");
 const AmountsObjectType = require("./Amounts/ObjectType");
@@ -21,7 +22,7 @@ module.exports = new GraphQLObjectType({
         {
             _id : { type: GraphQLID },
             BudgetNumber: { type: new GraphQLNonNull(GraphQLString) },
-            BudgetDate: { type: new GraphQLNonNull(GraphQLString) },
+            BudgetDate: { type: new GraphQLNonNull(GraphQLDate) },
             CustomerId: { type: new GraphQLNonNull(GraphQLID) },
             AddressId: { type: new GraphQLNonNull(GraphQLID) },
             Title: { type: GraphQLString },
@@ -50,14 +51,13 @@ module.exports = new GraphQLObjectType({
                             function(result){                             
                                 if (result && result.success) {
                                     let customer = result.data;
-                                    let iAddress = _.findIndex (
-                                                        customer.Addresses, 
-                                                        function(address) {
-                                                            return address._id === parent.AddressId;
-                                                        }
-                                                    );
-                                    if(iAddress < 0) return null;
-                                    return customer.Addresses[iAddress];
+                                    let address = _.find (
+                                        customer.Addresses, 
+                                        function(address) {
+                                            return address._id.toString() == parent.AddressId.toString();
+                                        }
+                                    );
+                                    return address ? address : null;
                                 } else 
                                     return null;
                             }

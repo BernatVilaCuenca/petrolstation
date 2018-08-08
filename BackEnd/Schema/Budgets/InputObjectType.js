@@ -8,7 +8,6 @@ const {
 
 const ChapterInputObjectType = require("./Chapter/InputObjectType");
 const AmountsInputObjectType = require("./Amounts/InputObjectType");
-const StateStoryElementInputObjectType = require("./StateStoryElement/InputObjectType");
 
 module.exports = new GraphQLInputObjectType({
     name:"BudgetInput",
@@ -23,8 +22,7 @@ module.exports = new GraphQLInputObjectType({
             Description: { type: GraphQLString },
             Footer: { type: GraphQLString },
             Chapters: { type: new GraphQLList(ChapterInputObjectType) },
-            Amounts: { type: AmountsInputObjectType },
-            StateStory: { type: new GraphQLList(StateStoryElementInputObjectType) }
+            Amounts: { type: AmountsInputObjectType }
         }
     )
 });
