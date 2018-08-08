@@ -12,7 +12,6 @@ module.exports = new GraphQLInputObjectType({
         HouseNumber : { type: GraphQLString },
         FlatNumber : { type: GraphQLString },
         Door : { type: GraphQLString },
-        Others : { type: GraphQLString },
-        CompleteAddress : { type: GraphQLString }
+        Others : { type: GraphQLString }
     })
 });

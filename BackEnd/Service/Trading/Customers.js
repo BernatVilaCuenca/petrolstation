@@ -4,9 +4,8 @@ const Actions = require("../Actions");
 const Q = require('q');
 
 class CustomersService extends ListableItemService{
-    constructor(repository, repositoryList, departmentsRepository){
+    constructor(repository, repositoryList){
         super(repository, repositoryList, Errors.Trading.Customers);
-        this.departmentsRepository = departmentsRepository;
     }
     createListItem(item){
         let listItem = {
@@ -39,33 +38,7 @@ class CustomersService extends ListableItemService{
                 }else{
                     data.PersonData = null;
                 }
-                if(data.Addresses.length === 0)
-                    deferred.resolve(data);
-                else{
-                    let promises = [];
-                    for(let i in data.Addresses){
-                        let address = data.Addresses[i];
-                        promises.push(
-                            self.getDepartment(address.DepartmentId)
-                            .then(function (department) { 
-                                return department.Name;
-                            })
-                            .catch(function () { 
-                                return null;
-                            })
-                        );
-                    }
-                    Q.allSettled(promises)
-                    .then(function (results) {
-                        for(let i in data.Addresses){
-                            if(results[i].value !== null)
-                                data.Addresses[i].CompleteAddress = `C/${data.Addresses[i].StreetName} (${results[i].value})`;
-                            else
-                                data.Addresses[i].CompleteAddress = `C/${data.Addresses[i].StreetName}`;
-                        }
-                        deferred.resolve(data);
-                    });
-                }
+                deferred.resolve(data);
             break;
             default:
                 deferred.resolve(data);
