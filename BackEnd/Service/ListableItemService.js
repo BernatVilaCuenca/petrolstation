@@ -1,5 +1,4 @@
 const LogManager = require("../LogManager");
-const Actions = require("./Actions");
 const Q = require('q');
 
 class ListableItemService {
@@ -43,120 +42,238 @@ class ListableItemService {
             deferred.resolve({ success: false, errors: [ self.errors.getOne ] });
         });
         return deferred.promise;
-    }
-    createListItem(data){
+    }    
+    prepare(originalData, newData){
         let deferred = Q.defer();
-        deferred.resolve(data);
+        let result = { };
+        if(originalData)
+            result = {
+                item: Object.assign(originalData.item, newData),
+                itemList: Object.assign({ }, originalData.itemList)
+            };
+        else
+            result = {
+                item: newData,
+                itemList: {}
+            };
+        deferred.resolve({ success: true, data: result });
         return deferred.promise;
     }
-    prepareItem(data, currentData, action){
+    updateExternalEntities(data){
         let deferred = Q.defer();
-        deferred.resolve(data);
+        deferred.resolve({ success: true });
         return deferred.promise;
     }
-    getCurrentData(data, action){
+    fetch(id){
+        let self=this;
         let deferred = Q.defer();
-        switch(action){
-            case Actions.INSERT:
-            deferred.resolve(null);
-            break;
-            case Actions.UPDATE:
-            case Actions.DELETE:
-                let id = (action === Actions.UPDATE) ? data._id : data;
-                self.repository.getOne(id)
-                .then(function(result){
-                    if(result && result.success)
-                        deferred.resolve(result.data);
+        self.repository.getOne(id)
+        .then(function(result){
+            if(result && result.success){
+                self.repositoryList.getOne(id)
+                .then(function(resultList){
+                    if(resultList && resultList.success)
+                        deferred.resolve({ success: true, data: { item: result.data, itemList: resultList.data }});
                     else
-                        deferred.resolve(null);
+                        deferred.resolve({ success: false, data: null });
                 })
                 .catch(function(){
-                    deferred.resolve(null);
+                    deferred.resolve({ success: false, data: null });
                 });
-            break;
-            default:
-                deferred.resolve(null);
-            break;
-        }
+            } else
+                deferred.resolve({ success: false, data: null });
+        })
+        .catch(function(){
+            deferred.resolve({ success: false, data: null });
+        });
         return deferred.promise;
     }
-    updateExternal(data, action){
+    performInsert(data){
+        let self=this;
+        let className = self.constructor.name;
         let deferred = Q.defer();
-        deferred.resolve(data);
+        delete data.item._id;
+        self.repository.insert(data.item)
+        .then(function(result){
+            if(result && result.success) {
+                data.itemList._id = result.data._id;
+                self.repositoryList.insert(data.itemList)
+                .then(function(resultList){
+                    if(resultList && resultList.success)
+                        LogManager.LogInfo(`${className} inserted the new item ${ resultList.data._id }`);
+                    else
+                        LogManager.LogError(`Error on ${className}.insert`);
+                    deferred.resolve(result);
+                })
+                .catch(function(error){
+                    LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                });
+            }else{
+                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+            }
+        })
+        .catch(function(error){
+            LogManager.LogError(`Error on ${className}.insert: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+        });
         return deferred.promise;
     }
     insert(item){
         let self=this;
+        let className = self.constructor.name;
         let deferred = Q.defer();
-        delete item._id;
-        self.applyAction(item, Actions.INSERT)
-        .then(function(result){ deferred.resolve(result); })
-        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.INSERT] ] }); });
+        self.prepare(null, item)
+        .then(function(resultPrepare){
+            if(resultPrepare && resultPrepare.success){
+                self.performInsert(resultPrepare.data)
+                .then(function(resultPerform){ 
+                    if(resultPerform && resultPerform.success) {
+                        self.updateExternalEntities(resultPerform.data)
+                        .then(function(resultExternalUpdate){
+                            if(resultExternalUpdate && resultExternalUpdate.success) {
+                                deferred.resolve({ success: true, data: resultPerform.data });
+                            }else{
+                                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                                deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                            }
+                        })
+                        .catch(function(){
+                            LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                            deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                        });
+                    }else{
+                        LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                        deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                    }               
+                })
+                .catch(function(){
+                    LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                });
+            }else{
+            }
+        })
+        .catch(function(){
+            LogManager.LogError(`Error on ${className}.insert: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+        });
+        return deferred.promise;
+    }
+    performUpdate(data){
+        let self=this;
+        let className = self.constructor.name;
+        let deferred = Q.defer();
+        self.repository.update(data.item)
+        .then(function(result){
+            if(result && result.success) {
+                data.itemList._id = result.data._id;
+                self.repositoryList.update(data.itemList)
+                .then(function(resultList){
+                    if(resultList && resultList.success)
+                        LogManager.LogInfo(`${className} updated the item ${ resultList.data._id }`);
+                    else
+                        LogManager.LogError(`Error on ${className}.insert`);
+                    deferred.resolve(result);
+                })
+                .catch(function(error){
+                    LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                });
+            }else{
+                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+            }
+        })
+        .catch(function(error){
+            LogManager.LogError(`Error on ${className}.insert: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+        });
         return deferred.promise;
     }
     update(item){
         let self=this;
+        let className = self.constructor.name;
         let deferred = Q.defer();
-        self.applyAction(item, Actions.UPDATE)
-        .then(function(result){ deferred.resolve(result); })
-        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.UPDATE] ] }); });
+
+        self.fetch(item._id)
+        .then(function(resultFetch){
+            if(resultFetch && resultFetch.success) {
+                self.prepare(resultFetch.data, item)
+                .then(function(resultPrepare){
+                    if(resultPrepare && resultPrepare.success){
+                        self.performUpdate(resultPrepare.data)
+                        .then(function(resultPerform){ 
+                            if(resultPerform && resultPerform.success) {
+                                self.updateExternalEntities(resultPerform.data)
+                                .then(function(resultExternalUpdate){
+                                    if(resultExternalUpdate && resultExternalUpdate.success) {
+                                        deferred.resolve({ success: true, data: resultPerform.data });
+                                    }else{
+                                        LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                        deferred.resolve({ success: false, errors: [ self.errors.update ] });
+                                    }
+                                })
+                                .catch(function(){
+                                    LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                    deferred.resolve({ success: false, errors: [ self.errors.update ] });
+                                });
+                            }else{
+                                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                deferred.resolve({ success: false, errors: [ self.errors.update ] });
+                            }               
+                        })
+                        .catch(function(){
+                            LogManager.LogError(`Error on ${className}.update: ${error}`);
+                            deferred.resolve({ success: false, errors: [ self.errors.update ] });
+                        });
+                    }else{
+                    }
+                })
+                .catch(function(){
+                    LogManager.LogError(`Error on ${className}.update: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.update ] });
+                });
+            }else{
+                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                deferred.resolve({ success: false, errors: [ self.errors.update ] });
+            }
+        })
+        .catch(function(){
+            LogManager.LogError(`Error on ${className}.update: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.update ] });
+        });
         return deferred.promise;
     }
     delete(id){
         let self=this;
-        let deferred = Q.defer();
-        self.applyAction(id, Actions.DELETE)
-        .then(function(result){ deferred.resolve(result); })
-        .catch(function(){ deferred.resolve({ success: false, errors: [ self.errors[Actions.DELETE] ] }); });
-        return deferred.promise;
-    }
-    applyAction(data, action){
-        let self=this;
         let className = self.constructor.name;
         let deferred = Q.defer();
-        
-        self.getCurrentData(data, action)
-        .then(function(currentData){
-            self.prepareItem(data, currentData, action)
-            .then(function(modifiedData){
-                self.repository[action](modifiedData)
-                .then(function(result){
-                    if(result && result.success) {
-                        self.createListItem(result.data)
-                        .then(function(listItem){
-                            self.repositoryList[action](listItem)
-                            .then(function(resultInList){
-                                if(resultInList && resultInList.success)
-                                    LogManager.LogInfo(`${className}.${action}`);
-                                else
-                                    LogManager.LogError(`Error on ${className}.${action}`);
-                                deferred.resolve(result);
-                            })
-                            .catch(function(error){
-                                LogManager.LogError(`Error on ${className}.${action}: ${error}`);
-                                deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-                            });
-                        })
-                        .catch(function(error){
-                            LogManager.LogError(`Error on ${className}.${action}: ${error}`);
-                            deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-                        });                    
-                    } else {
-                        LogManager.LogError(`Error on ${className}.${action}: ${error}`);
-                        deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-                    }                
+        self.repository.delete(id)
+        .then(function(result){
+            if(result && result.success) {
+                self.repositoryList.delete(id)
+                .then(function(resultList){
+                    if(resultList && resultList.success)
+                        LogManager.LogInfo(`${className} deleted the item ${ id }`);
+                    else
+                        LogManager.LogError(`Error on ${className}.delete`);
+                    deferred.resolve(result);
                 })
-                .catch(function(){
-                    deferred.resolve({ success: false, errors: [ self.errors[action] ] });
+                .catch(function(error){
+                    LogManager.LogError(`Error on ${className}.delete: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.delete ] });
                 });
-            })
-            .catch(function(){
-                deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-            });
+            }else{
+                LogManager.LogError(`Error on ${className}.delete: ${error}`);
+                deferred.resolve({ success: false, errors: [ self.errors.delete ] });
+            }
         })
-        .catch(function(){
-            deferred.resolve({ success: false, errors: [ self.errors[action] ] });
-        });        
+        .catch(function(error){
+            LogManager.LogError(`Error on ${className}.delete: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.delete ] });
+        });
         return deferred.promise;
     }
 }

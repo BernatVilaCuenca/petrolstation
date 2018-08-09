@@ -42,7 +42,7 @@ class Repository{
         });
         return deferred.promise;
     }
-    update(item){
+    update(item){        
         let self = this;
         var deferred = Q.defer();
         this.model.findById(item._id, function(errorOnFetch, result){	
@@ -61,7 +61,7 @@ class Repository{
         });
         return deferred.promise;
     }
-    delete(id){
+    delete(id){        
         let self = this;
         var deferred = Q.defer();
         this.model.findById(id, function(errorOnFetch, itemToDelete){	
