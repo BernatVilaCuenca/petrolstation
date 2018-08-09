@@ -23,6 +23,7 @@ class BudgetsService extends ListableItemService{
         console.log(CustomerId)
         self.getCustomer(CustomerId)
             .then(function(customer){
+                console.log(customer)
                 if(customer){
                     console.log(customer)
                     itemList.CustomerCompleteName = customer.Type === CustomerType.Person ? 
