@@ -1,5 +1,7 @@
-module.exports = Object.freeze({
-    INSERT: 'insert',
-    UPDATE: 'update',
-    DELETE: 'delete'
-});
+module.exports = {
+    GetAll: 'GetAll',
+    GetOne: 'GetOne',
+    Insert: 'Insert',
+    Update: 'Update',
+    Delete: 'Delete'
+};

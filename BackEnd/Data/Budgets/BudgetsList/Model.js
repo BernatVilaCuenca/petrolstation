@@ -11,6 +11,13 @@ const stateStoryElementSchema = new Mongoose.Schema({
     versionKey:false,
     _id: false
 });
+const stateDataSchema = new Mongoose.Schema({
+    StateName: String,
+    StateStory: [ stateStoryElementSchema ]
+},{
+    versionKey:false,
+    _id: false
+});
 
 const schema = new Mongoose.Schema({
     BudgetNumber: String,
@@ -23,7 +30,7 @@ const schema = new Mongoose.Schema({
             Quantity: Number
         }
     },
-    StateStory: [ stateStoryElementSchema ]
+    StateData: stateDataSchema
 },{
     versionKey:false
 });

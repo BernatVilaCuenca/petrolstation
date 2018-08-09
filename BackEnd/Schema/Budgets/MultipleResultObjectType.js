@@ -3,13 +3,12 @@ const {
     GraphQLObjectType, 
     GraphQLString,
     GraphQLID,
-    GraphQLNonNull,
-    GraphQLList
+    GraphQLNonNull
 } = graphQL;
 const { GraphQLDate } = require('graphql-iso-date');
 
 const AmountsObjectType = require("./Amounts/ObjectType");
-const StateStoryElementObjectType = require("./StateStoryElement/ObjectType");
+const StateDataObjectType = require("./StateData/ObjectType");
 
 module.exports = new GraphQLObjectType({
     name:"BudgetList",
@@ -22,7 +21,7 @@ module.exports = new GraphQLObjectType({
             CompleteAddress: { type: GraphQLString },
             Title: { type: GraphQLString },
             Amounts: { type: AmountsObjectType },
-            StateStory: { type: new GraphQLList(StateStoryElementObjectType) }
+            StateData: { type: StateDataObjectType }
         }
     )
 });

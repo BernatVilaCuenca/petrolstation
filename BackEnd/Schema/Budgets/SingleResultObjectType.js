@@ -12,7 +12,7 @@ const { GraphQLDate } = require('graphql-iso-date');
 
 const ChapterObjectType = require("./Chapter/ObjectType");
 const AmountsObjectType = require("./Amounts/ObjectType");
-const StateStoryElementObjectType = require("./StateStoryElement/ObjectType");
+const StateDataObjectType = require("./StateData/ObjectType");
 const CustomerObjectType = require("../Trading/Customers/SingleResultObjectType");
 const AddressObjectType = require("../Shared/Address/ObjectType");
 
@@ -30,7 +30,7 @@ module.exports = new GraphQLObjectType({
             Footer: { type: GraphQLString },
             Chapters: { type: new GraphQLList(ChapterObjectType) },
             Amounts: { type: AmountsObjectType },
-            StateStory: { type: new GraphQLList(StateStoryElementObjectType) },
+            StateData: { type: StateDataObjectType },
 
             Customer: {
                 type: CustomerObjectType,

@@ -1,5 +1,5 @@
 module.exports = Object.freeze({
-    Created: 'CREATED',
-    Closed: 'CLOSED',
-    Sent: 'SENT'
+    Created: 'Created',
+    Locked: 'Locked',
+    Sent: 'Sent'
 });

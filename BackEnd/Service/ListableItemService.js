@@ -1,5 +1,7 @@
-const LogManager = require("../LogManager");
 const Q = require('q');
+
+const LogManager = require("../LogManager");
+const Actions = require("./Actions");
 
 class ListableItemService {
     constructor(repository, repositoryList, errors){
@@ -122,6 +124,7 @@ class ListableItemService {
     }
     insert(item){
         let self=this;
+        self.action = Actions.Insert;
         let className = self.constructor.name;
         let deferred = Q.defer();
         self.prepare(null, item)
@@ -194,9 +197,9 @@ class ListableItemService {
     }
     update(item){
         let self=this;
+        self.action = Actions.Update;
         let className = self.constructor.name;
         let deferred = Q.defer();
-
         self.fetch(item._id)
         .then(function(resultFetch){
             if(resultFetch && resultFetch.success) {
@@ -248,6 +251,7 @@ class ListableItemService {
     }
     delete(id){
         let self=this;
+        self.action = Actions.Delete;
         let className = self.constructor.name;
         let deferred = Q.defer();
         self.repository.delete(id)

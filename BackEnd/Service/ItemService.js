@@ -1,15 +1,19 @@
 const LogManager = require("../LogManager");
 const Q = require('q');
+const Actions = require('./Actions');
 
 class ItemService {
     constructor(repository, errors){
         this.repository = repository;
-        this.errors = errors;      
+        this.errors = errors;   
+        this.action = null;   
     }
     getAll(query){
-        let className = this.constructor.name;
+        let self=this;
+        self.action = Actions.GetAll;
+        let className = self.constructor.name;
         let deferred = Q.defer();
-        this.repository.getAll(query)
+        self.repository.getAll(query)
         .then(function(result){
             if(result && result.success)
                 LogManager.LogInfo(`${className}.getAll querying ${JSON.stringify(query)} returned ${result.data ? result.data.length : 0} items`);
@@ -19,14 +23,16 @@ class ItemService {
         })
         .catch(function(error){
             LogManager.LogError(`Error on ${className}.getAll: ${error}`);
-            deferred.resolve({ success: false, errors: [ this.errors.getAll ] });
+            deferred.resolve({ success: false, errors: [ self.errors.getAll ] });
         });
         return deferred.promise;
     }
     getOne(id){
-        let className = this.constructor.name;
+        let self=this;
+        self.action = Actions.GetOne;
+        let className = self.constructor.name;
         let deferred = Q.defer();
-        this.repository.getOne(id)
+        self.repository.getOne(id)
         .then(function(result){
             if(result && result.success)
                 LogManager.LogInfo(`${className}.getOne returned the item ${id}`);
@@ -36,7 +42,7 @@ class ItemService {
         })
         .catch(function(error){
             LogManager.LogError(`Error on ${className}.getOne: ${error}`);
-            deferred.resolve({ success: false, errors: [ this.errors.getOne ] });
+            deferred.resolve({ success: false, errors: [ self.errors.getOne ] });
         });
         return deferred.promise;
     }
@@ -89,6 +95,7 @@ class ItemService {
     }
     insert(item){
         let self=this;
+        self.action = Actions.Insert;
         let className = self.constructor.name;
         let deferred = Q.defer();
         self.prepare(null, item)
@@ -150,9 +157,9 @@ class ItemService {
     }
     update(item){
         let self=this;
+        self.action = Actions.Update;
         let className = self.constructor.name;
         let deferred = Q.defer();
-
         self.fetch(item._id)
         .then(function(resultFetch){
             if(resultFetch && resultFetch.success) {
@@ -204,6 +211,7 @@ class ItemService {
     }
     delete(id){
         let self=this;
+        self.action = Actions.Delete;
         let className = self.constructor.name;
         let deferred = Q.defer();
         self.repository.delete(id)

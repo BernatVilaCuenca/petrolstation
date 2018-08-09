@@ -5,8 +5,8 @@ var moment = require('moment');
 const Errors = require("../../Errors");
 const ListableItemService = require("../ListableItemService");
 const CustomerType = require("../Trading/Type");
-const Actions = require("../Actions");
-const States = require("../Budgets/States")
+const Actions = require("./Actions");
+const States = require("./States")
 
 class BudgetsService extends ListableItemService{
     constructor(repository, repositoryList, customerRepository, townsRepository){
@@ -14,67 +14,119 @@ class BudgetsService extends ListableItemService{
         this.customerRepository = customerRepository;
         this.townsRepository = townsRepository;
     }
-    prepareItem(data, currentData, action){
-        let deferred = Q.defer();
-        switch(action){
-            case Actions.INSERT:
-                data.BudgetDate = moment(data.BudgetDate, "DD/MM/YYYY");
-                data.StateStory = [{
-                    StateName: States.Created,
-                    StateDate: new Date(),
-                    SendMailData: null
-                }];
-                deferred.resolve(data);
-            break;
-            case Actions.UPDATE:
-                data.BudgetDate = moment(data.BudgetDate, "DD/MM/YYYY");
-                deferred.resolve(data);
-            break;
-            default:
-                deferred.resolve(data);
-            break;
-        }        
-        return deferred.promise;
-    }
-    createListItem(item){
+    completeItemListData(item){
         let self = this;
         let deferred = Q.defer();
-        
-        let { _id, BudgetNumber, BudgetDate, CustomerId, AddressId, Amounts,  StateStory } = item;
-        let listItem = { _id, BudgetNumber, BudgetDate, Amounts, StateStory };
 
+        let { _id, BudgetNumber, BudgetDate, CustomerId, AddressId, Amounts,  StateData } = item;
+        let itemList = { _id, BudgetNumber, BudgetDate, Amounts, StateData };
+        console.log(CustomerId)
         self.getCustomer(CustomerId)
             .then(function(customer){
                 if(customer){
-                    listItem.CustomerCompleteName = customer.Type === CustomerType.Person ? 
-                                                    customer.PersonData.CompleteName : 
-                                                    customer.LegalPersonData.BusinessName;                
-                    listItem.CompleteAddress = '';
+                    console.log(customer)
+                    itemList.CustomerCompleteName = customer.Type === CustomerType.Person ? 
+                                                        customer.PersonData.CompleteName : 
+                                                        customer.LegalPersonData.BusinessName;                
+                    itemList.CompleteAddress = '';
                     
                     let address = _.find (
                         customer.Addresses, 
                         function(address) {
                             return address._id.toString() == AddressId.toString();
                         }
-                    );                    
+                    );           
+                    console.log(address)         
                     if(address){
-                        listItem.CompleteAddress = `C/${ address.StreetName }`;
+                        itemList.CompleteAddress = `C/${ address.StreetName }`;
                         self.getTown(address.TownId)
                             .then(function(town){    
-                                listItem.CompleteAddress = `${ listItem.CompleteAddress } (${ town.Name })`;
+                                itemList.CompleteAddress = `${ itemList.CompleteAddress } (${ town.Name })`;
                             })
                             .finally(function(){ 
-                                deferred.resolve(listItem); 
+                                deferred.resolve({ success: true, data: itemList });
                             });
                     } else
-                        deferred.resolve(listItem);
+                        deferred.resolve({ success: false });
                 } else
-                    deferred.resolve(listItem);
+                    deferred.resolve({ success: false });
             })
             .catch(function(){ 
-                deferred.resolve(listItem); 
+                deferred.resolve({ success: false });
             });
+        return deferred.promise;
+    }
+    completeItemData(item){
+        let self = this;
+        let deferred = Q.defer();
+        item.BudgetDate = moment(item.BudgetDate, "DD/MM/YYYY");
 
+        switch(self.action){
+            case Actions.Insert:
+                item.StateData = {
+                    StateName: States.Created,
+                    StateStory: [{
+                        StateName: States.Created,
+                        StateDate: new Date(),
+                        SendMailData: null
+                    }]
+                };
+            break;
+            case Actions.Lock:
+                let stateStory = item.StateData.StateStory;
+                stateStory.push({
+                    StateName: States.Locked,
+                    StateDate: new Date(),
+                    SendMailData: null
+                });
+                item.StateData = {
+                    StateName: States.Locked,
+                    StateStory: stateStory
+                };
+            break;
+            case Actions.Send:
+            break;
+            default:
+            break;
+        }
+        deferred.resolve({ success: true, data: item });
+        return deferred.promise;
+    }
+    prepare(originalData, newData){
+        let self = this;
+        let deferred = Q.defer();
+        let result = { };
+        if(originalData)
+            result = { 
+                item: Object.assign(originalData.item, newData),
+                itemList: Object.assign({ }, originalData.itemList)
+            };
+        else
+            result = { 
+                item: newData,
+                itemList: { }
+            };
+        self.completeItemData(result.item)
+        .then(function(resultCompleteItem){ 
+            if(resultCompleteItem && resultCompleteItem.success){
+                result.item = resultCompleteItem.data;
+                self.completeItemListData(result.item)
+                .then(function(resultCompleteItemList){ 
+                    if(resultCompleteItemList && resultCompleteItemList.success){
+                        result.itemList = resultCompleteItemList.data;
+                        deferred.resolve({ success: true, data: result });
+                    }else
+                        deferred.resolve({ success: false });                    
+                })
+               .catch(function(){
+                    deferred.resolve({ success: false });
+                });
+            }else
+                deferred.resolve({ success: false });                     
+        })
+       .catch(function(){
+            deferred.resolve({ success: false });
+        });
         return deferred.promise;
     }
     getCustomer(id){

@@ -2,7 +2,6 @@ const Q = require('q');
 
 const Errors = require("../../Errors");
 const ListableItemService = require("../ListableItemService");
-const Actions = require("../Actions");
 const Type = require("./Type");
 
 class CustomersService extends ListableItemService{
