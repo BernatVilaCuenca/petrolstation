@@ -20,12 +20,9 @@ class BudgetsService extends ListableItemService{
 
         let { _id, BudgetNumber, BudgetDate, CustomerId, AddressId, Amounts,  StateData } = item;
         let itemList = { _id, BudgetNumber, BudgetDate, Amounts, StateData };
-        console.log(CustomerId)
         self.getCustomer(CustomerId)
             .then(function(customer){
-                console.log(customer)
                 if(customer){
-                    console.log(customer)
                     itemList.CustomerCompleteName = customer.Type === CustomerType.Person ? 
                                                         customer.PersonData.CompleteName : 
                                                         customer.LegalPersonData.BusinessName;                
@@ -37,7 +34,6 @@ class BudgetsService extends ListableItemService{
                             return address._id.toString() == AddressId.toString();
                         }
                     );           
-                    console.log(address)         
                     if(address){
                         itemList.CompleteAddress = `C/${ address.StreetName }`;
                         self.getTown(address.TownId)
