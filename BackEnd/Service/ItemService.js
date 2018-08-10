@@ -83,7 +83,7 @@ class ItemService {
                 LogManager.LogInfo(`${className} inserted the new item ${ resultList.data._id }`);
                 deferred.resolve(result);
             }else{
-                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                LogManager.LogError(`Error on ${className}.insert`);
                 deferred.resolve({ success: false, errors: [ self.errors.insert ] });
             }
         })
@@ -109,27 +109,27 @@ class ItemService {
                             if(resultExternalUpdate && resultExternalUpdate.success) {
                                 deferred.resolve({ success: true, data: resultPerform.data });
                             }else{
-                                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                                LogManager.LogError(`Error on ${className}.insert`);
                                 deferred.resolve({ success: false, errors: [ self.errors.insert ] });
                             }
                         })
-                        .catch(function(){
+                        .catch(function(error){
                             LogManager.LogError(`Error on ${className}.insert: ${error}`);
                             deferred.resolve({ success: false, errors: [ self.errors.insert ] });
                         });
                     }else{
-                        LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                        LogManager.LogError(`Error on ${className}.insert`);
                         deferred.resolve({ success: false, errors: [ self.errors.insert ] });
                     }               
                 })
-                .catch(function(){
+                .catch(function(error){
                     LogManager.LogError(`Error on ${className}.insert: ${error}`);
                     deferred.resolve({ success: false, errors: [ self.errors.insert ] });
                 });
             }else{
             }
         })
-        .catch(function(){
+        .catch(function(error){
             LogManager.LogError(`Error on ${className}.insert: ${error}`);
             deferred.resolve({ success: false, errors: [ self.errors.insert ] });
         });
@@ -145,7 +145,7 @@ class ItemService {
                 LogManager.LogInfo(`${className} updated the item ${ result.data._id }`);
                 deferred.resolve(result);
             }else{
-                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                LogManager.LogError(`Error on ${className}.insert`);
                 deferred.resolve({ success: false, errors: [ self.errors.insert ] });
             }
         })
@@ -174,36 +174,36 @@ class ItemService {
                                     if(resultExternalUpdate && resultExternalUpdate.success) {
                                         deferred.resolve({ success: true, data: resultPerform.data });
                                     }else{
-                                        LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                        LogManager.LogError(`Error on ${className}.update`);
                                         deferred.resolve({ success: false, errors: [ self.errors.update ] });
                                     }
                                 })
-                                .catch(function(){
+                                .catch(function(error){
                                     LogManager.LogError(`Error on ${className}.update: ${error}`);
                                     deferred.resolve({ success: false, errors: [ self.errors.update ] });
                                 });
                             }else{
-                                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                LogManager.LogError(`Error on ${className}.update`);
                                 deferred.resolve({ success: false, errors: [ self.errors.update ] });
                             }               
                         })
-                        .catch(function(){
+                        .catch(function(error){
                             LogManager.LogError(`Error on ${className}.update: ${error}`);
                             deferred.resolve({ success: false, errors: [ self.errors.update ] });
                         });
                     }else{
                     }
                 })
-                .catch(function(){
+                .catch(function(error){
                     LogManager.LogError(`Error on ${className}.update: ${error}`);
                     deferred.resolve({ success: false, errors: [ self.errors.update ] });
                 });
             }else{
-                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                LogManager.LogError(`Error on ${className}.update`);
                 deferred.resolve({ success: false, errors: [ self.errors.update ] });
             }
         })
-        .catch(function(){
+        .catch(function(error){
             LogManager.LogError(`Error on ${className}.update: ${error}`);
             deferred.resolve({ success: false, errors: [ self.errors.update ] });
         });
@@ -220,7 +220,7 @@ class ItemService {
                 LogManager.LogInfo(`${className} deleted the item ${ id }`);
                 deferred.resolve(result);
             }else{
-                LogManager.LogError(`Error on ${className}.delete: ${error}`);
+                LogManager.LogError(`Error on ${className}.delete`);
                 deferred.resolve({ success: false, errors: [ self.errors.delete ] });
             }
         })

@@ -112,7 +112,7 @@ class ListableItemService {
                     deferred.resolve({ success: false, errors: [ self.errors.insert ] });
                 });
             }else{
-                LogManager.LogError(`Error on ${className}.insert: ${error}`);
+                LogManager.LogError(`Error on ${className}.insert`);
                 deferred.resolve({ success: false, errors: [ self.errors.insert ] });
             }
         })
@@ -179,21 +179,21 @@ class ListableItemService {
                     if(resultList && resultList.success)
                         LogManager.LogInfo(`${className} updated the item ${ resultList.data._id }`);
                     else
-                        LogManager.LogError(`Error on ${className}.insert`);
+                        LogManager.LogError(`Error on ${className}.update`);
                     deferred.resolve(result);
                 })
                 .catch(function(error){
-                    LogManager.LogError(`Error on ${className}.insert: ${error}`);
-                    deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                    LogManager.LogError(`Error on ${className}.update: ${error}`);
+                    deferred.resolve({ success: false, errors: [ self.errors.update ] });
                 });
             }else{
-                LogManager.LogError(`Error on ${className}.insert: ${error}`);
-                deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+                LogManager.LogError(`Error on ${className}.update`);
+                deferred.resolve({ success: false, errors: [ self.errors.update ] });
             }
         })
         .catch(function(error){
-            LogManager.LogError(`Error on ${className}.insert: ${error}`);
-            deferred.resolve({ success: false, errors: [ self.errors.insert ] });
+            LogManager.LogError(`Error on ${className}.update: ${error}`);
+            deferred.resolve({ success: false, errors: [ self.errors.update ] });
         });
         return deferred.promise;
     }
@@ -216,36 +216,36 @@ class ListableItemService {
                                     if(resultExternalUpdate && resultExternalUpdate.success) {
                                         deferred.resolve({ success: true, data: resultPerform.data });
                                     }else{
-                                        LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                        LogManager.LogError(`Error on ${className}.update`);
                                         deferred.resolve({ success: false, errors: [ self.errors.update ] });
                                     }
                                 })
-                                .catch(function(){
+                                .catch(function(error){
                                     LogManager.LogError(`Error on ${className}.update: ${error}`);
                                     deferred.resolve({ success: false, errors: [ self.errors.update ] });
                                 });
                             }else{
-                                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                                LogManager.LogError(`Error on ${className}.update`);
                                 deferred.resolve({ success: false, errors: [ self.errors.update ] });
                             }               
                         })
-                        .catch(function(){
+                        .catch(function(error){
                             LogManager.LogError(`Error on ${className}.update: ${error}`);
                             deferred.resolve({ success: false, errors: [ self.errors.update ] });
                         });
                     }else{
                     }
                 })
-                .catch(function(){
+                .catch(function(error){
                     LogManager.LogError(`Error on ${className}.update: ${error}`);
                     deferred.resolve({ success: false, errors: [ self.errors.update ] });
                 });
             }else{
-                LogManager.LogError(`Error on ${className}.update: ${error}`);
+                LogManager.LogError(`Error on ${className}.update`);
                 deferred.resolve({ success: false, errors: [ self.errors.update ] });
             }
         })
-        .catch(function(){
+        .catch(function(error){
             LogManager.LogError(`Error on ${className}.update: ${error}`);
             deferred.resolve({ success: false, errors: [ self.errors.update ] });
         });
@@ -272,7 +272,7 @@ class ListableItemService {
                     deferred.resolve({ success: false, errors: [ self.errors.delete ] });
                 });
             }else{
-                LogManager.LogError(`Error on ${className}.delete: ${error}`);
+                LogManager.LogError(`Error on ${className}.delete`);
                 deferred.resolve({ success: false, errors: [ self.errors.delete ] });
             }
         })

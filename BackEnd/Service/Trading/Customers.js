@@ -21,6 +21,13 @@ class CustomersService extends ListableItemService{
                 item: newData,
                 itemList: { }
             };
+
+        if(result.item.Type === Type.Person){
+            result.item.LegalPersonData = null;
+            result.item.PersonData.CompleteName = `${result.item.PersonData.Name} ${result.item.PersonData.Surname}`;
+        }else
+            result.item.PersonData = null;
+
         result.itemList.Type = newData.Type;
         result.itemList.Deletable = newData.Deletable;
             
@@ -28,7 +35,7 @@ class CustomersService extends ListableItemService{
             result.itemList.Phone = newData.PersonData.Phone;
             result.itemList.Email = newData.PersonData.Email;
             result.itemList.DocumentId = newData.PersonData.DocumentId;
-            result.itemList.CompleteName = `${newData.PersonData.Name} ${newData.PersonData.Surname}`;
+            result.itemList.CompleteName = result.item.PersonData.CompleteName;
         }else{
             result.itemList.Phone = newData.LegalPersonData.Phone;
             result.itemList.Email = newData.LegalPersonData.Email;
