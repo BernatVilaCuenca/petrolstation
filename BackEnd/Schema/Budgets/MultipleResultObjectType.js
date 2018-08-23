@@ -9,6 +9,8 @@ const { GraphQLDate } = require('graphql-iso-date');
 
 const AmountsObjectType = require("./Amounts/ObjectType");
 const StateDataObjectType = require("./StateData/ObjectType");
+const ActionsObjectType = require("./Actions/ObjectType");
+const ActionHelper = require("./Actions/ActionHelper");
 
 module.exports = new GraphQLObjectType({
     name:"BudgetList",
@@ -21,7 +23,13 @@ module.exports = new GraphQLObjectType({
             CompleteAddress: { type: GraphQLString },
             Title: { type: GraphQLString },
             Amounts: { type: AmountsObjectType },
-            StateData: { type: StateDataObjectType }
+            StateData: { type: StateDataObjectType },
+            Actions: { 
+                type: ActionsObjectType,
+                resolve(parent, args){
+                    return ActionHelper.GetActionsAvailable(parent);
+                } 
+            }
         }
     )
 });

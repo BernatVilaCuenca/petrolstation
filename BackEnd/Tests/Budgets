@@ -3,8 +3,8 @@ mutation{
     Budget:{
       BudgetNumber:"1234",
       BudgetDate:"03/10/2018",
-      CustomerId:"5b6a802452686052a8438b3f",
-      AddressId:"5b6a802452686052a8438b40",
+      CustomerId:"5b7e4ae300a13921ec483867",
+      AddressId:"5b7e4ae300a13921ec483868",
       Title:"Title",
       Description:"Description",
       Footer: "Footer",
@@ -43,10 +43,14 @@ mutation{
         _id
         BudgetNumber
         BudgetDate
+        CustomerId
         Customer {
           _id
-          Deletable
+          Type
+          PersonData
+          LegalPersonData
         }
+        AddressId
         Address {
           _id
           Deletable
@@ -70,13 +74,7 @@ mutation{
             Quantity
           }
         }
-        StateStory {
-          StateName
-          StateDate
-          SendMailData{
-            Destinations
-          }
-        }
+        StateData
       }
   }
 }

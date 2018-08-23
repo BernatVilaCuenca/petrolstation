@@ -15,6 +15,8 @@ const AmountsObjectType = require("./Amounts/ObjectType");
 const StateDataObjectType = require("./StateData/ObjectType");
 const CustomerObjectType = require("../Trading/Customers/SingleResultObjectType");
 const AddressObjectType = require("../Shared/Address/ObjectType");
+const ActionsObjectType = require("./Actions/ObjectType");
+const ActionHelper = require("./Actions/ActionHelper");
 
 module.exports = new GraphQLObjectType({
     name:"Budget",
@@ -65,6 +67,12 @@ module.exports = new GraphQLObjectType({
                         .catch(function(){ return null; });
                     return globalResult;
                 }
+            },
+            Actions: { 
+                type: ActionsObjectType,
+                resolve(parent, args){
+                    return ActionHelper.GetActionsAvailable(parent);
+                } 
             }
         }
     )
