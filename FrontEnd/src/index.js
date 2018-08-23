@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Main from './components/Main';
 import Customers from './components/Trading/Customers/List';
 import OwnEnterprise from './components/Trading/OwnEnterprise/Detail';
+import Budgets from './components/Budgets/Budgets/List';
 
 const Config = require("./config");
 global.config = Config;
@@ -27,6 +28,7 @@ ReactDOM.render(
             <Route exact path='/' component={Main}></Route>
             <Route path='/Customers' component={Customers}></Route>
             <Route path='/OwnEnterprise' component={OwnEnterprise}></Route>
+            <Route path='/Budgets' component={Budgets}></Route>
         </div>
     </Router>
     , document.getElementById('root')

@@ -39,7 +39,75 @@ const singleResultSchema = `{
     errors
     data {
         _id
-        
+        BudgetNumber
+        BudgetDate
+        CustomerId
+        AddressId
+        Title
+        Description
+        Footer
+        Chapters{
+            Description
+            Quantity
+            Lines{
+                Description
+                Quantity
+            }
+        }
+        Amounts{
+            Total{
+                Quantity
+            }
+        }
+        StateData {
+            StateName
+            StateStory {
+                StateName
+                StateDate
+                SendMailData {
+                    Destinations
+                }
+            }
+        }
+        Customer{            
+            Type
+            PersonData {
+                Name
+                Surname
+                Phone
+                Email
+                DocumentId
+            }
+            LegalPersonData {
+                BusinessName
+                Phone
+                Email
+                DocumentId
+            }
+        }
+        Address { 
+            Department{
+                _id
+                Name
+            }
+            Town{
+                _id
+                Name
+            }
+            PostCode
+            StreetName
+            HouseNumber
+            FlatNumber
+            Door
+            Others
+        }
+        Actions {
+            Edit
+            Delete
+            Lock
+            Reopen
+            SendMail
+        }
     }
 }`;
 
@@ -71,7 +139,7 @@ module.exports = class BudgetsStore{
                 if(result && result.data && result.data.budget){
                     result = result.data.budget;
                     if(result.success)
-                        global.eventManager.emit(CustomersEvents.GetOne, result.data);
+                        global.eventManager.emit(BudgetsEvents.GetOne, result.data);
                     else
                         global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
                 }                
@@ -83,22 +151,22 @@ module.exports = class BudgetsStore{
     }
     insert(data){
         global.apiClient.request(
-            `mutation insertCustomer(
-                $customer: CustomerInput
+            `mutation insertBudget(
+                $budget: BudgetInput
             ){ 
-                insertCustomer (
-                    Customer: $customer
+                insertBudget (
+                    Budget: $budget
                 )
                 ${singleResultSchema}
             }`,
             { 
-                customer: data
+                budget: data
             },
             function(result){
-                if(result && result.data && result.data.insertCustomer){
-                    result = result.data.insertCustomer;
+                if(result && result.data && result.data.insertBudget){
+                    result = result.data.insertBudget;
                     if(result.success)
-                        global.eventManager.emit(CustomersEvents.Insert, result.data);
+                        global.eventManager.emit(BudgetsEvents.Insert, result.data);
                     else
                         global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
                 }                
@@ -110,22 +178,22 @@ module.exports = class BudgetsStore{
     }
     update(data){
         global.apiClient.request(
-            `mutation updateCustomer(
-                $customer: CustomerInput
+            `mutation updateBudget(
+                $budget: BudgetInput
             ){ 
-                updateCustomer (
-                    Customer: $customer
+                updateBudget (
+                    Budget: $budget
                 )
                 ${singleResultSchema}
             }`,
             { 
-                customer: data
+                budget: data
             },
             function(result){
-                if(result && result.data && result.data.updateCustomer){
-                    result = result.data.updateCustomer;
+                if(result && result.data && result.data.updateBudget){
+                    result = result.data.updateBudget;
                     if(result.success)
-                        global.eventManager.emit(CustomersEvents.Update, result.data);
+                        global.eventManager.emit(BudgetsEvents.Update, result.data);
                     else
                         global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
                 }                
@@ -137,10 +205,10 @@ module.exports = class BudgetsStore{
     }
     delete(data){
         global.apiClient.request(
-            `mutation deleteCustomer(
+            `mutation deleteBudget(
                 $id: ID
             ){ 
-                deleteCustomer (
+                deleteBudget (
                     id: $id
                 )
                 ${singleResultSchema}
@@ -149,10 +217,10 @@ module.exports = class BudgetsStore{
                 id: data
             },
             function(result){
-                if(result && result.data && result.data.deleteCustomer){
-                    result = result.data.deleteCustomer;
+                if(result && result.data && result.data.deleteBudget){
+                    result = result.data.deleteBudget;
                     if(result.success)
-                        global.eventManager.emit(CustomersEvents.Delete, result.data);
+                        global.eventManager.emit(BudgetsEvents.Delete, result.data);
                     else
                         global.eventManager.emit(NotificatorEvents.Notificate, result.errors);
                 }                
