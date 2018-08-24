@@ -17,13 +17,6 @@ const multipleResultSchema = `{
         }
         StateData {
             StateName
-            StateStory {
-                StateName
-                StateDate
-                SendMailData {
-                    Destinations
-                }
-            }
         }
         Actions {
             Edit
@@ -61,13 +54,6 @@ const singleResultSchema = `{
         }
         StateData {
             StateName
-            StateStory {
-                StateName
-                StateDate
-                SendMailData {
-                    Destinations
-                }
-            }
         }
         Customer{            
             Type

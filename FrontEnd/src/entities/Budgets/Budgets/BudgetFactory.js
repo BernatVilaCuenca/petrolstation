@@ -20,7 +20,7 @@ module.exports = class BudgetFactory {
                 }
             },
             Actions: {
-                Edit: false,
+                Edit: true,
                 Delete: false,
                 Lock: false,
                 Reopen: false,

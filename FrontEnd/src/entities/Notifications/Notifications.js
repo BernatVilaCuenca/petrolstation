@@ -6,6 +6,7 @@ module.exports = Object.freeze({
         message:'All required fields should be completed',
         type: Type.Error
     },
+
     ErrorGeographicsDepartmentsGetAll: { 
         id:'ErrorGeographicsDepartmentsGetAll', 
         message:'Error while getting the departments',
@@ -26,6 +27,7 @@ module.exports = Object.freeze({
         message:'Error while getting the town',
         type: Type.Error
     },
+
     ErrorTradingCustomersGetAll: { 
         id:'ErrorTradingCustomersGetAll', 
         message:'Error while getting the customers',
@@ -66,6 +68,7 @@ module.exports = Object.freeze({
         message:'Customer deleted succesfuly',
         type: Type.Information
     },
+
     ErrorTradingOwnEnterpriseGetOne: { 
         id:'ErrorTradingOwnEnterpriseGetOne', 
         message:'Error while getting the company data',
@@ -79,6 +82,47 @@ module.exports = Object.freeze({
     SuccessTradingOwnEnterpriseUpdate: { 
         id:'SuccessTradingOwnEnterpriseUpdate', 
         message:'Company data updated succesfuly',
+        type: Type.Information
+    },
+
+    ErrorBudgetsGetAll: { 
+        id:'ErrorBudgetsGetAll', 
+        message:'Error while getting the budgets',
+        type: Type.Error
+    },
+    ErrorBudgetsGetOne: { 
+        id:'ErrorBudgetsGetOne', 
+        message:'Error while getting the budget',
+        type: Type.Error
+    },
+    ErrorBudgetsInsert: { 
+        id:'ErrorBudgetsInsert', 
+        message:'Error while creating the new budget',
+        type: Type.Error
+    },
+    ErrorBudgetsUpdate: { 
+        id:'ErrorBudgetsUpdate', 
+        message:'Error while updating the budget',
+        type: Type.Error
+    },
+    ErrorBudgetsDelete: { 
+        id:'ErrorBudgetsDelete', 
+        message:'Error while deleting the budget',
+        type: Type.Error
+    },
+    SuccessBudgetsInsert: { 
+        id:'SuccessBudgetsInsert', 
+        message:'Budget created succesfuly',
+        type: Type.Information
+    },
+    SuccessBudgetsUpdate: { 
+        id:'SuccessBudgetsUpdate', 
+        message:'Budget updated succesfuly',
+        type: Type.Information
+    },
+    SuccessBudgetsDelete: { 
+        id:'SuccessBudgetsDelete', 
+        message:'Budget deleted succesfuly',
         type: Type.Information
     }
 });
